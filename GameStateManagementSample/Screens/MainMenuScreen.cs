@@ -31,17 +31,20 @@ namespace GameStateManagement
             : base("Main Menu")
         {
             // Create our menu entries.
-            MenuEntry playGameMenuEntry = new MenuEntry("Play Game");
+            MenuEntry startGameMenuEntry = new MenuEntry("Start Game");
+            MenuEntry aboutGameMenuEntry = new MenuEntry("About");
             MenuEntry optionsMenuEntry = new MenuEntry("Options");
             MenuEntry exitMenuEntry = new MenuEntry("Exit");
 
             // Hook up menu event handlers.
-            playGameMenuEntry.Selected += PlayGameMenuEntrySelected;
+            startGameMenuEntry.Selected += StartGameMenuEntrySelected;
+            aboutGameMenuEntry.Selected += AboutGameMenuEntrySelected;
             optionsMenuEntry.Selected += OptionsMenuEntrySelected;
             exitMenuEntry.Selected += OnCancel;
 
             // Add entries to the menu.
-            MenuEntries.Add(playGameMenuEntry);
+            MenuEntries.Add(startGameMenuEntry);
+            MenuEntries.Add(aboutGameMenuEntry);
             MenuEntries.Add(optionsMenuEntry);
             MenuEntries.Add(exitMenuEntry);
         }
@@ -51,12 +54,20 @@ namespace GameStateManagement
         #region Handle Input
 
         /// <summary>
-        /// Event handler for when the Play Game menu entry is selected.
+        /// Event handler for when the Start Game menu entry is selected.
         /// </summary>
-        private void PlayGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        private void StartGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
                                new GameplayScreen());
+        }
+
+        /// <summary>
+        /// Event handler for when the About Game menu entry is selected.
+        /// </summary>
+        private void AboutGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            ScreenManager.AddScreen(new AboutGameScreen(), e.PlayerIndex);
         }
 
         /// <summary>
@@ -72,7 +83,7 @@ namespace GameStateManagement
         /// </summary>
         protected override void OnCancel(PlayerIndex playerIndex)
         {
-            const string message = "Are you sure you want to exit this sample?";
+            const string message = "Are you sure you want to exit?";
 
             MessageBoxScreen confirmExitMessageBox = new MessageBoxScreen(message);
 
