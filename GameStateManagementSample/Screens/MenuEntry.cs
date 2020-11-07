@@ -35,6 +35,11 @@ namespace GameStateManagement
         private string text;
 
         /// <summary>
+        /// The sprite font for this entry.
+        /// </summary>
+        private SpriteFont spriteFont;
+
+        /// <summary>
         /// Tracks a fading selection effect on the entry.
         /// </summary>
         /// <remarks>
@@ -59,6 +64,15 @@ namespace GameStateManagement
         {
             get { return text; }
             set { text = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the sprite font of this menu entry.
+        /// </summary>
+        public SpriteFont SpriteFont
+        {
+            get { return spriteFont; }
+            set { spriteFont = value; }
         }
 
         /// <summary>
@@ -100,6 +114,12 @@ namespace GameStateManagement
             this.text = text;
         }
 
+        public MenuEntry(SpriteFont spriteFont)
+        {
+
+            this.spriteFont = spriteFont;
+        }
+
         #endregion Initialization
 
         #region Update and Draw
@@ -134,11 +154,12 @@ namespace GameStateManagement
             // there is no such thing as a selected item on Windows Phone, so we always
             // force isSelected to be false
 #if WINDOWS_PHONE
-            isSelected = false;
+            isSelected = true;
 #endif
+            Color menuEntryColor = new Color(130, 2, 2);
 
             // Draw the selected entry in yellow, otherwise white.
-            Color color = isSelected ? Color.Yellow : Color.White;
+            Color color = isSelected ? menuEntryColor : Color.White;
 
             // Pulsate the size of the selected menu entry.
             double time = gameTime.TotalGameTime.TotalSeconds;
@@ -159,6 +180,9 @@ namespace GameStateManagement
 
             spriteBatch.DrawString(font, text, position, color, 0,
                                    origin, scale, SpriteEffects.None, 0);
+
+            if (spriteFont != null)
+                spriteBatch.DrawString(spriteFont, spriteFont.ToString(), position, color);
         }
 
         /// <summary>

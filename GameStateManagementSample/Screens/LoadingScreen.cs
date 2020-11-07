@@ -56,7 +56,7 @@ namespace GameStateManagement
             this.loadingIsSlow = loadingIsSlow;
             this.screensToLoad = screensToLoad;
 
-            TransitionOnTime = TimeSpan.FromSeconds(0.5);
+            TransitionOnTime = TimeSpan.FromSeconds(2.5);
         }
 
         /// <summary>
@@ -138,19 +138,30 @@ namespace GameStateManagement
                 SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
                 SpriteFont font = ScreenManager.Font;
 
-                const string message = "Loading...";
+                const string message1 = "Initiate   Starship    System    E.X.O.";
+                const string message2 = "Loading    Components...";
 
                 // Center the text in the viewport.
                 Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-                Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
-                Vector2 textSize = font.MeasureString(message);
-                Vector2 textPosition = (viewportSize - textSize) / 2;
 
-                Color color = Color.White * TransitionAlpha;
+                //Message 1
+                Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
+                Vector2 textSizeMessage1 = font.MeasureString(message1);
+                Vector2 textPositionMessage1 = (viewportSize - textSizeMessage1) / 2;
+
+                //Message 2
+                viewportSize = new Vector2(viewport.Width, viewport.Height+70);
+                Vector2 textSizeMessage2 = font.MeasureString(message2);
+                Vector2 textPositionMessage2 = (viewportSize - textSizeMessage2) / 2;
+
+                Color color = Color.Green * TransitionAlpha;
 
                 // Draw the text.
                 spriteBatch.Begin();
-                spriteBatch.DrawString(font, message, textPosition, color);
+
+                spriteBatch.DrawString(font, message1, textPositionMessage1, color);
+                spriteBatch.DrawString(font, message2, textPositionMessage2, color);
+
                 spriteBatch.End();
             }
         }
