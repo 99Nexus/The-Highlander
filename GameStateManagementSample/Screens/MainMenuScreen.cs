@@ -132,7 +132,7 @@ namespace GameStateManagement
             Vector2 textSizeStartGame = startGameMenuFont.MeasureString("Start Game");
             Vector2 textPositionStartGame = (viewportSize - textSizeStartGame) / 2;
 
-            //About Game
+            //About
             viewportSize = new Vector2(viewport.Width, viewport.Height + 100);
             Vector2 textSizeAboutGame = aboutGameMenuFont.MeasureString("About");
             Vector2 textPositionAboutGame = (viewportSize - textSizeAboutGame) / 2;
