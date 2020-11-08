@@ -15,7 +15,7 @@ namespace GameStateManagement
 
         // Constructor
         public AboutGameScreen() 
-            : base("")
+            : base("About")
         {
         }
 
