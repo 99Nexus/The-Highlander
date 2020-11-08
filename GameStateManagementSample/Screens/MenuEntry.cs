@@ -180,9 +180,6 @@ namespace GameStateManagement
 
             spriteBatch.DrawString(font, text, position, color, 0,
                                    origin, scale, SpriteEffects.None, 0);
-
-            if (spriteFont != null)
-                spriteBatch.DrawString(spriteFont, spriteFont.ToString(), position, color);
         }
 
         /// <summary>
