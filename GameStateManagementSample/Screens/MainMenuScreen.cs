@@ -28,10 +28,7 @@ namespace GameStateManagement
         #region Fields
 
         private Texture2D startScreenLogo;
-        private SpriteFont startGameMenuFont;
-        private SpriteFont aboutGameMenuFont;
-        private SpriteFont optionsMenuFont;
-        private SpriteFont exitMenuFont;
+
         #endregion Fields
 
         #region Initialization
@@ -50,10 +47,6 @@ namespace GameStateManagement
             ContentManager content = ScreenManager.Game.Content;
 
             startScreenLogo = content.Load<Texture2D>(@"graphics\screen_graphics\start_screen_logo");
-            startGameMenuFont = content.Load<SpriteFont>(@"spritefonts\screen_fonts\start_screen_font");
-            aboutGameMenuFont = content.Load<SpriteFont>(@"spritefonts\screen_fonts\start_screen_font");
-            optionsMenuFont = content.Load<SpriteFont>(@"spritefonts\screen_fonts\start_screen_font");
-            exitMenuFont = content.Load<SpriteFont>(@"spritefonts\screen_fonts\start_screen_font");
         }
 
         #endregion Initialization
@@ -117,7 +110,9 @@ namespace GameStateManagement
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
+            ScreenManager screenManager = this.ScreenManager;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
+            SpriteFont font = screenManager.Font;
 
             // Center menu entrys in the viewport
             Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
@@ -129,22 +124,22 @@ namespace GameStateManagement
 
             //Start Game
             viewportSize = new Vector2(viewport.Width, viewport.Height);
-            Vector2 textSizeStartGame = startGameMenuFont.MeasureString("Start Game");
+            Vector2 textSizeStartGame = font.MeasureString("Start Game");
             Vector2 textPositionStartGame = (viewportSize - textSizeStartGame) / 2;
 
-            //About
-            viewportSize = new Vector2(viewport.Width, viewport.Height + 100);
-            Vector2 textSizeAboutGame = aboutGameMenuFont.MeasureString("About");
-            Vector2 textPositionAboutGame = (viewportSize - textSizeAboutGame) / 2;
-
             //Options
-            viewportSize = new Vector2(viewport.Width, viewport.Height + 200);
-            Vector2 textSizeOptions = optionsMenuFont.MeasureString("Options");
+            viewportSize = new Vector2(viewport.Width, viewport.Height + 100);
+            Vector2 textSizeOptions = font.MeasureString("Options");
             Vector2 textPositionOptions = (viewportSize - textSizeOptions) / 2;
+
+            //About
+            viewportSize = new Vector2(viewport.Width, viewport.Height + 200);
+            Vector2 textSizeAboutGame = font.MeasureString("About");
+            Vector2 textPositionAboutGame = (viewportSize - textSizeAboutGame) / 2;
 
             //Exit
             viewportSize = new Vector2(viewport.Width, viewport.Height + 300);
-            Vector2 textSizeExit = exitMenuFont.MeasureString("Exit");
+            Vector2 textSizeExit = font.MeasureString("Exit");
             Vector2 textPositionExit = (viewportSize - textSizeExit) / 2;
 
 
@@ -152,27 +147,27 @@ namespace GameStateManagement
 
             // Draw the start screen logo and menu
             spriteBatch.Draw(startScreenLogo, startScreenLogoPosition, Color.White);
-            spriteBatch.DrawString(startGameMenuFont, "Start Game", textPositionStartGame, Color.LightGray);
-            spriteBatch.DrawString(aboutGameMenuFont, "About", textPositionAboutGame, Color.LightGray);
-            spriteBatch.DrawString(optionsMenuFont, "Options", textPositionOptions, Color.LightGray);
-            spriteBatch.DrawString(exitMenuFont, "Exit", textPositionExit, Color.LightGray);
+            //spriteBatch.DrawString(font, "Start Game", textPositionStartGame, Color.LightGray);
+            //spriteBatch.DrawString(font, "Options", textPositionOptions, Color.LightGray);
+            //spriteBatch.DrawString(font, "About", textPositionAboutGame, Color.LightGray);
+            //spriteBatch.DrawString(font, "Exit", textPositionExit, Color.LightGray);
 
             // Create our menu entries.
-            MenuEntry startGameMenuEntry = new MenuEntry(startGameMenuFont);
-            MenuEntry aboutGameMenuEntry = new MenuEntry(aboutGameMenuFont);
-            MenuEntry optionsMenuEntry = new MenuEntry(optionsMenuFont);
-            MenuEntry exitMenuEntry = new MenuEntry(exitMenuFont);
+            MenuEntry startGameMenuEntry = new MenuEntry("Start Game");
+            MenuEntry optionsMenuEntry = new MenuEntry("Options");
+            MenuEntry aboutGameMenuEntry = new MenuEntry("About");
+            MenuEntry exitMenuEntry = new MenuEntry("Exit");
 
             // Hook up menu event handlers.
             startGameMenuEntry.Selected += StartGameMenuEntrySelected;
-            aboutGameMenuEntry.Selected += AboutGameMenuEntrySelected;
             optionsMenuEntry.Selected += OptionsMenuEntrySelected;
+            aboutGameMenuEntry.Selected += AboutGameMenuEntrySelected;
             exitMenuEntry.Selected += OnCancel;
             
             // Add entries to the menu.
             MenuEntries.Add(startGameMenuEntry);
-            MenuEntries.Add(aboutGameMenuEntry);
             MenuEntries.Add(optionsMenuEntry);
+            MenuEntries.Add(aboutGameMenuEntry);
             MenuEntries.Add(exitMenuEntry);
 
             spriteBatch.End();
