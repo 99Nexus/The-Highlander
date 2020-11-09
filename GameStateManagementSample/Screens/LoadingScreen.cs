@@ -56,7 +56,7 @@ namespace GameStateManagement
             this.loadingIsSlow = loadingIsSlow;
             this.screensToLoad = screensToLoad;
 
-            TransitionOnTime = TimeSpan.FromSeconds(2.5);
+            TransitionOnTime = TimeSpan.FromSeconds(2.0);
         }
 
         /// <summary>
