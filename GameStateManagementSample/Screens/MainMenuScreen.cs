@@ -39,7 +39,23 @@ namespace GameStateManagement
         public MainMenuScreen()
             : base("")
         {
-           
+            // Create our menu entries.
+            MenuEntry startGameMenuEntry = new MenuEntry("Start Game");
+            MenuEntry optionsMenuEntry = new MenuEntry("Options");
+            MenuEntry aboutGameMenuEntry = new MenuEntry("About");
+            MenuEntry exitMenuEntry = new MenuEntry("Exit");
+
+            // Hook up menu event handlers.
+            startGameMenuEntry.Selected += StartGameMenuEntrySelected;
+            optionsMenuEntry.Selected += OptionsMenuEntrySelected;
+            aboutGameMenuEntry.Selected += AboutGameMenuEntrySelected;
+            exitMenuEntry.Selected += OnCancel;
+
+            // Add entries to the menu.
+            MenuEntries.Add(startGameMenuEntry);
+            MenuEntries.Add(optionsMenuEntry);
+            MenuEntries.Add(aboutGameMenuEntry);
+            MenuEntries.Add(exitMenuEntry);
         }
 
         public override void LoadContent()
@@ -102,9 +118,9 @@ namespace GameStateManagement
         }
 
         #endregion Handle         
-        
-        #region Draw
- 
+
+        #region Update and Draw
+
         /// <summary>
         /// Draws the start screen logo
         /// </summary>
@@ -118,61 +134,23 @@ namespace GameStateManagement
             Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
 
             //Start screen logo
-            Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height-200);
+            Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height-250);
             Vector2 startScreenLogoSize = new Vector2(startScreenLogo.Width, startScreenLogo.Height);
             Vector2 startScreenLogoPosition = (viewportSize - startScreenLogoSize) / 2;
-
-            //Start Game
-            viewportSize = new Vector2(viewport.Width, viewport.Height);
-            Vector2 textSizeStartGame = font.MeasureString("Start Game");
-            Vector2 textPositionStartGame = (viewportSize - textSizeStartGame) / 2;
-
-            //Options
-            viewportSize = new Vector2(viewport.Width, viewport.Height + 100);
-            Vector2 textSizeOptions = font.MeasureString("Options");
-            Vector2 textPositionOptions = (viewportSize - textSizeOptions) / 2;
-
-            //About
-            viewportSize = new Vector2(viewport.Width, viewport.Height + 200);
-            Vector2 textSizeAboutGame = font.MeasureString("About");
-            Vector2 textPositionAboutGame = (viewportSize - textSizeAboutGame) / 2;
-
-            //Exit
-            viewportSize = new Vector2(viewport.Width, viewport.Height + 300);
-            Vector2 textSizeExit = font.MeasureString("Exit");
-            Vector2 textPositionExit = (viewportSize - textSizeExit) / 2;
-
 
             spriteBatch.Begin();
 
             // Draw the start screen logo and menu
             spriteBatch.Draw(startScreenLogo, startScreenLogoPosition, Color.White);
-            //spriteBatch.DrawString(font, "Start Game", textPositionStartGame, Color.LightGray);
-            //spriteBatch.DrawString(font, "Options", textPositionOptions, Color.LightGray);
-            //spriteBatch.DrawString(font, "About", textPositionAboutGame, Color.LightGray);
-            //spriteBatch.DrawString(font, "Exit", textPositionExit, Color.LightGray);
-
-            // Create our menu entries.
-            MenuEntry startGameMenuEntry = new MenuEntry("Start Game");
-            MenuEntry optionsMenuEntry = new MenuEntry("Options");
-            MenuEntry aboutGameMenuEntry = new MenuEntry("About");
-            MenuEntry exitMenuEntry = new MenuEntry("Exit");
-
-            // Hook up menu event handlers.
-            startGameMenuEntry.Selected += StartGameMenuEntrySelected;
-            optionsMenuEntry.Selected += OptionsMenuEntrySelected;
-            aboutGameMenuEntry.Selected += AboutGameMenuEntrySelected;
-            exitMenuEntry.Selected += OnCancel;
-            
-            // Add entries to the menu.
-            MenuEntries.Add(startGameMenuEntry);
-            MenuEntries.Add(optionsMenuEntry);
-            MenuEntries.Add(aboutGameMenuEntry);
-            MenuEntries.Add(exitMenuEntry);
 
             spriteBatch.End();
+
+            // Call Draw method of the class MainMenuScreen to draw the menu entrys too
+            base.Draw(gameTime);
         }
 
-        #endregion Draw
+
+
+        #endregion Update and Draw
     }
 }

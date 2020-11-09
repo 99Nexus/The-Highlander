@@ -12,8 +12,10 @@
 #region Using Statements
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Net.Mime;
 
 #endregion Using Statements
 
@@ -35,17 +37,14 @@ namespace GameStateManagement
         private string text;
 
         /// <summary>
-        /// The sprite font for this entry.
-        /// </summary>
-        private SpriteFont spriteFont;
-
-        /// <summary>
         /// Tracks a fading selection effect on the entry.
         /// </summary>
         /// <remarks>
         /// The entries transition out of the selection effect when they are deselected.
         /// </remarks>
         private float selectionFade;
+
+        private SpriteFont font;
 
         /// <summary>
         /// The position at which the entry is drawn. This is set by the MenuScreen
@@ -64,15 +63,6 @@ namespace GameStateManagement
         {
             get { return text; }
             set { text = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the sprite font of this menu entry.
-        /// </summary>
-        public SpriteFont SpriteFont
-        {
-            get { return spriteFont; }
-            set { spriteFont = value; }
         }
 
         /// <summary>
@@ -114,10 +104,15 @@ namespace GameStateManagement
             this.text = text;
         }
 
-        public MenuEntry(SpriteFont spriteFont)
+        public void LoadContent(MenuScreen screen)
         {
-
-            this.spriteFont = spriteFont;
+            // Only load font if it wasn´t loaded yet
+            if(font == null)
+            {
+                ScreenManager screenManager = screen.ScreenManager;
+                ContentManager content = screenManager.Game.Content;
+                font = content.Load<SpriteFont>(@"spritefonts\screen_fonts\start_screen_font");
+            }
         }
 
         #endregion Initialization
@@ -161,25 +156,17 @@ namespace GameStateManagement
             // Draw the selected entry in yellow, otherwise white.
             Color color = isSelected ? menuEntryColor : Color.White;
 
-            // Pulsate the size of the selected menu entry.
-            double time = gameTime.TotalGameTime.TotalSeconds;
-
-            float pulsate = (float)Math.Sin(time * 6) + 1;
-
-            float scale = 1 + pulsate * 0.05f * selectionFade;
-
             // Modify the alpha to fade text out during transitions.
             color *= screen.TransitionAlpha;
 
             // Draw text, centered on the middle of each line.
             ScreenManager screenManager = screen.ScreenManager;
             SpriteBatch spriteBatch = screenManager.SpriteBatch;
-            SpriteFont font = screenManager.Font;
 
-            Vector2 origin = new Vector2(0, font.LineSpacing / 2);
+            // Load font
+            LoadContent(screen);
 
-            spriteBatch.DrawString(font, text, position, color, 0,
-                                   origin, scale, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, text, position, color);
         }
 
         /// <summary>
@@ -187,7 +174,8 @@ namespace GameStateManagement
         /// </summary>
         public virtual int GetHeight(MenuScreen screen)
         {
-            return screen.ScreenManager.Font.LineSpacing;
+            LoadContent(screen);
+            return (int)font.MeasureString(Text).Y;
         }
 
         /// <summary>
@@ -195,7 +183,8 @@ namespace GameStateManagement
         /// </summary>
         public virtual int GetWidth(MenuScreen screen)
         {
-            return (int)screen.ScreenManager.Font.MeasureString(Text).X;
+            LoadContent(screen);
+            return (int)font.MeasureString(Text).X;
         }
 
         #endregion Update and Draw
