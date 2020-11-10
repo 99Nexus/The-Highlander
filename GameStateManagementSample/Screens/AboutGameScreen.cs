@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace GameStateManagement
 {
@@ -29,6 +30,8 @@ namespace GameStateManagement
         public AboutGameScreen()
             : base("")
         {
+            TransitionOnTime = TimeSpan.FromSeconds(0.0);
+            TransitionOffTime = TimeSpan.FromSeconds(0.0);
         }
 
         #endregion Initialization

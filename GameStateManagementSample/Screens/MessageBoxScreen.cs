@@ -48,27 +48,13 @@ namespace GameStateManagement
         /// usage text prompt.
         /// </summary>
         public MessageBoxScreen(string message)
-            : this(message, true)
-        { }
-
-        /// <summary>
-        /// Constructor lets the caller specify whether to include the standard
-        /// "A=ok, B=cancel" usage text prompt.
-        /// </summary>
-        public MessageBoxScreen(string message, bool includeUsageText)
         {
-            const string usageText = "\nA button, Space, Enter = ok" +
-                                     "\nB button, Esc = cancel";
-
-            if (includeUsageText)
-                this.message = message + usageText;
-            else
-                this.message = message;
-
-            IsPopup = true;
+            this.message = message;
 
             TransitionOnTime = TimeSpan.FromSeconds(0.2);
             TransitionOffTime = TimeSpan.FromSeconds(0.2);
+
+            IsPopup = true;
         }
 
         /// <summary>
@@ -81,7 +67,7 @@ namespace GameStateManagement
         {
             ContentManager content = ScreenManager.Game.Content;
 
-            gradientTexture = content.Load<Texture2D>("gradient");
+            gradientTexture = content.Load<Texture2D>(@"graphics\screen_graphics\esc_menu_background");
         }
 
         #endregion Initialization
@@ -129,35 +115,48 @@ namespace GameStateManagement
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
+            String yesOption = "Yes = Space, Enter";
+            String noOption = "No = Esc";
 
             // Darken down any other screens that were drawn beneath the popup.
             ScreenManager.FadeBackBufferToBlack(TransitionAlpha * 2 / 3);
 
             // Center the message text in the viewport.
             Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-            Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
-            Vector2 textSize = font.MeasureString(message);
-            Vector2 textPosition = (viewportSize - textSize) / 2;
 
-            // The background includes a border somewhat larger than the text itself.
-            const int hPad = 32;
-            const int vPad = 16;
+            // Question
+            Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height-30);
+            Vector2 questionSize = font.MeasureString(message);
+            Vector2 questionPosition = (viewportSize - questionSize) / 2;
 
-            Rectangle backgroundRectangle = new Rectangle((int)textPosition.X - hPad,
-                                                          (int)textPosition.Y - vPad,
-                                                          (int)textSize.X + hPad * 2,
-                                                          (int)textSize.Y + vPad * 2);
+            // Yes-option
+            viewportSize = new Vector2(viewport.Width, viewport.Height + 80);
+            Vector2 yesOptionSize = font.MeasureString(yesOption);
+            Vector2 yesOptionPosition = (viewportSize - yesOptionSize) / 2;
+
+            // No-option
+            viewportSize = new Vector2(viewport.Width, viewport.Height + 160);
+            Vector2 noOptionSize = font.MeasureString(noOption);
+            Vector2 noOptionPosition = (viewportSize - noOptionSize) / 2;
+
+            // Background
+            viewportSize = new Vector2(viewport.Width, viewport.Height);
+            Vector2 backgroudSize = new Vector2(gradientTexture.Width, gradientTexture.Height);
+            Vector2 backgroundPosition = (viewportSize - backgroudSize) / 2;
 
             // Fade the popup alpha during transitions.
             Color color = Color.White * TransitionAlpha;
+            Color optionsColor = new Color(130, 2, 2);
 
             spriteBatch.Begin();
 
             // Draw the background rectangle.
-            spriteBatch.Draw(gradientTexture, backgroundRectangle, color);
+            spriteBatch.Draw(gradientTexture, backgroundPosition, color);
 
             // Draw the message box text.
-            spriteBatch.DrawString(font, message, textPosition, color);
+            spriteBatch.DrawString(font, message, questionPosition, optionsColor);
+            spriteBatch.DrawString(font, yesOption, yesOptionPosition, optionsColor);
+            spriteBatch.DrawString(font, noOption, noOptionPosition, optionsColor);
 
             spriteBatch.End();
         }

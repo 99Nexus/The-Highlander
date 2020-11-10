@@ -14,6 +14,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 #endregion Using Statements
 
@@ -39,6 +40,9 @@ namespace GameStateManagement
         public MainMenuScreen()
             : base("")
         {
+            TransitionOnTime = TimeSpan.FromSeconds(0.0);
+            TransitionOffTime = TimeSpan.FromSeconds(0.0);
+
             // Create our menu entries.
             MenuEntry startGameMenuEntry = new MenuEntry("Start Game");
             MenuEntry optionsMenuEntry = new MenuEntry("Options");
@@ -99,7 +103,7 @@ namespace GameStateManagement
         /// </summary>
         protected override void OnCancel(PlayerIndex playerIndex)
         {
-            const string message = "Are you sure you want to exit?";
+            const string message = "Do you want to exit Captain?";
 
             MessageBoxScreen confirmExitMessageBox = new MessageBoxScreen(message);
 

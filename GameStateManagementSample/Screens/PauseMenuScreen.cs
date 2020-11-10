@@ -23,7 +23,7 @@ namespace GameStateManagement
         /// Constructor.
         /// </summary>
         public PauseMenuScreen()
-            : base("Paused")
+            : base("")
         {
             // Create our menu entries.
             MenuEntry resumeGameMenuEntry = new MenuEntry("Resume Game");
@@ -47,7 +47,7 @@ namespace GameStateManagement
         /// </summary>
         private void QuitGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            const string message = "Are you sure you want to quit this game?";
+            const string message = "Do you want to exit Captain?";
 
             MessageBoxScreen confirmQuitMessageBox = new MessageBoxScreen(message);
 
