@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Linq;
 using System.Threading;
 
 #endregion Using Statements
@@ -92,24 +93,27 @@ namespace GameStateManagement
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
-            // If all the previous screens have finished transitioning
-            // off, it is time to actually perform the load.
-            if (otherScreensAreGone)
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
-                ScreenManager.RemoveScreen(this);
-
-                foreach (GameScreen screen in screensToLoad)
+                // If all the previous screens have finished transitioning
+                // off, it is time to actually perform the load.
+                if (otherScreensAreGone)
                 {
-                    if (screen != null)
-                    {
-                        ScreenManager.AddScreen(screen, ControllingPlayer);
-                    }
-                }
+                    ScreenManager.RemoveScreen(this);
 
-                // Once the load has finished, we use ResetElapsedTime to tell
-                // the  game timing mechanism that we have just finished a very
-                // long frame, and that it should not try to catch up.
-                ScreenManager.Game.ResetElapsedTime();
+                    foreach (GameScreen screen in screensToLoad)
+                    {
+                        if (screen != null)
+                        {
+                            ScreenManager.AddScreen(screen, ControllingPlayer);
+                        }
+                    }
+
+                    // Once the load has finished, we use ResetElapsedTime to tell
+                    // the  game timing mechanism that we have just finished a very
+                    // long frame, and that it should not try to catch up.
+                    ScreenManager.Game.ResetElapsedTime();
+                }
             }
         }
 
@@ -140,20 +144,20 @@ namespace GameStateManagement
                 SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
                 SpriteFont font = ScreenManager.Font;
 
-                const string message1 = "Initiate   Starship    System    E.X.O.";
-                const string message2 = "Loading    Components...";
+                const string loadingMessage1 = "Initiate    Starship    System    E.X.O.";
+                const string loadingMessage2 = "Press    ' S '    to    start    the    system";
 
                 // Center the text in the viewport.
                 Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
 
                 //Message 1
                 Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
-                Vector2 textSizeMessage1 = font.MeasureString(message1);
+                Vector2 textSizeMessage1 = font.MeasureString(loadingMessage1);
                 Vector2 textPositionMessage1 = (viewportSize - textSizeMessage1) / 2;
 
                 //Message 2
                 viewportSize = new Vector2(viewport.Width, viewport.Height+70);
-                Vector2 textSizeMessage2 = font.MeasureString(message2);
+                Vector2 textSizeMessage2 = font.MeasureString(loadingMessage2);
                 Vector2 textPositionMessage2 = (viewportSize - textSizeMessage2) / 2;
 
                 Color color = Color.Green * TransitionAlpha;
@@ -161,8 +165,14 @@ namespace GameStateManagement
                 // Draw the text.
                 spriteBatch.Begin();
 
-                spriteBatch.DrawString(font, message1, textPositionMessage1, color);
-                spriteBatch.DrawString(font, message2, textPositionMessage2, color);
+                // Loading text
+                spriteBatch.DrawString(font, loadingMessage1, textPositionMessage1, color);
+                spriteBatch.DrawString(font, loadingMessage2, textPositionMessage2, color);
+
+                if (Keyboard.GetState().IsKeyDown(Keys.S))
+                {
+                    spriteBatch.DrawString(font, loadingMessage1, new Vector2(0,0), color);
+                }
 
                 spriteBatch.End();
             }
