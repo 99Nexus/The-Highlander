@@ -27,12 +27,12 @@ namespace GameStateManagement
     {
         #region Fields
 
-        //amer für Fullscreen
+        //amer; get and set functions to manipulate graphics
         public GraphicsDeviceManager graphics { get; set; }
-        private ScreenManager screenManager;
-
-        //amer für Fullscreen
+        //amer; a variable to save the game's setting, so that client can manipulate 
         public static GameStateManagementGame newgame { get; set; }
+
+        private ScreenManager screenManager;
 
         // By preloading any assets used by UI rendering, we avoid framerate glitches
         // when they suddenly need to be loaded in the middle of a menu transition.
@@ -55,7 +55,8 @@ namespace GameStateManagement
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 853;
             graphics.PreferredBackBufferHeight = 480;
-            //amer für Fullscreen
+
+            //amer; Fullscreen switch, default value for the full screen
             graphics.IsFullScreen = false;
 
             // Create the screen manager component.
@@ -67,7 +68,7 @@ namespace GameStateManagement
             screenManager.AddScreen(new BackgroundScreen(), null);
             screenManager.AddScreen(new MainMenuScreen(), null);
 
-            //amer für Fullscreen
+            //amer; the generated game will be in the variable newgame assign
             newgame = this;
         }
 

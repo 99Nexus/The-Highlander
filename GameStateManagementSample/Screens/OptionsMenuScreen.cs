@@ -33,7 +33,8 @@ namespace GameStateManagement
         private MenuEntry keyMapMenuEntry;
 
 
-        /*
+        /*scratch maybe we will need it later
+         * idea switch keyMap between 2 options
         public struct KeyMapping
         {
             public static string[] KeyMapdefault = { "W", "S", "D", "A", "Space" };

@@ -137,12 +137,23 @@ namespace GameStateManagement
             // Center menu entrys in the viewport
             Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
 
-            //Start screen logo
             Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height-250);
             Vector2 startScreenLogoSize = new Vector2(startScreenLogo.Width, startScreenLogo.Height);
             Vector2 startScreenLogoPosition = (viewportSize - startScreenLogoSize) / 2;
-
-            spriteBatch.Begin();
+            
+            
+            //amer; full screen switch, logo postion
+            if (GameStateManagementGame.newgame.graphics.IsFullScreen)
+            {
+                startScreenLogoPosition.X =  (viewportSize.X - startScreenLogoSize.X) / 2;
+                startScreenLogoPosition.Y = 0 ;
+            }
+            else
+            {
+                startScreenLogoPosition = (viewportSize - startScreenLogoSize) / 2;
+            }
+            
+                spriteBatch.Begin();
 
             // Draw the start screen logo and menu
             spriteBatch.Draw(startScreenLogo, startScreenLogoPosition, Color.White);
