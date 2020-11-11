@@ -12,10 +12,12 @@
 #region Using Statements
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading;
 
 #endregion Using Statements
@@ -40,8 +42,22 @@ namespace GameStateManagement
     {
         #region Fields
 
+        ContentManager content;
+
         private bool loadingIsSlow;
         private bool otherScreensAreGone;
+
+        private int emergencyTimer = 0;
+
+        // Booleans for next steps
+        private bool isSPressed = false;
+        private bool isEmergencyTimeOver = false;
+
+        // Messages
+        private string loadingMessage1 = "Initiate    Starship    System    E.X.O.";
+        private string loadingMessage2 = "Press    ' S '    to    start    the    system";
+        private string emergency = "EMERGENCY";
+        private SpriteFont emergencyMessage;
 
         private GameScreen[] screensToLoad;
 
@@ -81,6 +97,13 @@ namespace GameStateManagement
             screenManager.AddScreen(loadingScreen, controllingPlayer);
         }
 
+        public override void LoadContent()
+        {
+            content = new ContentManager(ScreenManager.Game.Services, "Content");
+
+            emergencyMessage = content.Load<SpriteFont>(@"spritefonts\screen_fonts\start_screen_font");
+        }
+
         #endregion Initialization
 
         #region Update and Draw
@@ -92,6 +115,12 @@ namespace GameStateManagement
                                                        bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                loadingMessage1 = " ";
+                loadingMessage2 = " ";
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
@@ -144,35 +173,71 @@ namespace GameStateManagement
                 SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
                 SpriteFont font = ScreenManager.Font;
 
-                const string loadingMessage1 = "Initiate    Starship    System    E.X.O.";
-                const string loadingMessage2 = "Press    ' S '    to    start    the    system";
-
                 // Center the text in the viewport.
                 Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
 
-                //Message 1
+                // Loading message 1
                 Vector2 viewportSize = new Vector2(viewport.Width, viewport.Height);
                 Vector2 textSizeMessage1 = font.MeasureString(loadingMessage1);
                 Vector2 textPositionMessage1 = (viewportSize - textSizeMessage1) / 2;
 
-                //Message 2
+                // Loading message 2
                 viewportSize = new Vector2(viewport.Width, viewport.Height+70);
                 Vector2 textSizeMessage2 = font.MeasureString(loadingMessage2);
                 Vector2 textPositionMessage2 = (viewportSize - textSizeMessage2) / 2;
+
+                // Emergency message 2
+                viewportSize = new Vector2(viewport.Width, viewport.Height - 200);
+                Vector2 textSizeEmergencyMessage = emergencyMessage.MeasureString(emergency);
+                Vector2 textPositionEmergencyMessage = (viewportSize - textSizeEmergencyMessage) / 2;
 
                 Color color = Color.Green * TransitionAlpha;
 
                 // Draw the text.
                 spriteBatch.Begin();
 
-                // Loading text
+                // 1.Section - Begin - Loading text
                 spriteBatch.DrawString(font, loadingMessage1, textPositionMessage1, color);
                 spriteBatch.DrawString(font, loadingMessage2, textPositionMessage2, color);
 
+                // Loading ends if "S" is pressed
                 if (Keyboard.GetState().IsKeyDown(Keys.S))
+                    isSPressed = true;
+
+                // 1.Section - End - Loading text
+
+
+                //2.Section - Begin - Emergency screen
+
+                if(isSPressed == true)
                 {
-                    spriteBatch.DrawString(font, loadingMessage1, new Vector2(0,0), color);
+                    ScreenManager.GraphicsDevice.Clear(Color.Red);
+                    spriteBatch.DrawString(emergencyMessage, emergency, textPositionEmergencyMessage, Color.White);
+                    emergencyTimer++;
                 }
+
+                //2.Section - End - Emergency screen
+
+
+                //3.Section - Begin - Commnication request
+
+                // draw message symbol after 5 seconds
+                if (emergencyTimer == 300)
+                    isEmergencyTimeOver = true;
+
+                if (isEmergencyTimeOver == true)
+                {
+                    spriteBatch.DrawString(emergencyMessage, "Test", new Vector2(0, 0), Color.White);
+                }
+
+                //3.Section - End - Commnication request
+
+
+                //4.Section - Begin - Commander text
+
+
+
+                //4.Section - End - Commander text
 
                 spriteBatch.End();
             }
