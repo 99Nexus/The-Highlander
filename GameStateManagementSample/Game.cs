@@ -27,8 +27,12 @@ namespace GameStateManagement
     {
         #region Fields
 
-        private GraphicsDeviceManager graphics;
+        //amer für Fullscreen
+        public GraphicsDeviceManager graphics { get; set; }
         private ScreenManager screenManager;
+
+        //amer für Fullscreen
+        public static GameStateManagementGame newgame { get; set; }
 
         // By preloading any assets used by UI rendering, we avoid framerate glitches
         // when they suddenly need to be loaded in the middle of a menu transition.
@@ -51,6 +55,8 @@ namespace GameStateManagement
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 853;
             graphics.PreferredBackBufferHeight = 480;
+            //amer für Fullscreen
+            graphics.IsFullScreen = false;
 
             // Create the screen manager component.
             screenManager = new ScreenManager(this);
@@ -60,6 +66,9 @@ namespace GameStateManagement
             // Activate the first screens.
             screenManager.AddScreen(new BackgroundScreen(), null);
             screenManager.AddScreen(new MainMenuScreen(), null);
+
+            //amer für Fullscreen
+            newgame = this;
         }
 
         /// <summary>

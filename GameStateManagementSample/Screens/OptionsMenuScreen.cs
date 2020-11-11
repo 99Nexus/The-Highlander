@@ -9,6 +9,9 @@
 
 #endregion File Description
 
+using GameStateManagementSample;
+using Microsoft.Xna.Framework.Graphics;
+
 namespace GameStateManagement
 {
     /// <summary>
@@ -20,26 +23,38 @@ namespace GameStateManagement
     {
         #region Fields
 
-        private MenuEntry ungulateMenuEntry;
-        private MenuEntry languageMenuEntry;
-        private MenuEntry frobnicateMenuEntry;
-        private MenuEntry elfMenuEntry;
 
-        private enum Ungulate
+        private MenuEntry fullscreenMenuEntry;
+
+        private MenuEntry musicMenuEntry;
+
+        private MenuEntry effectsMenuEntry;
+
+        private MenuEntry keyMapMenuEntry;
+
+
+        /*
+        public struct KeyMapping
         {
-            BactrianCamel,
-            Dromedary,
-            Llama,
-        }
+            public static string[] KeyMapdefault = { "W", "S", "D", "A", "Space" };
+            public static string[] KeyMapArrows = { "Up", "Down", "Right", "Left", "Space" };
+        }{ "forward: W", "backward: S", "right: D", "link: A" };
+        */
+        private static string[] KeyMapping = { "Move Forward \"W\"", "Move Backward \"S\"",
+                                                "Move Right \"D\"", "Move Left \"A\"" };
 
-        private static Ungulate currentUngulate = Ungulate.Dromedary;
 
-        private static string[] languages = { "C#", "French", "Deoxyribonucleic acid" };
-        private static int currentLanguage = 0;
+        
+        private static bool currentfullscreen = false;
 
-        private static bool frobnicate = true;
+        private static bool currentmusic = true;
 
-        private static int elf = 23;
+        private static bool currenteffecs = true;
+
+        private static int currentKeyMap = 0;
+
+ 
+
 
         #endregion Fields
 
@@ -49,31 +64,40 @@ namespace GameStateManagement
         /// Constructor.
         /// </summary>
         public OptionsMenuScreen()
-            : base("Options")
+            : base("")//"Options"
         {
+
             // Create our menu entries.
-            ungulateMenuEntry = new MenuEntry(string.Empty);
-            languageMenuEntry = new MenuEntry(string.Empty);
-            frobnicateMenuEntry = new MenuEntry(string.Empty);
-            elfMenuEntry = new MenuEntry(string.Empty);
+            fullscreenMenuEntry = new MenuEntry(string.Empty);
+
+            musicMenuEntry = new MenuEntry(string.Empty);
+
+            effectsMenuEntry = new MenuEntry(string.Empty);
+
+            keyMapMenuEntry = new MenuEntry(string.Empty);
+
 
             SetMenuEntryText();
 
-            MenuEntry back = new MenuEntry("Back");
+            fullscreenMenuEntry.Selected += FullscreenMenuEntrySelected;
 
-            // Hook up menu event handlers.
-            ungulateMenuEntry.Selected += UngulateMenuEntrySelected;
-            languageMenuEntry.Selected += LanguageMenuEntrySelected;
-            frobnicateMenuEntry.Selected += FrobnicateMenuEntrySelected;
-            elfMenuEntry.Selected += ElfMenuEntrySelected;
-            back.Selected += OnCancel;
+            musicMenuEntry.Selected += MusicMenuEntrySelected;
 
-            // Add entries to the menu.
-            MenuEntries.Add(ungulateMenuEntry);
-            MenuEntries.Add(languageMenuEntry);
-            MenuEntries.Add(frobnicateMenuEntry);
-            MenuEntries.Add(elfMenuEntry);
-            MenuEntries.Add(back);
+            effectsMenuEntry.Selected += EffectsMenuEntrySelected;
+
+            keyMapMenuEntry.Selected += KeyMapMenuEntrySelected;
+
+
+
+            MenuEntries.Add(fullscreenMenuEntry);
+
+            MenuEntries.Add(musicMenuEntry);
+
+            MenuEntries.Add(effectsMenuEntry);
+
+            MenuEntries.Add(keyMapMenuEntry);
+
+            //MenuEntries.Add(back);
         }
 
         /// <summary>
@@ -81,57 +105,81 @@ namespace GameStateManagement
         /// </summary>
         private void SetMenuEntryText()
         {
-            ungulateMenuEntry.Text = "Preferred ungulate: " + currentUngulate;
-            languageMenuEntry.Text = "Language: " + languages[currentLanguage];
-            frobnicateMenuEntry.Text = "Frobnicate: " + (frobnicate ? "on" : "off");
-            elfMenuEntry.Text = "elf: " + elf;
+            fullscreenMenuEntry.Text = "Full Screen: " + (currentfullscreen ? "on" : "off");
+
+            musicMenuEntry.Text = "Music: " + (currentmusic ? "unmuted" : "muted");
+
+            effectsMenuEntry.Text = "Effects: " + (currenteffecs ? "unmuted" : "muted");
+
+            keyMapMenuEntry.Text = "KeyMap: " + string.Join(",",KeyMapping[currentKeyMap]);
+
         }
 
         #endregion Initialization
 
         #region Handle Input
 
-        /// <summary>
-        /// Event handler for when the Ungulate menu entry is selected.
-        /// </summary>
-        private void UngulateMenuEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            currentUngulate++;
 
-            if (currentUngulate > Ungulate.Llama)
-                currentUngulate = 0;
+        /// <summary>
+        /// Event handler for when the Fullscreen menu entry is selected.
+        /// </summary>
+
+        private void FullscreenMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            currentfullscreen = !currentfullscreen;
+
+            if (GameStateManagementGame.newgame.graphics.IsFullScreen)
+            {
+                GameStateManagementGame.newgame.graphics.IsFullScreen = false;
+                GameStateManagementGame.newgame.graphics.ApplyChanges();
+            }
+            else
+            {
+                GameStateManagementGame.newgame.graphics.IsFullScreen = true;
+                GameStateManagementGame.newgame.graphics.ApplyChanges();
+            }
+            
 
             SetMenuEntryText();
+
+            
         }
 
-        /// <summary>
-        /// Event handler for when the Language menu entry is selected.
-        /// </summary>
-        private void LanguageMenuEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            currentLanguage = (currentLanguage + 1) % languages.Length;
 
+        /// <summary>
+        /// Event handler for when the Music menu entry is selected.
+        /// </summary>
+        private void MusicMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+
+            currentmusic = !currentmusic;
             SetMenuEntryText();
+
         }
 
-        /// <summary>
-        /// Event handler for when the Frobnicate menu entry is selected.
-        /// </summary>
-        private void FrobnicateMenuEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            frobnicate = !frobnicate;
 
+        /// <summary>
+        /// Event handler for when the effects menu entry is selected.
+        /// </summary>
+        private void EffectsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+
+            currenteffecs = !currenteffecs;
             SetMenuEntryText();
+
         }
 
+
         /// <summary>
-        /// Event handler for when the Elf menu entry is selected.
+        /// Event handler for when the effects menu entry is selected.
         /// </summary>
-        private void ElfMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        private void KeyMapMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            elf++;
+
+            currentKeyMap = (currentKeyMap + 1) % KeyMapping.Length;
 
             SetMenuEntryText();
+
         }
 
         #endregion Handle Input
