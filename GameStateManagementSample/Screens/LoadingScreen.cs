@@ -49,8 +49,11 @@ namespace GameStateManagement
 
         private int emergencyTimer = 0;
 
+        private Texture2D message; 
+
         // Booleans for next steps
         private bool isSPressed = false;
+        private bool isMPressed = false;
         private bool isEmergencyTimeOver = false;
 
         // Messages
@@ -94,6 +97,8 @@ namespace GameStateManagement
                                                             loadingIsSlow,
                                                             screensToLoad);
 
+            
+
             screenManager.AddScreen(loadingScreen, controllingPlayer);
         }
 
@@ -102,6 +107,9 @@ namespace GameStateManagement
             content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             emergencyMessage = content.Load<SpriteFont>(@"spritefonts\screen_fonts\start_screen_font");
+
+            //load the message-pic
+            message = content.Load<Texture2D>("message");
         }
 
         #endregion Initialization
@@ -144,8 +152,12 @@ namespace GameStateManagement
                     ScreenManager.Game.ResetElapsedTime();
                 }
             }
-        }
 
+            if (Keyboard.GetState().IsKeyDown(Keys.M))
+            {
+                
+            }
+        }
         /// <summary>
         /// Draws the loading screen.
         /// </summary>
@@ -191,6 +203,11 @@ namespace GameStateManagement
                 Vector2 textSizeEmergencyMessage = emergencyMessage.MeasureString(emergency);
                 Vector2 textPositionEmergencyMessage = (viewportSize - textSizeEmergencyMessage) / 2;
 
+                // Message 
+                viewportSize = new Vector2(viewport.Width, viewport.Height + 50);
+                Vector2 sizeMessage = new Vector2(message.Width, message.Height);
+                Vector2 positionMessage = (viewportSize - sizeMessage) / 2;
+
                 Color color = Color.Green * TransitionAlpha;
 
                 // Draw the text.
@@ -218,6 +235,9 @@ namespace GameStateManagement
 
                 //2.Section - End - Emergency screen
 
+                if (Keyboard.GetState().IsKeyDown(Keys.M))
+                    isMPressed = true;
+
 
                 //3.Section - Begin - Commnication request
 
@@ -225,16 +245,21 @@ namespace GameStateManagement
                 if (emergencyTimer == 300)
                     isEmergencyTimeOver = true;
 
+                
+
                 if (isEmergencyTimeOver == true)
                 {
-                    spriteBatch.DrawString(emergencyMessage, "Test", new Vector2(0, 0), Color.White);
+                    spriteBatch.Draw(message, positionMessage, Color.White);
                 }
 
                 //3.Section - End - Commnication request
 
 
                 //4.Section - Begin - Commander text
-
+                if(isMPressed == true)
+                {
+                    textPositionEmergencyMessage.X -= 100;
+                }
 
 
                 //4.Section - End - Commander text
