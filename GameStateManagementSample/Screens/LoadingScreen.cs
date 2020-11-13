@@ -48,8 +48,14 @@ namespace GameStateManagement
         private bool otherScreensAreGone;
 
         private int emergencyTimer = 0;
+        private int dialog_count = 0;
 
-        private Texture2D message; 
+        private Texture2D message;
+
+        // Alarm_Icon
+        private Texture2D alarm;
+
+        private SpriteFont dialogSprite;
 
         // Booleans for next steps
         private bool isSPressed = false;
@@ -61,6 +67,24 @@ namespace GameStateManagement
         private string loadingMessage2 = "Press    ' S '    to    start    the    system";
         private string emergency = "EMERGENCY";
         private SpriteFont emergencyMessage;
+
+
+        // Dialog
+        /*private string[] dialog_list = {"Commander Smith: CAPTAIN..? CAPTAIN.. are you okay?!\n" +
+                "Press 'M'",
+
+        "Commander Smith: I'm glad to hear that you are fine.\n" +
+                "Press 'M'",
+
+       "Commander Smith: You must complete the mission. You are our last hope...\n" +
+                "Press 'ENTER'"};*/
+
+        private string dialog1 = "Commander Smith: CAPTAIN..? CAPTAIN.. are you okay?!\n";
+        private string dialog2 = "I'm glad to hear that you are fine.\n";
+        private string dialog3 = "You must complete the mission. You are our last hope...";
+        private string enter = "PRESS ENTER";
+
+        private string dialog = " ";
 
         private GameScreen[] screensToLoad;
 
@@ -107,10 +131,15 @@ namespace GameStateManagement
             content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             emergencyMessage = content.Load<SpriteFont>(@"spritefonts\screen_fonts\start_screen_font");
+            dialogSprite = content.Load<SpriteFont>(@"spritefonts\screen_fonts\dialog_font");
+
+            //alarm = content.Load<Texture2D>(@"graphics\screen_graphics\alarm_icon");
+            
+
 
             //load the message-pic
             message = content.Load<Texture2D>("message");
-        }
+        }  
 
         #endregion Initialization
 
@@ -152,15 +181,20 @@ namespace GameStateManagement
                     ScreenManager.Game.ResetElapsedTime();
                 }
             }
-
             if (Keyboard.GetState().IsKeyDown(Keys.M))
             {
-                
+                isMPressed = true;
+                dialog = dialog1;
+                dialog += dialog2;
+                dialog += dialog3;
             }
+            
         }
         /// <summary>
         /// Draws the loading screen.
         /// </summary>
+        /// 
+
         public override void Draw(GameTime gameTime)
         {
             // If we are the only active screen, that means all the previous screens
@@ -208,7 +242,24 @@ namespace GameStateManagement
                 Vector2 sizeMessage = new Vector2(message.Width, message.Height);
                 Vector2 positionMessage = (viewportSize - sizeMessage) / 2;
 
+                // Dialog 
+                viewportSize = new Vector2(viewport.Width - 20, viewport.Height + 50);
+                Vector2 textSizeDialog = dialogSprite.MeasureString(dialog);
+                Vector2 textPositionDialog = (viewportSize - textSizeDialog) / 2;
+
+                // Alarm-Position
+                viewportSize = new Vector2(viewport.Width, viewport.Height - 10);
+                Vector2 pictureSizeAlarm = emergencyMessage.MeasureString(emergency);
+                Vector2 picturePositionAlarm = (viewportSize - textSizeEmergencyMessage) / 2;
+
+                // Enter
+                viewportSize = new Vector2(viewport.Width + 80, viewport.Height + 200);
+                Vector2 textSizePressEnter = dialogSprite.MeasureString(enter);
+                Vector2 textPositionPressEnter = (viewportSize - textSizeEmergencyMessage) / 2;
+
+
                 Color color = Color.Green * TransitionAlpha;
+
 
                 // Draw the text.
                 spriteBatch.Begin();
@@ -229,15 +280,14 @@ namespace GameStateManagement
                 if(isSPressed == true)
                 {
                     ScreenManager.GraphicsDevice.Clear(Color.Red);
+                    //spriteBatch.Draw(alarm, picturePositionAlarm, Color.White);
                     spriteBatch.DrawString(emergencyMessage, emergency, textPositionEmergencyMessage, Color.White);
                     emergencyTimer++;
                 }
 
                 //2.Section - End - Emergency screen
 
-                if (Keyboard.GetState().IsKeyDown(Keys.M))
-                    isMPressed = true;
-
+               
 
                 //3.Section - Begin - Commnication request
 
@@ -256,9 +306,12 @@ namespace GameStateManagement
 
 
                 //4.Section - Begin - Commander text
-                if(isMPressed == true)
+                if (isMPressed)
                 {
-                    textPositionEmergencyMessage.X -= 100;
+
+                    isEmergencyTimeOver = false;
+                    spriteBatch.DrawString(dialogSprite, dialog, textPositionDialog, Color.White);
+                    spriteBatch.DrawString(dialogSprite, enter, textPositionPressEnter, Color.White);
                 }
 
 
