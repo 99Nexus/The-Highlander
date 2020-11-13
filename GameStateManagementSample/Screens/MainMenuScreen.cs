@@ -30,6 +30,8 @@ namespace GameStateManagement
 
         private Texture2D startScreenLogo;
 
+
+
         #endregion Fields
 
         #region Initialization
@@ -67,6 +69,7 @@ namespace GameStateManagement
             ContentManager content = ScreenManager.Game.Content;
 
             startScreenLogo = content.Load<Texture2D>(@"graphics\screen_graphics\start_screen_logo");
+            
         }
 
         #endregion Initialization
@@ -143,7 +146,7 @@ namespace GameStateManagement
             
             
             //amer; full screen switch, logo postion
-            if (GameStateManagementGame.newgame.graphics.IsFullScreen)
+            if (GameStateManagementGame.Newgame.Graphics.IsFullScreen)
             {
                 startScreenLogoPosition.X =  (viewportSize.X - startScreenLogoSize.X) / 2;
                 startScreenLogoPosition.Y = 0 ;
@@ -157,7 +160,7 @@ namespace GameStateManagement
 
             // Draw the start screen logo and menu
             spriteBatch.Draw(startScreenLogo, startScreenLogoPosition, Color.White);
-
+            
             spriteBatch.End();
 
             // Call Draw method of the class MainMenuScreen to draw the menu entrys too

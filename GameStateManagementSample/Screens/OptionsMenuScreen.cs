@@ -129,15 +129,15 @@ namespace GameStateManagement
         {
             currentfullscreen = !currentfullscreen;
 
-            if (GameStateManagementGame.newgame.graphics.IsFullScreen)
+            if (GameStateManagementGame.Newgame.Graphics.IsFullScreen)
             {
-                GameStateManagementGame.newgame.graphics.IsFullScreen = false;
-                GameStateManagementGame.newgame.graphics.ApplyChanges();
+                GameStateManagementGame.Newgame.Graphics.IsFullScreen = false;
+                GameStateManagementGame.Newgame.Graphics.ApplyChanges();
             }
             else
             {
-                GameStateManagementGame.newgame.graphics.IsFullScreen = true;
-                GameStateManagementGame.newgame.graphics.ApplyChanges();
+                GameStateManagementGame.Newgame.Graphics.IsFullScreen = true;
+                GameStateManagementGame.Newgame.Graphics.ApplyChanges();
             }
             
 
