@@ -41,7 +41,7 @@ namespace GameStateManagement
         int i = 0;
 
 
-        private Vector2 playerPosition = new Vector2(370, 400);
+        private Vector2 playerPosition;
         
         private Vector2 enemyPosition = new Vector2(100, 100);
 
@@ -148,6 +148,11 @@ namespace GameStateManagement
                 Vector2 targetPosition = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2 - theHighlander[0].Height /2);
 
                 enemyPosition = Vector2.Lerp(enemyPosition, targetPosition, 0.05f);
+
+                playerPosition = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2,
+                            ScreenManager.GraphicsDevice.Viewport.Height - theHighlander[0].Height - 5);
+                //playerPosition.X = ScreenManager.GraphicsDevice.Viewport.Width / 2;
+                //playerPosition.Y = ScreenManager.GraphicsDevice.Viewport.Height - theHighlander[0].Height;
 
                 // TODO: this game isn't very fun! You could probably improve
                 // it by inserting something more interesting in this space :-)
