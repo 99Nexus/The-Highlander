@@ -32,9 +32,17 @@ namespace GameStateManagement
         #region Fields
 
         private ContentManager content;
-        private SpriteFont gameFont;
 
-        private Vector2 playerPosition = new Vector2(100, 100);
+
+        //private SpriteFont gameFont;
+
+        private Texture2D[] theHighlander = new Texture2D[3];
+
+        int i = 0;
+
+
+        private Vector2 playerPosition = new Vector2(370, 400);
+        
         private Vector2 enemyPosition = new Vector2(100, 100);
 
         private Random random = new Random();
@@ -45,8 +53,8 @@ namespace GameStateManagement
 
         #region Initialization
 
-
-        private Texture2D test;
+        //wozu?
+        private Texture2D bar;
 
 
         /// <summary>
@@ -63,14 +71,24 @@ namespace GameStateManagement
         /// </summary>
         public override void LoadContent()
         {
+
+
+
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-            gameFont = content.Load<SpriteFont>("gamefont");
+            //gameFont = content.Load<SpriteFont>("game");
+
+            bar = content.Load<Texture2D>(@"graphics\game_menu_graphics\bar_0upgrade\bar_10_0upg");
+
+            
+            theHighlander[0] = content.Load<Texture2D>(@"graphics\starships\the_highlander_1");
+            theHighlander[1] = content.Load<Texture2D>(@"graphics\starships\the_highlander_2");
+            theHighlander[2] = content.Load<Texture2D>(@"graphics\starships\the_highlander_3");
 
 
-
-            test = content.Load<Texture2D>(@"graphics\game_menu_graphics\bar_0upgrade\bar_10_0upg");
+            
+            
 
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
@@ -120,9 +138,14 @@ namespace GameStateManagement
                 enemyPosition.Y += (float)(random.NextDouble() - 0.5) * randomization;
 
                 // Apply a stabilizing force to stop the enemy moving off the screen.
-                Vector2 targetPosition = new Vector2(
+                //ich hab das aus kommentiert
+                /*
+                 * Vector2 targetPosition = new Vector2(
                     ScreenManager.GraphicsDevice.Viewport.Width / 2 - gameFont.MeasureString("Insert Gameplay Here").X / 2,
                     200);
+                */
+
+                Vector2 targetPosition = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2 - theHighlander[0].Height /2);
 
                 enemyPosition = Vector2.Lerp(enemyPosition, targetPosition, 0.05f);
 
@@ -184,7 +207,14 @@ namespace GameStateManagement
 
                 playerPosition += movement * 2;
             }
+
+
+ 
+
         }
+
+
+
 
         /// <summary>
         /// Draws the gameplay screen.
@@ -198,14 +228,39 @@ namespace GameStateManagement
             // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
+            SpriteBatch spriteBatch1 = ScreenManager.SpriteBatch;
+
+            
+
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
+            //spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
 
-            spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
-                                   enemyPosition, Color.DarkRed);
+            spriteBatch.Draw(bar, new Vector2(15, 15), Color.White);
 
-            spriteBatch.Draw(test, new Vector2(15, 15), Color.White);
+
+            // spriteBatch1.Draw(theHighlander[0], playerPosition, Color.White);
+
+            
+
+            if (i >= 0)
+            {
+                if (i == 3) { 
+                    i = 0;
+                }
+
+                spriteBatch1.Draw(theHighlander[i], playerPosition, Color.White);
+
+                i++;
+
+            }
+
+
+            //spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
+            //  enemyPosition, Color.DarkRed);
+
+            //wozu?
+
 
             spriteBatch.End();
 
