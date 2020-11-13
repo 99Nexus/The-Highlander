@@ -45,6 +45,10 @@ namespace GameStateManagement
 
         #region Initialization
 
+
+        private Texture2D test;
+
+
         /// <summary>
         /// Constructor.
         /// </summary>
@@ -63,6 +67,10 @@ namespace GameStateManagement
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             gameFont = content.Load<SpriteFont>("gamefont");
+
+
+
+            test = content.Load<Texture2D>(@"graphics\game_menu_graphics\bar_0upgrade\bar_10_0upg");
 
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
@@ -196,6 +204,8 @@ namespace GameStateManagement
 
             spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
                                    enemyPosition, Color.DarkRed);
+
+            spriteBatch.Draw(test, new Vector2(15, 15), Color.White);
 
             spriteBatch.End();
 

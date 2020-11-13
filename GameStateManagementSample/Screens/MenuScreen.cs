@@ -149,7 +149,7 @@ namespace GameStateManagement
 
 
             //amer; full screen switch, 2 start points for the menuEntries listing
-            if (GameStateManagementGame.newgame.graphics.IsFullScreen)
+            if (GameStateManagementGame.Newgame.Graphics.IsFullScreen)
             {
                 position = new Vector2(0f, 300f);
             }

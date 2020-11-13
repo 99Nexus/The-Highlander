@@ -28,9 +28,9 @@ namespace GameStateManagement
         #region Fields
 
         //amer; get and set functions to manipulate graphics
-        public GraphicsDeviceManager graphics { get; set; }
+        public GraphicsDeviceManager Graphics { get; set; }
         //amer; a variable to save the game's setting, so that client can manipulate 
-        public static GameStateManagementGame newgame { get; set; }
+        public static GameStateManagementGame Newgame { get; set; }
 
         private ScreenManager screenManager;
 
@@ -52,12 +52,12 @@ namespace GameStateManagement
         {
             Content.RootDirectory = "Content";
 
-            graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 853;
-            graphics.PreferredBackBufferHeight = 480;
+            Graphics = new GraphicsDeviceManager(this);
+            Graphics.PreferredBackBufferWidth = 853;
+            Graphics.PreferredBackBufferHeight = 480;
 
             //amer; Fullscreen switch, default value for the full screen
-            graphics.IsFullScreen = false;
+            Graphics.IsFullScreen = false;
 
             // Create the screen manager component.
             screenManager = new ScreenManager(this);
@@ -69,7 +69,7 @@ namespace GameStateManagement
             screenManager.AddScreen(new MainMenuScreen(), null);
 
             //amer; the generated game will be in the variable newgame assign
-            newgame = this;
+            Newgame = this;
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace GameStateManagement
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            graphics.GraphicsDevice.Clear(Color.Black);
+            Graphics.GraphicsDevice.Clear(Color.Black);
 
             // The real drawing happens inside the screen manager component.
             base.Draw(gameTime);
