@@ -41,7 +41,7 @@ namespace GameStateManagement
         int i = 0;
 
 
-        private Vector2 playerPosition;
+        private Vector2 playerPosition = new Vector2(0,0);
         
         private Vector2 enemyPosition = new Vector2(100, 100);
 
@@ -53,7 +53,7 @@ namespace GameStateManagement
 
         #region Initialization
 
-        //wozu?
+        
         private Texture2D bar;
 
 
@@ -77,7 +77,6 @@ namespace GameStateManagement
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-            //gameFont = content.Load<SpriteFont>("game");
 
             bar = content.Load<Texture2D>(@"graphics\game_menu_graphics\bar_0upgrade\bar_10_0upg");
 
@@ -86,9 +85,10 @@ namespace GameStateManagement
             theHighlander[1] = content.Load<Texture2D>(@"graphics\starships\the_highlander_2");
             theHighlander[2] = content.Load<Texture2D>(@"graphics\starships\the_highlander_3");
 
+            playerPosition.X = ScreenManager.GraphicsDevice.Viewport.Width / 2;
+            playerPosition.Y = ScreenManager.GraphicsDevice.Viewport.Height - theHighlander[0].Height - 5;
 
-            
-            
+
 
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
@@ -140,8 +140,8 @@ namespace GameStateManagement
                 // Apply a stabilizing force to stop the enemy moving off the screen.
                 //ich hab das aus kommentiert
                 /*
-                 * Vector2 targetPosition = new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width / 2 - gameFont.MeasureString("Insert Gameplay Here").X / 2,
+                  Vector2 targetPosition = new Vector2(
+                    ScreenManager.GraphicsDevice.Viewport.Width / 2 - theHighlander[0].Width / 2,
                     200);
                 */
 
@@ -149,10 +149,7 @@ namespace GameStateManagement
 
                 enemyPosition = Vector2.Lerp(enemyPosition, targetPosition, 0.05f);
 
-                playerPosition = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2,
-                            ScreenManager.GraphicsDevice.Viewport.Height - theHighlander[0].Height - 5);
-                //playerPosition.X = ScreenManager.GraphicsDevice.Viewport.Width / 2;
-                //playerPosition.Y = ScreenManager.GraphicsDevice.Viewport.Height - theHighlander[0].Height;
+
 
                 // TODO: this game isn't very fun! You could probably improve
                 // it by inserting something more interesting in this space :-)
@@ -244,10 +241,10 @@ namespace GameStateManagement
             spriteBatch.Draw(bar, new Vector2(15, 15), Color.White);
 
 
-            // spriteBatch1.Draw(theHighlander[0], playerPosition, Color.White);
+            spriteBatch1.Draw(theHighlander[0], playerPosition, Color.White);
 
             
-
+            /*
             if (i >= 0)
             {
                 if (i == 3) { 
@@ -259,12 +256,11 @@ namespace GameStateManagement
                 i++;
 
             }
-
+            */
 
             //spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
             //  enemyPosition, Color.DarkRed);
 
-            //wozu?
 
 
             spriteBatch.End();
