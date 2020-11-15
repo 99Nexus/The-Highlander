@@ -11,6 +11,7 @@
 
 #region Using Statements
 
+using GameStateManagement.Starships;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -38,7 +39,7 @@ namespace GameStateManagement
 
         private Texture2D[] theHighlander = new Texture2D[3];
 
-        int i = 0;
+        int spriteCounter = 0;
 
 
         private Vector2 playerPosition = new Vector2(0,0);
@@ -48,6 +49,10 @@ namespace GameStateManagement
         private Random random = new Random();
 
         private float pauseAlpha;
+
+        private float angle = 0;
+
+        private TheHighlander highlander;
 
         #endregion Fields
 
@@ -71,24 +76,23 @@ namespace GameStateManagement
         /// </summary>
         public override void LoadContent()
         {
-
-
-
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
 
             bar = content.Load<Texture2D>(@"graphics\game_menu_graphics\bar_0upgrade\bar_10_0upg");
 
-            
+            // Load sprites and textures
             theHighlander[0] = content.Load<Texture2D>(@"graphics\starships\the_highlander_1");
             theHighlander[1] = content.Load<Texture2D>(@"graphics\starships\the_highlander_2");
             theHighlander[2] = content.Load<Texture2D>(@"graphics\starships\the_highlander_3");
 
-            playerPosition.X = ScreenManager.GraphicsDevice.Viewport.Width / 2;
-            playerPosition.Y = ScreenManager.GraphicsDevice.Viewport.Height - theHighlander[0].Height - 5;
-
-
+            // Objects
+            highlander = new TheHighlander(theHighlander[0])
+            {
+                Position = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2, ScreenManager.GraphicsDevice.Viewport.Height - theHighlander[0].Height - 5),
+                Origin = new Vector2(theHighlander[spriteCounter].Width / 2, theHighlander[spriteCounter].Height / 2),
+            };            
 
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
@@ -122,6 +126,8 @@ namespace GameStateManagement
                                                        bool coveredByOtherScreen)
         {
             base.Update(gameTime, otherScreenHasFocus, false);
+
+            highlander.Update(gameTime);
 
             // Gradually fade in or out depending on whether we are covered by the pause screen.
             if (coveredByOtherScreen)
@@ -184,39 +190,9 @@ namespace GameStateManagement
             }
             else
             {
-                // Otherwise move the player position.
-                Vector2 movement = Vector2.Zero;
-        
-                if (keyboardState.IsKeyDown(Keys.Left))
-                    movement.X--;
-
-                if (keyboardState.IsKeyDown(Keys.Right))
-                    movement.X++;
-
-                if (keyboardState.IsKeyDown(Keys.Up))
-                    movement.Y--;
-
-                if (keyboardState.IsKeyDown(Keys.Down))
-                    movement.Y++;
-
-                Vector2 thumbstick = gamePadState.ThumbSticks.Left;
-
-                movement.X += thumbstick.X;
-                movement.Y -= thumbstick.Y;
-
-                if (movement.Length() > 1)
-                    movement.Normalize();
-
-                playerPosition += movement * 2;
+                highlander.HandleInput();
             }
-
-
- 
-
         }
-
-
-
 
         /// <summary>
         /// Draws the gameplay screen.
@@ -227,43 +203,30 @@ namespace GameStateManagement
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
                                                Color.CornflowerBlue, 0, 0);
 
+            ScreenManager screenManager = this.ScreenManager;
+
             // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-            SpriteBatch spriteBatch1 = ScreenManager.SpriteBatch;
-
+            // Count up counter to change sprite
+            if(spriteCounter < 2)
+            {
+                spriteCounter++;
+            }
+            else
+            {
+                spriteCounter = 0;
+            }
             
 
             spriteBatch.Begin();
 
-            //spriteBatch.DrawString(gameFont, "// TODO", playerPosition, Color.Green);
-
             spriteBatch.Draw(bar, new Vector2(15, 15), Color.White);
 
-
-            spriteBatch1.Draw(theHighlander[0], playerPosition, Color.White);
-
-            
-            /*
-            if (i >= 0)
-            {
-                if (i == 3) { 
-                    i = 0;
-                }
-
-                spriteBatch1.Draw(theHighlander[i], playerPosition, Color.White);
-
-                i++;
-
-            }
-            */
-
-            //spriteBatch.DrawString(gameFont, "Insert Gameplay Here",
-            //  enemyPosition, Color.DarkRed);
-
-
-
             spriteBatch.End();
+
+            highlander.Draw(gameTime, spriteBatch);
+            highlander.Texture = theHighlander[spriteCounter];
 
             // If the game is transitioning on or off, fade it out to black.
             if (TransitionPosition > 0 || pauseAlpha > 0)
