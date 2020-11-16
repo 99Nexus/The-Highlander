@@ -66,46 +66,10 @@ namespace GameStateManagement.Starships
 
 
         public void HandleInput()
-        {
-            /*
-            Vector2 movement = Vector2.Zero;
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-
-                if (rotation >= -1)
-                    rotation -= 0.05f;
-
-                if (rotation < -1)
-                    movement.X--;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-
-                if (rotation <= 1)
-                    rotation += 0.05f;
-
-                if (rotation > 1)
-                    movement.X++;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
-                movement.Y--;
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
-                movement.Y++;
-
-
-            if (movement.Length() > 1)
-                movement.Normalize();
-
-            position += movement * 2;
-            */
-            
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+        {            
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
                 rotation -= MathHelper.ToRadians(rotationVelocity);
-            else if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            else if (Keyboard.GetState().IsKeyDown(Keys.D))
                 rotation += MathHelper.ToRadians(rotationVelocity);
 
             Vector2 direction = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - rotation), -(float)Math.Sin(MathHelper.ToRadians(90) - rotation));
@@ -115,7 +79,7 @@ namespace GameStateManagement.Starships
             //erst überprüfen ob das Bildschirm im Fullscreen oder nicht
             //Dann wenn Up gedrückt wird, wird die Methode Move()
             if (!GameStateManagementGame.Newgame.Graphics.IsFullScreen) { 
-                if (Keyboard.GetState().IsKeyDown(Keys.Up)) {
+                if (Keyboard.GetState().IsKeyDown(Keys.W)) {
                     Move(direction);
                 }
             }
