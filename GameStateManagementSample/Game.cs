@@ -34,6 +34,8 @@ namespace GameStateManagement
 
         private ScreenManager screenManager;
 
+   
+
         // By preloading any assets used by UI rendering, we avoid framerate glitches
         // when they suddenly need to be loaded in the middle of a menu transition.
         private static readonly string[] preloadAssets =
@@ -53,7 +55,9 @@ namespace GameStateManagement
             Content.RootDirectory = "Content";
 
             Graphics = new GraphicsDeviceManager(this);
+
             Graphics.PreferredBackBufferWidth = 853;
+
             Graphics.PreferredBackBufferHeight = 480;
 
             //amer; Fullscreen switch, default value for the full screen
@@ -99,6 +103,8 @@ namespace GameStateManagement
         }
 
         #endregion Draw
+
+
     }
 
     #region Entry Point

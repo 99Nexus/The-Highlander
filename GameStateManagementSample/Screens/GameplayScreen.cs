@@ -54,11 +54,16 @@ namespace GameStateManagement
 
         private TheHighlander highlander;
 
+        //amer
+        
+        public SpriteFont einFont;
+
+
         #endregion Fields
 
         #region Initialization
 
-        
+
         private Texture2D bar;
 
 
@@ -81,17 +86,19 @@ namespace GameStateManagement
 
 
             bar = content.Load<Texture2D>(@"graphics\game_menu_graphics\bar_0upgrade\bar_10_0upg");
-
+            einFont = content.Load<SpriteFont>("einFont");
             // Load sprites and textures
             theHighlander[0] = content.Load<Texture2D>(@"graphics\starships\the_highlander_1");
             theHighlander[1] = content.Load<Texture2D>(@"graphics\starships\the_highlander_2");
             theHighlander[2] = content.Load<Texture2D>(@"graphics\starships\the_highlander_3");
 
             // Objects
-            highlander = new TheHighlander(theHighlander[0])
+            highlander = new TheHighlander(theHighlander[0],einFont)
             {
                 Position = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2, ScreenManager.GraphicsDevice.Viewport.Height - theHighlander[0].Height - 5),
+                
                 Origin = new Vector2(theHighlander[spriteCounter].Width / 2, theHighlander[spriteCounter].Height / 2),
+                
             };            
 
             // A real game would probably have more content than this sample, so
@@ -208,8 +215,10 @@ namespace GameStateManagement
             // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
+            SpriteBatch _spriteBatch = ScreenManager.SpriteBatch;
+
             // Count up counter to change sprite
-            if(spriteCounter < 2)
+            if (spriteCounter < 2)
             {
                 spriteCounter++;
             }
@@ -224,8 +233,13 @@ namespace GameStateManagement
             spriteBatch.Draw(bar, new Vector2(15, 15), Color.White);
 
             spriteBatch.End();
+            /*
+            _spriteBatch.Begin();
+            _spriteBatch.DrawString(einFont, new string(theHighlander.ToString()), new Vector2(300, 300), Color.Black);
+            _spriteBatch.End();
+            */
 
-            highlander.Draw(gameTime, spriteBatch);
+            highlander.Draw(gameTime, spriteBatch, _spriteBatch);
             highlander.Texture = theHighlander[spriteCounter];
 
             // If the game is transitioning on or off, fade it out to black.

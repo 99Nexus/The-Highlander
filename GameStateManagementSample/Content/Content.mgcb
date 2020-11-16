@@ -37,6 +37,13 @@
 /processorParam:TextureFormat=Color
 /build:blank.png
 
+#begin einFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:einFont.spritefont
+
 #begin gamefont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
