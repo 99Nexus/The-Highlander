@@ -75,24 +75,23 @@ namespace GameStateManagement.Starships
             Vector2 direction = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - rotation), -(float)Math.Sin(MathHelper.ToRadians(90) - rotation));
 
 
-
-            //erst überprüfen ob das Bildschirm im Fullscreen oder nicht
-            //Dann wenn Up gedrückt wird, wird die Methode Move()
+            //First check whether the screen in Fullscreen or Windows size mode is
+            //then if the Player click "w" the methode Mover() will be called
             if (!GameStateManagementGame.Newgame.Graphics.IsFullScreen) { 
                 if (Keyboard.GetState().IsKeyDown(Keys.W)) {
                     Move(direction);
                 }
             }
-            //Im FullScreen
-            else if (Keyboard.GetState().IsKeyDown(Keys.Up)) {
+            //In FullScreen case
+            else if (Keyboard.GetState().IsKeyDown(Keys.W)) {
                 Move(direction);
             }
 
         }
 
-        //Hier wird überprüfen ob die Position erlaubt ist oder nicht
-        //wenn nicht erlaubt, wird die Posistion des Spielers in der Mitte eingesetzt
-
+        //Here will be the Position checked, whether is vaild or not
+        // If the Ship across the screen's borders then the ship will be replaced
+        // in the middle of the screen (respawn)
         public void Move( Vector2 direction)
         {
             if (IsValid())
