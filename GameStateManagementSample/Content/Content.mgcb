@@ -490,6 +490,18 @@
 /processorParam:TextureFormat=Compressed
 /build:graphics/game_menu_graphics/score.spritefont
 
+#begin graphics/game_objects/theHighlanderLaser.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:graphics/game_objects/theHighlanderLaser.png
+
 #begin graphics/screen_graphics/about_game_text.png
 /importer:TextureImporter
 /processor:TextureProcessor
