@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Threading;
+using GameStateManagement.Screens;
 
 #endregion Using Statements
 
@@ -54,17 +55,24 @@ namespace GameStateManagement
 
         private TheHighlander highlander;
 
-        //amer
-        
-        public SpriteFont einFont;
 
+
+        //amer
+
+        private SpriteFont einFont;
+
+        private GameMenuInfo gameMenuInfo;
+
+        private ScoreManager scoreManager;
+        
+        private SpriteFont score;
+
+        private Texture2D bar;
 
         #endregion Fields
 
         #region Initialization
 
-
-        private Texture2D bar;
 
 
         /// <summary>
@@ -84,22 +92,39 @@ namespace GameStateManagement
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
+            //
+            scoreManager = ScoreManager.Load();
 
+            //load the health bar img
             bar = content.Load<Texture2D>(@"graphics\game_menu_graphics\bar_0upgrade\bar_10_0upg");
+
+            //score
+            score = content.Load<SpriteFont>(@"graphics\game_menu_graphics\score");
+
+
+            // this is for testing the position of the player
             einFont = content.Load<SpriteFont>("einFont");
+            
             // Load sprites and textures
             theHighlander[0] = content.Load<Texture2D>(@"graphics\starships\the_highlander_1");
             theHighlander[1] = content.Load<Texture2D>(@"graphics\starships\the_highlander_2");
             theHighlander[2] = content.Load<Texture2D>(@"graphics\starships\the_highlander_3");
 
             // Objects
-            highlander = new TheHighlander(theHighlander[0],einFont)
+            highlander = new TheHighlander(theHighlander[0],einFont,"Player1",0)
             {
                 Position = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2, ScreenManager.GraphicsDevice.Viewport.Height - theHighlander[0].Height - 5),
                 
                 Origin = new Vector2(theHighlander[spriteCounter].Width / 2, theHighlander[spriteCounter].Height / 2),
                 
-            };            
+            };
+
+            scoreManager = ScoreManager.Load();
+
+            gameMenuInfo = new GameMenuInfo(bar,score, highlander.Player.Playername,highlander.Player.Value)
+            {
+
+            };
 
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
@@ -151,6 +176,7 @@ namespace GameStateManagement
                 enemyPosition.Y += (float)(random.NextDouble() - 0.5) * randomization;
 
                 // Apply a stabilizing force to stop the enemy moving off the screen.
+
                 //ich hab das aus kommentiert
                 /*
                   Vector2 targetPosition = new Vector2(
@@ -162,6 +188,25 @@ namespace GameStateManagement
 
                 enemyPosition = Vector2.Lerp(enemyPosition, targetPosition, 0.05f);
 
+                /*
+                 //TODO
+                //amer
+                //when tha game end save the Score and Player name in the list
+                // this 2 lines we shoul put it when the game end
+                //which is till now unclear when the game will end
+                scoreManager.Add(new Score(highlander.Player.Playername, highlander.Player.Value));
+                ScoreManager.Save(scoreManager);
+                
+                //List load
+                //this will use it in the next menu option
+                
+                scoreManager = ScoreManager.Load();
+
+                spriteBatch.DrawString(score,"HighScore:\n" +
+                string.Join("\n", scoreManager.Highscore.Select(c => c.Playername + ": "+ c.Value).ToArray()),
+                new Vector2(GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width /2, GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Hight /2 ),
+                Color.White);
+                */
 
 
                 // TODO: this game isn't very fun! You could probably improve
@@ -227,21 +272,15 @@ namespace GameStateManagement
                 spriteCounter = 0;
             }
             
-
-            spriteBatch.Begin();
-
-            spriteBatch.Draw(bar, new Vector2(15, 15), Color.White);
-
-            spriteBatch.End();
-            /*
-            _spriteBatch.Begin();
-            _spriteBatch.DrawString(einFont, new string(theHighlander.ToString()), new Vector2(300, 300), Color.Black);
-            _spriteBatch.End();
-            */
+            
+            
 
             highlander.Draw(gameTime, spriteBatch, _spriteBatch);
             highlander.Texture = theHighlander[spriteCounter];
 
+
+            gameMenuInfo.Draw(gameTime, spriteBatch,highlander.Player.Playername, highlander.Player.Value);
+            
             // If the game is transitioning on or off, fade it out to black.
             if (TransitionPosition > 0 || pauseAlpha > 0)
             {

@@ -483,6 +483,13 @@
 /processorParam:TextureFormat=Color
 /build:graphics/game_menu_graphics/bar_2upgrade/bar_9.png
 
+#begin graphics/game_menu_graphics/score.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:graphics/game_menu_graphics/score.spritefont
+
 #begin graphics/screen_graphics/about_game_text.png
 /importer:TextureImporter
 /processor:TextureProcessor

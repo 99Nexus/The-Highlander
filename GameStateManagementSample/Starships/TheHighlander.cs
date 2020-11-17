@@ -25,16 +25,18 @@ namespace GameStateManagement.Starships
 
         //amer, liber das lassen für testen
         private SpriteFont einFont;
+        //public int PlayerScore { get; set; }
+        public Score Player { get; set; }
 
         #endregion Fields
 
         #region Initialization
 
-        public TheHighlander(Texture2D texture, SpriteFont einFont)
+        public TheHighlander(Texture2D texture, SpriteFont einFont, string playerName, int playerScore)
         {
             this.texture = texture;
             this.einFont = einFont;
-
+            Player = new Score(playerName, playerScore);
 
         }
 
@@ -46,8 +48,8 @@ namespace GameStateManagement.Starships
         {
 
         }
-        
-        //mit dieser Methode wird überprüft ob die Position erlaubt oder nicht  
+
+        //This Methode will check the Position, whether is vaild or not  
         public bool IsValid()
         {
 
@@ -89,7 +91,8 @@ namespace GameStateManagement.Starships
 
         }
 
-        //Here will be the Position checked, whether is vaild or not
+        //Here will be the Position checked, whether is vaild or not, by calling the
+        //Methode IsValid()
         // If the Ship across the screen's borders then the ship will be replaced
         // in the middle of the screen (respawn)
         public void Move( Vector2 direction)
@@ -97,11 +100,13 @@ namespace GameStateManagement.Starships
             if (IsValid())
             {
                 Position += direction * linearVelocity;
+                Player.Value++;
             }
             else
             {
                 Position = new Vector2(GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width / 2,
                        GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Height - 50);
+                Player.Value = Player.Value - 200;
             }
         }
 
@@ -111,8 +116,11 @@ namespace GameStateManagement.Starships
             spriteBatch.Begin();
             spriteBatch.Draw(texture, Position, null, Color.White, rotation, Origin, 1, SpriteEffects.None, 0);
             spriteBatch.End();
-            _spriteBatch.Begin();
+
             
+
+            
+            _spriteBatch.Begin();
             _spriteBatch.DrawString(einFont, new string("Y " + Position.Y.ToString()), new Vector2(30, 100), Color.Black);
             _spriteBatch.DrawString(einFont, new string("X " + Position.X.ToString()), new Vector2(30, 130), Color.Black);
             
