@@ -31,7 +31,6 @@ namespace GameStateManagement
         private Texture2D startScreenLogo;
 
 
-
         #endregion Fields
 
         #region Initialization
@@ -48,18 +47,21 @@ namespace GameStateManagement
             // Create our menu entries.
             MenuEntry startGameMenuEntry = new MenuEntry("Start Game");
             MenuEntry optionsMenuEntry = new MenuEntry("Options");
+            MenuEntry highScoreMenuEntry = new MenuEntry("High Score");
             MenuEntry aboutGameMenuEntry = new MenuEntry("About");
             MenuEntry exitMenuEntry = new MenuEntry("Exit");
 
             // Hook up menu event handlers.
             startGameMenuEntry.Selected += StartGameMenuEntrySelected;
             optionsMenuEntry.Selected += OptionsMenuEntrySelected;
+            highScoreMenuEntry.Selected += highScoreMenuEntrySelected;
             aboutGameMenuEntry.Selected += AboutGameMenuEntrySelected;
             exitMenuEntry.Selected += OnCancel;
 
             // Add entries to the menu.
             MenuEntries.Add(startGameMenuEntry);
             MenuEntries.Add(optionsMenuEntry);
+            MenuEntries.Add(highScoreMenuEntry);
             MenuEntries.Add(aboutGameMenuEntry);
             MenuEntries.Add(exitMenuEntry);
         }
@@ -100,6 +102,15 @@ namespace GameStateManagement
         {
             ScreenManager.AddScreen(new OptionsMenuScreen(), e.PlayerIndex);
         }
+
+        /// <summary>
+        /// Event handler for when the High Score menu entry is selected.
+        /// </summary>
+        private void highScoreMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            ScreenManager.AddScreen(new HighScoreScreen(), e.PlayerIndex);
+        }
+
 
         /// <summary>
         /// When the user cancels the main menu, ask if they want to exit the sample.

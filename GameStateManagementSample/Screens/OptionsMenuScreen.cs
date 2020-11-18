@@ -2,15 +2,19 @@
 
 //-----------------------------------------------------------------------------
 // OptionsMenuScreen.cs
-//
+//amer
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
 #endregion File Description
 
+#region Using Statements
+
 using GameStateManagementSample;
 using Microsoft.Xna.Framework.Graphics;
+
+#endregion Using Statements
 
 namespace GameStateManagement
 {
@@ -21,8 +25,8 @@ namespace GameStateManagement
     /// </summary>
     internal class OptionsMenuScreen : MenuScreen
     {
-        #region Fields
 
+        #region Fields
 
         private MenuEntry fullscreenMenuEntry;
 
@@ -32,7 +36,6 @@ namespace GameStateManagement
 
         private MenuEntry keyMapMenuEntry;
 
-
         /*scratch maybe we will need it later
          * idea switch keyMap between 2 options
         public struct KeyMapping
@@ -41,10 +44,9 @@ namespace GameStateManagement
             public static string[] KeyMapArrows = { "Up", "Down", "Right", "Left", "Space" };
         }{ "forward: W", "backward: S", "right: D", "link: A" };
         */
+
         private static string[] KeyMapping = { "Move Forward \"W\"", "Move Backward \"S\"",
                                                 "Move Right \"D\"", "Move Left \"A\"" };
-
-
         
         private static bool currentfullscreen = false;
 
@@ -54,10 +56,8 @@ namespace GameStateManagement
 
         private static int currentKeyMap = 0;
 
- 
-
-
         #endregion Fields
+
 
         #region Initialization
 
@@ -65,7 +65,7 @@ namespace GameStateManagement
         /// Constructor.
         /// </summary>
         public OptionsMenuScreen()
-            : base("")//"Options"
+            : base("")//to make a header for the screen
         {
 
             // Create our menu entries.
@@ -76,7 +76,6 @@ namespace GameStateManagement
             effectsMenuEntry = new MenuEntry(string.Empty);
 
             keyMapMenuEntry = new MenuEntry(string.Empty);
-
 
             SetMenuEntryText();
 
@@ -89,7 +88,7 @@ namespace GameStateManagement
             keyMapMenuEntry.Selected += KeyMapMenuEntrySelected;
 
 
-
+            //MenuEntries.Add(back);
             MenuEntries.Add(fullscreenMenuEntry);
 
             MenuEntries.Add(musicMenuEntry);
@@ -98,7 +97,6 @@ namespace GameStateManagement
 
             MenuEntries.Add(keyMapMenuEntry);
 
-            //MenuEntries.Add(back);
         }
 
         /// <summary>
@@ -118,13 +116,12 @@ namespace GameStateManagement
 
         #endregion Initialization
 
-        #region Handle Input
 
+        #region Handle Input
 
         /// <summary>
         /// Event handler for when the Fullscreen menu entry is selected.
         /// </summary>
-
         private void FullscreenMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             currentfullscreen = !currentfullscreen;
@@ -139,13 +136,10 @@ namespace GameStateManagement
                 GameStateManagementGame.Newgame.Graphics.IsFullScreen = true;
                 GameStateManagementGame.Newgame.Graphics.ApplyChanges();
             }
-            
 
             SetMenuEntryText();
 
-            
         }
-
 
         /// <summary>
         /// Event handler for when the Music menu entry is selected.
@@ -170,7 +164,6 @@ namespace GameStateManagement
 
         }
 
-
         /// <summary>
         /// Event handler for when the effects menu entry is selected.
         /// </summary>
@@ -184,5 +177,6 @@ namespace GameStateManagement
         }
 
         #endregion Handle Input
+
     }
 }

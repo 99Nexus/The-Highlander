@@ -192,7 +192,7 @@ namespace GameStateManagement
                  //TODO
                 //amer
                 //when tha game end save the Score and Player name in the list
-                // this 2 lines we shoul put it when the game end
+                // this 2 lines we should put them when the game end
                 //which is till now unclear when the game will end
                 scoreManager.Add(new Score(highlander.Player.Playername, highlander.Player.Value));
                 ScoreManager.Save(scoreManager);
@@ -271,8 +271,6 @@ namespace GameStateManagement
             {
                 spriteCounter = 0;
             }
-            
-            
             
 
             highlander.Draw(gameTime, spriteBatch, _spriteBatch);

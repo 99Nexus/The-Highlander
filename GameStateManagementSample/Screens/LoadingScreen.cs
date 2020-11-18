@@ -122,7 +122,6 @@ namespace GameStateManagement
                                                             screensToLoad);
 
             
-
             screenManager.AddScreen(loadingScreen, controllingPlayer);
         }
 
@@ -135,7 +134,6 @@ namespace GameStateManagement
 
             //alarm = content.Load<Texture2D>(@"graphics\screen_graphics\alarm_icon");
             
-
 
             //load the message-pic
             message = content.Load<Texture2D>("message");
