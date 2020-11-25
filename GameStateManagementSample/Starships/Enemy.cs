@@ -405,7 +405,7 @@ namespace GameStateManagement.Starships
 
         public void Update(GameTime gameTime, Vector2 playerPosition)
         {
-            enemyBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            enemyBox = new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
 
             // Update player position for movement and action
             this.playerPosition = playerPosition;

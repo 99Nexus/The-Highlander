@@ -29,8 +29,6 @@ namespace GameStateManagement.Starships
         private SpriteFont einFont;
         //public int PlayerScore { get; set; }
         public Score Player { get; set; }
-
-        //new
         public Rectangle highlanderBox;
         
         

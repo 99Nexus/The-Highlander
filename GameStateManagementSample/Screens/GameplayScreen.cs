@@ -44,7 +44,6 @@ namespace GameStateManagement
         int spriteCounter = 0;
 
 
-
         private Vector2 playerPosition = new Vector2(0,0);
         
         private Vector2 enemyPosition = new Vector2(100, 100);
@@ -62,13 +61,9 @@ namespace GameStateManagement
         //amer
 
         private SpriteFont einFont;
-
         private GameMenuInfo gameMenuInfo;
-
         private ScoreManager scoreManager;
-        
         private SpriteFont score;
-
         private Texture2D bar;
 
         //test enemy
@@ -134,12 +129,17 @@ namespace GameStateManagement
                 
             };
 
-            theEnemy = content.Load<Texture2D>(@"graphics\starships\the_highlander_3");
+            theEnemy = content.Load<Texture2D>(@"graphics\starships\tanker1");
 
-            enemy = new Enemy(theEnemy, einFont, 1, 0, 0, 0);
+
+            enemy = new Enemy(theEnemy, einFont, new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2, ScreenManager.GraphicsDevice.Viewport.Height / 2), 2, 2, 2f, new Vector2(200, 400), highlander.Position, 20.0, MovementMode.VERTICAL)
+            {
+                Origin = new Vector2(theEnemy.Width / 2, theEnemy.Height / 2),
+            };
+
 
             theExplosion = content.Load<Texture2D>(@"explosion");
-            explosion = new Explosion(theExplosion, new Vector2(enemy.position.X, enemy.position.Y));
+            explosion = new Explosion(theExplosion, new Vector2(enemy.Position.X, enemy.Position.Y));
             scoreManager = ScoreManager.Load();
 
             gameMenuInfo = new GameMenuInfo(bar,score, highlander.Player.Playername,highlander.Player.Value)
@@ -253,7 +253,7 @@ namespace GameStateManagement
             }
 
             if (enemy.isVisible) {
-                enemy.Update(gameTime);
+                enemy.Update(gameTime,highlander.Position);
             }
             else
             {
@@ -262,9 +262,8 @@ namespace GameStateManagement
 
             highlander.Update(gameTime);
 
-            
-
             //LoadEnemies();
+
             base.Update(gameTime, otherScreenHasFocus, false);
             
             /*
@@ -358,15 +357,10 @@ namespace GameStateManagement
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
-            // This game has a blue background. Why? Because!
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
                                                Color.CornflowerBlue, 0, 0);
-
             ScreenManager screenManager = this.ScreenManager;
-
-            // Our player and enemy are both actually just text strings.
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-
             SpriteBatch _spriteBatch = ScreenManager.SpriteBatch;
 
             // Count up counter to change sprite
@@ -379,7 +373,10 @@ namespace GameStateManagement
                 spriteCounter = 0;
             }
 
-            enemy.Draw(gameTime, spriteBatch);
+
+            if (enemy.isVisible) { 
+                enemy.Draw(gameTime, spriteBatch);
+            }
             explosion.Draw(spriteBatch);
 
             /*
@@ -390,8 +387,6 @@ namespace GameStateManagement
 
             highlander.Draw(gameTime, spriteBatch, _spriteBatch);
             highlander.Texture = theHighlander[spriteCounter];
-
-
             gameMenuInfo.Draw(gameTime, spriteBatch,highlander.Player.Playername, highlander.Player.Value);
             
             // If the game is transitioning on or off, fade it out to black.

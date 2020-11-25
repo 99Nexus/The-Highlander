@@ -177,9 +177,6 @@ namespace GameStateManagement
             // Call Draw method of the class MainMenuScreen to draw the menu entrys too
             base.Draw(gameTime);
         }
-
-
-
         #endregion Update and Draw
     }
 }
