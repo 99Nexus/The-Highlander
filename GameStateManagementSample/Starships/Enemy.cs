@@ -23,6 +23,8 @@ namespace GameStateManagement.Starships
         private SpriteFont spriteFont;
         private string shieldString;
         private Vector2 textureSize;
+        public Rectangle enemyBox;
+        public bool isVisible;
 
         // State attributes
         private static int actualShield;
@@ -57,6 +59,10 @@ namespace GameStateManagement.Starships
         public Vector2 Origin;
         public MovementMode MovementMode;
 
+
+
+
+
         public Enemy(Texture2D texture, SpriteFont spriteFont, Vector2 position, int maxShield, int weaponPower, float linearVelocity, Vector2 end, Vector2 playerPosition, double keepDistanceToPlayer, MovementMode movementMode) 
         {
             this.texture = texture;
@@ -73,7 +79,7 @@ namespace GameStateManagement.Starships
             this.playerPosition = playerPosition;
             this.keepDistanceToPlayer = keepDistanceToPlayer;
             this.movementMode = movementMode;
-
+            this.isVisible = true;
             // Set values for the actual movement mode
             changeMovementMode(movementMode);
         }
@@ -399,6 +405,8 @@ namespace GameStateManagement.Starships
 
         public void Update(GameTime gameTime, Vector2 playerPosition)
         {
+            enemyBox = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+
             // Update player position for movement and action
             this.playerPosition = playerPosition;
 
