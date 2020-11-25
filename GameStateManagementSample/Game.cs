@@ -34,8 +34,6 @@ namespace GameStateManagement
 
         private ScreenManager screenManager;
 
-   
-
         // By preloading any assets used by UI rendering, we avoid framerate glitches
         // when they suddenly need to be loaded in the middle of a menu transition.
         private static readonly string[] preloadAssets =
@@ -63,6 +61,10 @@ namespace GameStateManagement
             //amer; Fullscreen switch, default value for the full screen
             Graphics.IsFullScreen = false;
 
+            //use the desktop’s resolution, that will not make other
+            //apps in windows size
+            Graphics.HardwareModeSwitch = false;
+
             // Create the screen manager component.
             screenManager = new ScreenManager(this);
 
@@ -72,7 +74,7 @@ namespace GameStateManagement
             screenManager.AddScreen(new BackgroundScreen(), null);
             screenManager.AddScreen(new MainMenuScreen(), null);
 
-            //amer; the generated game will be in the variable newgame assign
+            //amer; the generated game will be to the variable newgame assign
             Newgame = this;
         }
 

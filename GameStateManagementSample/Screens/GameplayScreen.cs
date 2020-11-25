@@ -19,6 +19,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Threading;
 using GameStateManagement.Screens;
+using System.Collections.Generic;
 
 #endregion Using Statements
 
@@ -41,6 +42,7 @@ namespace GameStateManagement
         private Texture2D[] theHighlander = new Texture2D[3];
 
         int spriteCounter = 0;
+
 
 
         private Vector2 playerPosition = new Vector2(0,0);
@@ -68,6 +70,19 @@ namespace GameStateManagement
         private SpriteFont score;
 
         private Texture2D bar;
+
+        //test enemy
+        private Enemy enemy;
+        private Texture2D theEnemy;
+
+        //test Explosion
+        private Explosion explosion;
+        private Texture2D theExplosion;
+        
+        // they have a methode and list maybe helpful for later
+        //private List<Enemy> enemyList = new List<Enemy>();
+        //private List<Explosion> explosionList = new List<Explosion>();
+
 
         #endregion Fields
 
@@ -119,6 +134,12 @@ namespace GameStateManagement
                 
             };
 
+            theEnemy = content.Load<Texture2D>(@"graphics\starships\the_highlander_3");
+
+            enemy = new Enemy(theEnemy, einFont, 1, 0, 0, 0);
+
+            theExplosion = content.Load<Texture2D>(@"explosion");
+            explosion = new Explosion(theExplosion, new Vector2(enemy.position.X, enemy.position.Y));
             scoreManager = ScoreManager.Load();
 
             gameMenuInfo = new GameMenuInfo(bar,score, highlander.Player.Playername,highlander.Player.Value)
@@ -147,6 +168,53 @@ namespace GameStateManagement
 
         #endregion Initialization
 
+
+        #region Loading Enemy
+        /*
+        public void LoadEnemies()
+        {
+            /*
+            if(enemyList.Count < 1)
+            {
+                enemyList.Add(new Enemy(theEnemy, einFont, 1, 0, 0, 0));
+            }
+            
+
+            enemyList.Add(new Enemy(theEnemy, einFont, 1, 0, 0, 0));
+
+            if (!enemyList[0].isVisible)
+            {
+                enemyList.RemoveAt(0);
+                
+            }
+
+
+            for (int i = 0; i < enemyList.Count; i++)
+            {
+                if (!enemyList[i].isVisible)
+                {
+                    enemyList.RemoveAt(i);
+                    i--;
+                }
+
+            }
+        }
+
+        public void ManageExplosions()
+        {
+            for (int i = 0; i < explosionList.Count; i++)
+            {
+                if (!explosionList[i].isVisible)
+                {
+                    explosionList.RemoveAt(i);
+                    i--;
+                }
+
+            }
+        }
+        */
+        #endregion Loading Enemy & Manage Explosions
+
         #region Update and Draw
 
         /// <summary>
@@ -157,23 +225,62 @@ namespace GameStateManagement
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
-            base.Update(gameTime, otherScreenHasFocus, false);
+            /*
+            foreach(Enemy e in enemyList)
+            {
+                if (e.enemyBox.Intersects(highlander.highlanderBox))
+                {
+                    e.isVisible = false;
+                }
+                e.Update(gameTime);
+            }
+            */
+
+            if (highlander.highlanderBox.Intersects(enemy.enemyBox))
+            {
+                /*
+                if (--highlander.Shield == 0)
+                {
+                    highlander.isVisible = false;
+                }
+
+
+                if (--enemy.AsctualShield == 0) { 
+                    enemy.isVisible = false;
+                }
+                */
+                enemy.isVisible = false;
+            }
+
+            if (enemy.isVisible) {
+                enemy.Update(gameTime);
+            }
+            else
+            {
+                explosion.Update(gameTime);
+            }
 
             highlander.Update(gameTime);
 
+            
+
+            //LoadEnemies();
+            base.Update(gameTime, otherScreenHasFocus, false);
+            
+            /*
             // Gradually fade in or out depending on whether we are covered by the pause screen.
             if (coveredByOtherScreen)
                 pauseAlpha = Math.Min(pauseAlpha + 1f / 32, 1);
             else
                 pauseAlpha = Math.Max(pauseAlpha - 1f / 32, 0);
-
-            if (IsActive)
-            {
+            */
+           // if (IsActive)
+            //{
                 // Apply some random jitter to make the enemy move around.
-                const float randomization = 10;
+                //const float randomization = 10;
 
-                enemyPosition.X += (float)(random.NextDouble() - 0.5) * randomization;
-                enemyPosition.Y += (float)(random.NextDouble() - 0.5) * randomization;
+               // enemyPosition.X += (float)(random.NextDouble() - 0.5) * randomization;
+                //enemyPosition.Y += (float)(random.NextDouble() - 0.5) * randomization;
 
                 // Apply a stabilizing force to stop the enemy moving off the screen.
 
@@ -184,9 +291,9 @@ namespace GameStateManagement
                     200);
                 */
 
-                Vector2 targetPosition = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2 - theHighlander[0].Height /2);
+                //Vector2 targetPosition = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2 - theHighlander[0].Height /2);
 
-                enemyPosition = Vector2.Lerp(enemyPosition, targetPosition, 0.05f);
+                //enemyPosition = Vector2.Lerp(enemyPosition, targetPosition, 0.05f);
 
                 /*
                  //TODO
@@ -211,7 +318,7 @@ namespace GameStateManagement
 
                 // TODO: this game isn't very fun! You could probably improve
                 // it by inserting something more interesting in this space :-)
-            }
+           // }
         }
 
         /// <summary>
@@ -271,7 +378,15 @@ namespace GameStateManagement
             {
                 spriteCounter = 0;
             }
-            
+
+            enemy.Draw(gameTime, spriteBatch);
+            explosion.Draw(spriteBatch);
+
+            /*
+            foreach(Enemy e in enemyList)
+            {
+                e.Draw(gameTime, eSpriteBatch);
+            }*/
 
             highlander.Draw(gameTime, spriteBatch, _spriteBatch);
             highlander.Texture = theHighlander[spriteCounter];

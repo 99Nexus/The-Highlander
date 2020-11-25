@@ -20,14 +20,20 @@ namespace GameStateManagement.Starships
         public Texture2D Texture;
         public Vector2 Position;
         public Vector2 Origin;
+        //new
+        public int Shield;
+        public bool isVisible;
 
-        
 
         //amer, liber das lassen für testen
         private SpriteFont einFont;
         //public int PlayerScore { get; set; }
         public Score Player { get; set; }
 
+        //new
+        public Rectangle highlanderBox;
+        
+        
         #endregion Fields
 
         #region Initialization
@@ -37,7 +43,7 @@ namespace GameStateManagement.Starships
             this.texture = texture;
             this.einFont = einFont;
             Player = new Score(playerName, playerScore);
-
+            this.isVisible = true;
         }
 
         #endregion Initialization
@@ -46,7 +52,7 @@ namespace GameStateManagement.Starships
 
         public void Update(GameTime gameTime)
         {
-
+            highlanderBox = new Rectangle((int)Position.X, (int)Position.Y,texture.Width,texture.Height);
         }
 
         //This Methode will check the Position, whether is vaild or not  
@@ -119,7 +125,7 @@ namespace GameStateManagement.Starships
 
             
 
-            
+            //for testing
             _spriteBatch.Begin();
             _spriteBatch.DrawString(einFont, new string("Y " + Position.Y.ToString()), new Vector2(30, 100), Color.Black);
             _spriteBatch.DrawString(einFont, new string("X " + Position.X.ToString()), new Vector2(30, 130), Color.Black);

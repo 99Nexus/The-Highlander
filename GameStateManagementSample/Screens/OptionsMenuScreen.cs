@@ -12,6 +12,7 @@
 #region Using Statements
 
 using GameStateManagementSample;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 #endregion Using Statements

@@ -51,9 +51,6 @@ namespace GameStateManagementSample
             base.Draw(gameTime);
         }
 
-
-
     }
     
-
 }
