@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -32,15 +33,22 @@ namespace GameStateManagement.Starships
             this.rotation = rotation;
         }
 
+        public void LoadContent(ContentManager content)
+        {
+            texture = content.Load<Texture2D>(@"graphics\game_objects\theHighlanderLaser");
+        }
+
         public void Update(GameTime gameTime, Vector2 playerPos)
         {
             position = playerPos;
-            position += velocity * direction;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, null, Color.White, 0f, origin, 1f, SpriteEffects.None, 0);
+
+            position += velocity * direction;
+
+            spriteBatch.Draw(texture, position, null, Color.White, rotation, origin, 1f, SpriteEffects.None, 0);
         }
     }
 }
