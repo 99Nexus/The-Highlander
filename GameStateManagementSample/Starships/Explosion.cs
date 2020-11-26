@@ -86,9 +86,7 @@ namespace GameStateManagement.Starships
         {
             if (isVisible)
             {
-                spriteBatch.Begin();
                 spriteBatch.Draw(texture, position, sourceRect, Color.White, 0f,origion,1.0f,SpriteEffects.None,0);
-                spriteBatch.End();
             }
         }
     }

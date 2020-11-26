@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameStateManagement.GameObjects;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -7,41 +9,55 @@ using System.Text;
 
 namespace GameStateManagement.Starships
 {
-    class TheHighlander
+    public class TheHighlander
     {
         #region Fields
 
-        private Texture2D texture;
+        // Graphical attributes
+        public Texture2D[] texture;
+        public Rectangle highlanderBox;
+        public bool isVisible;
+        public int spriteCounter = 0;
+        public Score Player { get; set; }
+        public string playerName = "Player1";
+
+        // State attributes
+        public float linearVelocity = 4f;
+        public int updateLevel = 0;
+        public int shield = 10;
+        public int score;
+
+        // Movement attributes
         private float rotation;
         public float rotationVelocity = 3f;
-        public float linearVelocity = 4f;
-
-        // Properties
-        public Texture2D Texture;
-        public Vector2 Position;
         public Vector2 Origin;
-        //new
-        public int Shield;
-        public bool isVisible;
-
+        public Rectangle Rectangle;
+        public Vector2 Position;
 
         //amer, liber das lassen für testen
-        private SpriteFont einFont;
+        private SpriteFont sprite;
         //public int PlayerScore { get; set; }
-        public Score Player { get; set; }
-        public Rectangle highlanderBox;
-        
-        
+
+    
         #endregion Fields
 
         #region Initialization
 
-        public TheHighlander(Texture2D texture, SpriteFont einFont, string playerName, int playerScore)
+        public TheHighlander(SpriteFont sprite, string playerName, int playerScore)
         {
-            this.texture = texture;
-            this.einFont = einFont;
+            this.sprite = sprite;
             Player = new Score(playerName, playerScore);
             this.isVisible = true;
+        }
+
+        public void LoadContent(ContentManager content)
+        {
+            texture = new Texture2D[3];
+            texture[0] = content.Load<Texture2D>(@"graphics\starships\the_highlander_1");
+            texture[1] = content.Load<Texture2D>(@"graphics\starships\the_highlander_2");
+            texture[2] = content.Load<Texture2D>(@"graphics\starships\the_highlander_3");
+
+            Origin = new Vector2(texture[spriteCounter].Width / 2, texture[spriteCounter].Height / 2);
         }
 
         #endregion Initialization
@@ -50,7 +66,8 @@ namespace GameStateManagement.Starships
 
         public void Update(GameTime gameTime)
         {
-            highlanderBox = new Rectangle((int)Position.X, (int)Position.Y,texture.Width,texture.Height);
+           highlanderBox = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
+           Rectangle = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
         }
 
         //This Methode will check the Position, whether is vaild or not  
@@ -109,26 +126,22 @@ namespace GameStateManagement.Starships
             else
             {
                 Position = new Vector2(GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width / 2,
-                       GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Height - 50);
+                       GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Height -50);
                 Player.Value = Player.Value - 200;
             }
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, SpriteBatch _spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            
-            spriteBatch.Begin();
-            spriteBatch.Draw(texture, Position, null, Color.White, rotation, Origin, 1, SpriteEffects.None, 0);
-            spriteBatch.End();
+            // Count up to change sprite
+            if (spriteCounter < 2)
+                spriteCounter++;
+            else
+                spriteCounter = 0;
 
-            
-
-            //for testing
-            _spriteBatch.Begin();
-            _spriteBatch.DrawString(einFont, new string("Y " + Position.Y.ToString()), new Vector2(30, 100), Color.Black);
-            _spriteBatch.DrawString(einFont, new string("X " + Position.X.ToString()), new Vector2(30, 130), Color.Black);
-            
-            _spriteBatch.End();
+            spriteBatch.Draw(texture[spriteCounter], Position, null, Color.White, rotation, Origin, 1, SpriteEffects.None, 0);
+            spriteBatch.DrawString(sprite, new string("Y " + Position.Y.ToString()), new Vector2(30, 100), Color.Black);
+            spriteBatch.DrawString(sprite, new string("X " + Position.X.ToString()), new Vector2(30, 130), Color.Black);
         }
 
         #endregion Update and Draw
