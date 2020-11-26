@@ -20,6 +20,7 @@ using System;
 using System.Threading;
 using GameStateManagement.Screens;
 using System.Collections.Generic;
+using GameStateManagement.GameObjects;
 
 #endregion Using Statements
 
@@ -34,56 +35,36 @@ namespace GameStateManagement
     {
         #region Fields
 
+        // Management objects
         private ContentManager content;
+        private ScoreManager scoreManager;
 
+        // Game Objects
+        private TheHighlander highlander;
+        private HealthBar healthBar;
+        private Highscore highscore;
+        private Enemy enemy;
+        private Camera camera;
+        private Camera cameraBar;
+        private Camera cameraHighscore;
+        private Explosion explosion;
 
-        //private SpriteFont gameFont;
-
-        private Texture2D[] theHighlander = new Texture2D[3];
-
-        int spriteCounter = 0;
-
-
-        private Vector2 playerPosition = new Vector2(0,0);
-        
-        private Vector2 enemyPosition = new Vector2(100, 100);
-
+        // Other objects
         private Random random = new Random();
-
+        private SpriteFont einFont;
         private float pauseAlpha;
 
-        private float angle = 0;
-
-        private TheHighlander highlander;
-
-
-
-        //amer
-
-        private SpriteFont einFont;
-        private GameMenuInfo gameMenuInfo;
-        private ScoreManager scoreManager;
-        private SpriteFont score;
-        private Texture2D bar;
-
-        //test enemy
-        private Enemy enemy;
-        private Texture2D theEnemy;
 
         //test Explosion
-        private Explosion explosion;
         private Texture2D theExplosion;
-        
+
         // they have a methode and list maybe helpful for later
         //private List<Enemy> enemyList = new List<Enemy>();
         //private List<Explosion> explosionList = new List<Explosion>();
 
-
         #endregion Fields
 
         #region Initialization
-
-
 
         /// <summary>
         /// Constructor.
@@ -102,50 +83,35 @@ namespace GameStateManagement
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-            //
             scoreManager = ScoreManager.Load();
-
-            //load the health bar img
-            bar = content.Load<Texture2D>(@"graphics\game_menu_graphics\bar_0upgrade\bar_10_0upg");
-
-            //score
-            score = content.Load<SpriteFont>(@"graphics\game_menu_graphics\score");
-
 
             // this is for testing the position of the player
             einFont = content.Load<SpriteFont>("einFont");
-            
-            // Load sprites and textures
-            theHighlander[0] = content.Load<Texture2D>(@"graphics\starships\the_highlander_1");
-            theHighlander[1] = content.Load<Texture2D>(@"graphics\starships\the_highlander_2");
-            theHighlander[2] = content.Load<Texture2D>(@"graphics\starships\the_highlander_3");
 
             // Objects
-            highlander = new TheHighlander(theHighlander[0],einFont,"Player1",0)
+            highlander = new TheHighlander(einFont, "Player1", 0)
             {
-                Position = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2, ScreenManager.GraphicsDevice.Viewport.Height - theHighlander[0].Height - 5),
-                
-                Origin = new Vector2(theHighlander[spriteCounter].Width / 2, theHighlander[spriteCounter].Height / 2),
-                
+                Position = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2, ScreenManager.GraphicsDevice.Viewport.Height / 2),
             };
 
-            theEnemy = content.Load<Texture2D>(@"graphics\starships\tanker1");
+            highlander.LoadContent(content);
 
+            enemy = new Enemy(new Vector2(400, 500), 2, 2, 2f, new Vector2(200, 400), highlander.Position, 20.0, MovementMode.VERTICAL);
+            enemy.LoadContent(content);
 
-            enemy = new Enemy(theEnemy, einFont, new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2, ScreenManager.GraphicsDevice.Viewport.Height / 2), 2, 2, 2f, new Vector2(200, 400), highlander.Position, 20.0, MovementMode.VERTICAL)
-            {
-                Origin = new Vector2(theEnemy.Width / 2, theEnemy.Height / 2),
-            };
+            healthBar = new HealthBar(highlander);
+            healthBar.LoadContent(content);
 
+            highscore = new Highscore(highlander);
+            highscore.LoadContent(content);
 
             theExplosion = content.Load<Texture2D>(@"explosion");
             explosion = new Explosion(theExplosion, new Vector2(enemy.Position.X, enemy.Position.Y));
             scoreManager = ScoreManager.Load();
 
-            gameMenuInfo = new GameMenuInfo(bar,score, highlander.Player.Playername,highlander.Player.Value)
-            {
-
-            };
+            camera = new Camera(this);
+            cameraBar = new Camera(this);
+            cameraHighscore = new Camera(this);
 
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
@@ -235,7 +201,6 @@ namespace GameStateManagement
                 e.Update(gameTime);
             }
             */
-
             if (highlander.highlanderBox.Intersects(enemy.enemyBox))
             {
                 /*
@@ -261,8 +226,11 @@ namespace GameStateManagement
             }
 
             highlander.Update(gameTime);
+            healthBar.Update(gameTime);
 
-            //LoadEnemies();
+            camera.Follow(highlander);
+            cameraBar.Follow(healthBar);
+            cameraHighscore.Follow(highscore);
 
             base.Update(gameTime, otherScreenHasFocus, false);
             
@@ -363,32 +331,32 @@ namespace GameStateManagement
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteBatch _spriteBatch = ScreenManager.SpriteBatch;
 
-            // Count up counter to change sprite
-            if (spriteCounter < 2)
-            {
-                spriteCounter++;
-            }
-            else
-            {
-                spriteCounter = 0;
-            }
 
+            spriteBatch.Begin(transformMatrix: camera.Transform);
 
             if (enemy.isVisible) { 
-                enemy.Draw(gameTime, spriteBatch);
+                enemy.Draw(gameTime, _spriteBatch);
             }
             explosion.Draw(spriteBatch);
 
-            /*
-            foreach(Enemy e in enemyList)
-            {
-                e.Draw(gameTime, eSpriteBatch);
-            }*/
+            highlander.Draw(gameTime, spriteBatch);
 
-            highlander.Draw(gameTime, spriteBatch, _spriteBatch);
-            highlander.Texture = theHighlander[spriteCounter];
-            gameMenuInfo.Draw(gameTime, spriteBatch,highlander.Player.Playername, highlander.Player.Value);
-            
+            spriteBatch.End();
+
+
+            spriteBatch.Begin(transformMatrix: cameraBar.Transform);
+
+            healthBar.Draw(gameTime, spriteBatch);
+
+            spriteBatch.End();
+
+
+            spriteBatch.Begin(transformMatrix: cameraHighscore.Transform);
+
+            highscore.Draw(gameTime, spriteBatch);
+
+            spriteBatch.End();
+
             // If the game is transitioning on or off, fade it out to black.
             if (TransitionPosition > 0 || pauseAlpha > 0)
             {
