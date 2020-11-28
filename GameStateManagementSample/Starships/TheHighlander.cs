@@ -58,6 +58,7 @@ namespace GameStateManagement.Starships
             texture[2] = content.Load<Texture2D>(@"graphics\starships\the_highlander_3");
 
             Origin = new Vector2(texture[spriteCounter].Width / 2, texture[spriteCounter].Height / 2);
+            
         }
 
         #endregion Initialization
@@ -67,7 +68,8 @@ namespace GameStateManagement.Starships
         public void Update(GameTime gameTime)
         {
            highlanderBox = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
-           Rectangle = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
+           //wozu ist das Rectangle?
+           //Rectangle = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
         }
 
         //This Methode will check the Position, whether is vaild or not  
@@ -102,20 +104,25 @@ namespace GameStateManagement.Starships
             //then if the Player click "w" the methode Mover() will be called
             if (!GameStateManagementGame.Newgame.Graphics.IsFullScreen) { 
                 if (Keyboard.GetState().IsKeyDown(Keys.W)) {
-                    Move(direction);
+                    // Move(direction);
+                    Position += direction * linearVelocity;
+                    Player.Value++;
                 }
             }
+
             //In FullScreen case
             else if (Keyboard.GetState().IsKeyDown(Keys.W)) {
-                Move(direction);
+                //Move(direction);
+                Position += direction * linearVelocity;
+                Player.Value++;
             }
 
         }
 
-        //Here will be the Position checked, whether is vaild or not, by calling the
-        //Methode IsValid()
-        // If the Ship across the screen's borders then the ship will be replaced
-        // in the middle of the screen (respawn)
+        ///Here will be the Position checked, whether is vaild or not, by calling the
+        ///Methode IsValid()
+        ///If the Ship across the screen's borders then the ship will be replaced
+        ///in the middle of the screen (respawn)
         public void Move( Vector2 direction)
         {
             if (IsValid())

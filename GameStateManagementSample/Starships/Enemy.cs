@@ -54,11 +54,13 @@ namespace GameStateManagement.Starships
         public Vector2 Origin;
         public MovementMode MovementMode;
 
+        public List<Laser> bulletList;
         #endregion Fields
 
         #region Inialization
 
-        public Enemy(Vector2 position, int maxShield, int weaponPower, float linearVelocity, Vector2 end, Vector2 playerPosition, double keepDistanceToPlayer, MovementMode movementMode) 
+        public Enemy(Vector2 position, int maxShield, int weaponPower, float linearVelocity,
+            Vector2 end, Vector2 playerPosition, double keepDistanceToPlayer, MovementMode movementMode) 
         {
             this.Position = position;
             this.maxShield = maxShield;

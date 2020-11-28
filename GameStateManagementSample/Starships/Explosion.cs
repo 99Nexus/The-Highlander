@@ -34,10 +34,9 @@ namespace GameStateManagement.Starships
         public Rectangle sourceRect;
         public bool isVisible;
 
-        public Explosion(Texture2D newTexture, Vector2 newPosition)
+        public Explosion(Vector2 newPosition)
         {
             position = newPosition;
-            texture = newTexture;
             timer = 0f;
             interval = 30f;
             currentFrame = 0;
@@ -48,7 +47,7 @@ namespace GameStateManagement.Starships
 
         public void LoadContent(ContentManager Content)
         {
-
+            texture = Content.Load<Texture2D>(@"explosion");
         }
 
         public void Update(GameTime gameTime)

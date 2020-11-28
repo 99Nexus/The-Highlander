@@ -54,9 +54,7 @@ namespace GameStateManagement
         private SpriteFont einFont;
         private float pauseAlpha;
 
-
-        //test Explosion
-        private Texture2D theExplosion;
+        Level lvl;
 
         // they have a methode and list maybe helpful for later
         //private List<Enemy> enemyList = new List<Enemy>();
@@ -85,30 +83,32 @@ namespace GameStateManagement
 
             scoreManager = ScoreManager.Load();
 
-            // this is for testing the position of the player
+            //for testing
             einFont = content.Load<SpriteFont>("einFont");
+            lvl = new Level(content.Load<Texture2D>(@"map"));
 
-            // Objects
+            // Objects declaration
             highlander = new TheHighlander(einFont, "Player1", 0)
             {
-                Position = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2, ScreenManager.GraphicsDevice.Viewport.Height / 2),
+                /*Position = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2,
+                 ScreenManager.GraphicsDevice.Viewport.Height / 2),*/
+                Position = new Vector2(lvl.LevelBackground.Width / 2 , lvl.LevelBackground.Height-100),
             };
+            healthBar = new HealthBar(highlander);
+            highscore = new Highscore(highlander);
 
+            enemy = new Enemy(new Vector2(400, 500), 2, 2, 2f, new Vector2(200, 400),
+                highlander.Position, 20.0, MovementMode.VERTICAL);
+
+            explosion = new Explosion(new Vector2(enemy.Position.X, enemy.Position.Y));
+            // Load content calls
             highlander.LoadContent(content);
-
-            enemy = new Enemy(new Vector2(400, 500), 2, 2, 2f, new Vector2(200, 400), highlander.Position, 20.0, MovementMode.VERTICAL);
+            healthBar.LoadContent(content);
+            highscore.LoadContent(content);
+            explosion.LoadContent(content);
             enemy.LoadContent(content);
 
-            healthBar = new HealthBar(highlander);
-            healthBar.LoadContent(content);
-
-            highscore = new Highscore(highlander);
-            highscore.LoadContent(content);
-
-            theExplosion = content.Load<Texture2D>(@"explosion");
-            explosion = new Explosion(theExplosion, new Vector2(enemy.Position.X, enemy.Position.Y));
-            scoreManager = ScoreManager.Load();
-
+            // Camera declaration
             camera = new Camera(this);
             cameraBar = new Camera(this);
             cameraHighscore = new Camera(this);
@@ -135,7 +135,7 @@ namespace GameStateManagement
         #endregion Initialization
 
 
-        #region Loading Enemy
+        #region Loading Enemy & Manage Explosions
         /*
         public void LoadEnemies()
         {
@@ -191,101 +191,16 @@ namespace GameStateManagement
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
-            /*
-            foreach(Enemy e in enemyList)
-            {
-                if (e.enemyBox.Intersects(highlander.highlanderBox))
-                {
-                    e.isVisible = false;
-                }
-                e.Update(gameTime);
-            }
-            */
-            if (highlander.highlanderBox.Intersects(enemy.enemyBox))
-            {
-                /*
-                if (--highlander.Shield == 0)
-                {
-                    highlander.isVisible = false;
-                }
+            Collison(gameTime);
 
-
-                if (--enemy.AsctualShield == 0) { 
-                    enemy.isVisible = false;
-                }
-                */
-                enemy.isVisible = false;
-            }
-
-            if (enemy.isVisible) {
-                enemy.Update(gameTime,highlander.Position);
-            }
-            else
-            {
-                explosion.Update(gameTime);
-            }
-
-            highlander.Update(gameTime);
-            healthBar.Update(gameTime);
+            //highlander.Update(gameTime);
+            //healthBar.Update(gameTime);
 
             camera.Follow(highlander);
             cameraBar.Follow(healthBar);
             cameraHighscore.Follow(highscore);
 
             base.Update(gameTime, otherScreenHasFocus, false);
-            
-            /*
-            // Gradually fade in or out depending on whether we are covered by the pause screen.
-            if (coveredByOtherScreen)
-                pauseAlpha = Math.Min(pauseAlpha + 1f / 32, 1);
-            else
-                pauseAlpha = Math.Max(pauseAlpha - 1f / 32, 0);
-            */
-           // if (IsActive)
-            //{
-                // Apply some random jitter to make the enemy move around.
-                //const float randomization = 10;
-
-               // enemyPosition.X += (float)(random.NextDouble() - 0.5) * randomization;
-                //enemyPosition.Y += (float)(random.NextDouble() - 0.5) * randomization;
-
-                // Apply a stabilizing force to stop the enemy moving off the screen.
-
-                //ich hab das aus kommentiert
-                /*
-                  Vector2 targetPosition = new Vector2(
-                    ScreenManager.GraphicsDevice.Viewport.Width / 2 - theHighlander[0].Width / 2,
-                    200);
-                */
-
-                //Vector2 targetPosition = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2 - theHighlander[0].Height /2);
-
-                //enemyPosition = Vector2.Lerp(enemyPosition, targetPosition, 0.05f);
-
-                /*
-                 //TODO
-                //amer
-                //when tha game end save the Score and Player name in the list
-                // this 2 lines we should put them when the game end
-                //which is till now unclear when the game will end
-                scoreManager.Add(new Score(highlander.Player.Playername, highlander.Player.Value));
-                ScoreManager.Save(scoreManager);
-                
-                //List load
-                //this will use it in the next menu option
-                
-                scoreManager = ScoreManager.Load();
-
-                spriteBatch.DrawString(score,"HighScore:\n" +
-                string.Join("\n", scoreManager.Highscore.Select(c => c.Playername + ": "+ c.Value).ToArray()),
-                new Vector2(GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width /2, GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Hight /2 ),
-                Color.White);
-                */
-
-
-                // TODO: this game isn't very fun! You could probably improve
-                // it by inserting something more interesting in this space :-)
-           // }
         }
 
         /// <summary>
@@ -303,10 +218,10 @@ namespace GameStateManagement
             KeyboardState keyboardState = input.CurrentKeyboardStates[playerIndex];
             GamePadState gamePadState = input.CurrentGamePadStates[playerIndex];
 
-            // The game pauses either if the user presses the pause button, or if
-            // they unplug the active gamepad. This requires us to keep track of
-            // whether a gamepad was ever plugged in, because we don't want to pause
-            // on PC if they are playing with a keyboard and have no gamepad at all!
+            /// The game pauses either if the user presses the pause button, or if
+            /// they unplug the active gamepad. This requires us to keep track of
+            /// whether a gamepad was ever plugged in, because we don't want to pause
+            /// on PC if they are playing with a keyboard and have no gamepad at all!
             bool gamePadDisconnected = !gamePadState.IsConnected &&
                                        input.GamePadWasConnected[playerIndex];
 
@@ -326,23 +241,31 @@ namespace GameStateManagement
         public override void Draw(GameTime gameTime)
         {
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
-                                               Color.CornflowerBlue, 0, 0);
+                                  Color.CornflowerBlue, 0, 0);
+            
             ScreenManager screenManager = this.ScreenManager;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
-            SpriteBatch _spriteBatch = ScreenManager.SpriteBatch;
+
+       
 
 
             spriteBatch.Begin(transformMatrix: camera.Transform);
 
-            if (enemy.isVisible) { 
-                enemy.Draw(gameTime, _spriteBatch);
+            lvl.Draw(spriteBatch);
+
+            if (enemy.isVisible)
+            {
+                enemy.Draw(gameTime, spriteBatch);
             }
+            
             explosion.Draw(spriteBatch);
-
+            
+            
+            
             highlander.Draw(gameTime, spriteBatch);
-
+            
+            
             spriteBatch.End();
-
 
             spriteBatch.Begin(transformMatrix: cameraBar.Transform);
 
@@ -364,8 +287,42 @@ namespace GameStateManagement
 
                 ScreenManager.FadeBackBufferToBlack(alpha);
             }
+
         }
 
-        #endregion Update and Draw
+        protected void Collison(GameTime gameTime)
+        {
+            if (highlander.highlanderBox.Intersects(enemy.enemyBox))
+            {
+                if (--enemy.AsctualShield <= 0)
+                {
+                    enemy.isVisible = false;
+                    explosion.Update(gameTime);
+                }
+                enemy.UpdateActualShieldValue();
+
+                if (--highlander.shield <= 0)
+                {
+                    highlander.isVisible = false;
+                    explosion.Update(gameTime);
+                }
+                highlander.Update(gameTime);
+            }
+            else
+            {
+                if (highlander.isVisible)
+                {
+                    healthBar.Update(gameTime);
+                    highlander.Update(gameTime);
+                }
+
+                if (enemy.isVisible)
+                {
+                    enemy.Update(gameTime, highlander.Position);
+                }
+            }
+
+            #endregion Update and Draw
+        }
     }
 }
