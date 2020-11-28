@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace GameStateManagement.Starships
@@ -27,6 +28,12 @@ namespace GameStateManagement.Starships
         public int shield = 10;
         public int score;
 
+        // Shoot
+        public Vector2 speed;
+        public Texture2D laserTexture;
+        public float laserDelay;
+        public List<Laser> laserList;
+
         // Movement attributes
         private float rotation;
         public float rotationVelocity = 3f;
@@ -45,7 +52,9 @@ namespace GameStateManagement.Starships
 
         public TheHighlander(SpriteFont sprite, string playerName, int playerScore)
         {
+            laserList = new List<Laser>();
             this.sprite = sprite;
+            laserDelay = 20;
             Player = new Score(playerName, playerScore);
             this.isVisible = true;
         }
@@ -58,6 +67,8 @@ namespace GameStateManagement.Starships
             texture[2] = content.Load<Texture2D>(@"graphics\starships\the_highlander_3");
 
             Origin = new Vector2(texture[spriteCounter].Width / 2, texture[spriteCounter].Height / 2);
+
+            laserTexture = content.Load<Texture2D>(@"graphics\game_objects\theHighlanderLaser");
             
         }
 
@@ -117,6 +128,13 @@ namespace GameStateManagement.Starships
                 Player.Value++;
             }
 
+            //shoot
+            if(Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                Shoot();
+
+            }
+            updateLaser();
         }
 
         ///Here will be the Position checked, whether is vaild or not, by calling the
@@ -149,8 +167,65 @@ namespace GameStateManagement.Starships
             spriteBatch.Draw(texture[spriteCounter], Position, null, Color.White, rotation, Origin, 1, SpriteEffects.None, 0);
             spriteBatch.DrawString(sprite, new string("Y " + Position.Y.ToString()), new Vector2(30, 100), Color.Black);
             spriteBatch.DrawString(sprite, new string("X " + Position.X.ToString()), new Vector2(30, 130), Color.Black);
+
+            //shoot
+            foreach(Laser l in laserList)
+            {
+                l.Draw(spriteBatch);
+            }
         }
 
         #endregion Update and Draw
+
+        #region Shoot
+        public void Shoot()
+        {
+            if(laserDelay >= 0)
+            {
+                laserDelay--;
+            }
+
+            if(laserDelay <= 0)
+            {
+                Laser newLaser = new Laser(laserTexture);
+                newLaser.position = new Vector2(Position.X + 30 - newLaser.texture.Width / 2, Position.Y + 30);
+
+                newLaser.isVisible = true;
+
+                if(laserList.Count() < 20)
+                {
+                    laserList.Add(newLaser);
+                }
+            }
+
+            if(laserDelay == 0)
+            {
+                laserDelay = 20;
+            }
+        }
+
+        public void updateLaser()
+        {
+            foreach(Laser l in laserList)
+            {
+                l.position.Y = l.position.Y - l.speed;
+
+                if(l.position.Y <= 0)
+                {
+                    l.isVisible = false;
+                }
+
+                for(int i = 0; i < laserList.Count; i++)
+                {
+                    if(!laserList[i].isVisible)
+                    {
+                        laserList.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+        }
+
+        #endregion Shoot
     }
 }
