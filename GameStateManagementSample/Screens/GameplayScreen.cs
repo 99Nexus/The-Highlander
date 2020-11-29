@@ -258,11 +258,10 @@ namespace GameStateManagement
                 enemy.Draw(gameTime, spriteBatch);
             }
             
-            explosion.Draw(spriteBatch);
-            
-            
-            
             highlander.Draw(gameTime, spriteBatch);
+            
+            
+            explosion.Draw(spriteBatch);
             
             
             spriteBatch.End();

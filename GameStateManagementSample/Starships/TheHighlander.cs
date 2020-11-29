@@ -40,12 +40,14 @@ namespace GameStateManagement.Starships
         public Vector2 Origin;
         public Rectangle Rectangle;
         public Vector2 Position;
+        public Vector2 direction;
 
         //amer, liber das lassen für testen
         private SpriteFont sprite;
         //public int PlayerScore { get; set; }
 
-    
+
+
         #endregion Fields
 
         #region Initialization
@@ -54,9 +56,10 @@ namespace GameStateManagement.Starships
         {
             laserList = new List<Laser>();
             this.sprite = sprite;
-            laserDelay = 20;
+            laserDelay = 10;
             Player = new Score(playerName, playerScore);
             this.isVisible = true;
+
         }
 
         public void LoadContent(ContentManager content)
@@ -103,16 +106,17 @@ namespace GameStateManagement.Starships
 
         public void HandleInput()
         {            
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            if (Keyboard.GetState().IsKeyDown(Keys.A)) { 
                 rotation -= MathHelper.ToRadians(rotationVelocity);
-            else if (Keyboard.GetState().IsKeyDown(Keys.D))
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
                 rotation += MathHelper.ToRadians(rotationVelocity);
 
-            Vector2 direction = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - rotation), -(float)Math.Sin(MathHelper.ToRadians(90) - rotation));
+            direction = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - rotation), -(float)Math.Sin(MathHelper.ToRadians(90) - rotation));
 
 
-            //First check whether the screen in Fullscreen or Windows size mode is
-            //then if the Player click "w" the methode Mover() will be called
+            ///First check whether the screen in Fullscreen or Windows size mode is
+            ///then if the Player click "w" the methode Mover() will be called
             if (!GameStateManagementGame.Newgame.Graphics.IsFullScreen) { 
                 if (Keyboard.GetState().IsKeyDown(Keys.W)) {
                     // Move(direction);
@@ -132,7 +136,6 @@ namespace GameStateManagement.Starships
             if(Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 Shoot();
-
             }
             updateLaser();
         }
@@ -164,15 +167,16 @@ namespace GameStateManagement.Starships
             else
                 spriteCounter = 0;
 
-            spriteBatch.Draw(texture[spriteCounter], Position, null, Color.White, rotation, Origin, 1, SpriteEffects.None, 0);
-            spriteBatch.DrawString(sprite, new string("Y " + Position.Y.ToString()), new Vector2(30, 100), Color.Black);
-            spriteBatch.DrawString(sprite, new string("X " + Position.X.ToString()), new Vector2(30, 130), Color.Black);
-
             //shoot
             foreach(Laser l in laserList)
             {
                 l.Draw(spriteBatch);
             }
+
+            spriteBatch.Draw(texture[spriteCounter], Position, null, Color.White, rotation, Origin, 1, SpriteEffects.None, 0);
+            spriteBatch.DrawString(sprite, new string("Y " + Position.Y.ToString()), new Vector2(30, 100), Color.Black);
+            spriteBatch.DrawString(sprite, new string("X " + Position.X.ToString()), new Vector2(30, 130), Color.Black);
+
         }
 
         #endregion Update and Draw
@@ -188,11 +192,12 @@ namespace GameStateManagement.Starships
             if(laserDelay <= 0)
             {
                 Laser newLaser = new Laser(laserTexture);
-                newLaser.position = new Vector2(Position.X + 30 - newLaser.texture.Width / 2, Position.Y + 30);
 
+                newLaser.position = new Vector2(Position.X - (int)rotation - (newLaser.texture.Width / 2),
+                                                Position.Y + 27 - (texture[0].Height / 2) ) ;
                 newLaser.isVisible = true;
 
-                if(laserList.Count() < 20)
+                if(laserList.Count() < 1000000000)
                 {
                     laserList.Add(newLaser);
                 }
@@ -200,22 +205,23 @@ namespace GameStateManagement.Starships
 
             if(laserDelay == 0)
             {
-                laserDelay = 20;
+                laserDelay = 10;
             }
         }
 
         public void updateLaser()
         {
-            foreach(Laser l in laserList)
+            foreach(Laser l in laserList.ToList())
             {
-                l.position.Y = l.position.Y - l.speed;
-
-                if(l.position.Y <= 0)
+                if (l.steps++ < 40) { 
+                    l.position += direction * (l.speed);
+                }
+                else
                 {
                     l.isVisible = false;
                 }
 
-                for(int i = 0; i < laserList.Count; i++)
+                for (int i = 0; i < laserList.Count; i++)
                 {
                     if(!laserList[i].isVisible)
                     {
