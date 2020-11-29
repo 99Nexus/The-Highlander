@@ -56,7 +56,7 @@ namespace GameStateManagement.Starships
         {
             laserList = new List<Laser>();
             this.sprite = sprite;
-            laserDelay = 10;
+            laserDelay = 30;
             Player = new Score(playerName, playerScore);
             this.isVisible = true;
 
@@ -72,7 +72,6 @@ namespace GameStateManagement.Starships
             Origin = new Vector2(texture[spriteCounter].Width / 2, texture[spriteCounter].Height / 2);
 
             laserTexture = content.Load<Texture2D>(@"graphics\game_objects\theHighlanderLaser");
-            
         }
 
         #endregion Initialization
@@ -82,8 +81,7 @@ namespace GameStateManagement.Starships
         public void Update(GameTime gameTime)
         {
            highlanderBox = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
-           //wozu ist das Rectangle?
-           //Rectangle = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
+           Rectangle = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
         }
 
         //This Methode will check the Position, whether is vaild or not  
@@ -105,7 +103,7 @@ namespace GameStateManagement.Starships
 
 
         public void HandleInput()
-        {            
+        {
             if (Keyboard.GetState().IsKeyDown(Keys.A)) { 
                 rotation -= MathHelper.ToRadians(rotationVelocity);
             }
@@ -169,9 +167,7 @@ namespace GameStateManagement.Starships
 
             //shoot
             foreach(Laser l in laserList)
-            {
                 l.Draw(spriteBatch);
-            }
 
             spriteBatch.Draw(texture[spriteCounter], Position, null, Color.White, rotation, Origin, 1, SpriteEffects.None, 0);
             spriteBatch.DrawString(sprite, new string("Y " + Position.Y.ToString()), new Vector2(30, 100), Color.Black);
@@ -185,9 +181,7 @@ namespace GameStateManagement.Starships
         public void Shoot()
         {
             if(laserDelay >= 0)
-            {
                 laserDelay--;
-            }
 
             if(laserDelay <= 0)
             {
@@ -195,31 +189,28 @@ namespace GameStateManagement.Starships
 
                 newLaser.position = new Vector2(Position.X - (int)rotation - (newLaser.texture.Width / 2),
                                                 Position.Y + 27 - (texture[0].Height / 2) ) ;
+                newLaser.Origin = new Vector2(laserTexture.Width / 2, laserTexture.Height / 2);
+                newLaser.rotation = rotation;
+                newLaser.direction = direction;
                 newLaser.isVisible = true;
 
                 if(laserList.Count() < 1000000000)
-                {
                     laserList.Add(newLaser);
-                }
             }
 
             if(laserDelay == 0)
-            {
-                laserDelay = 10;
-            }
+                laserDelay = 30;
         }
 
         public void updateLaser()
         {
             foreach(Laser l in laserList.ToList())
             {
-                if (l.steps++ < 40) { 
-                    l.position += direction * (l.speed);
+                if (l.steps++ < 80) { 
+                    l.position += l.direction * (l.speed);
                 }
                 else
-                {
                     l.isVisible = false;
-                }
 
                 for (int i = 0; i < laserList.Count; i++)
                 {

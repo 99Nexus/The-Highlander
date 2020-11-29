@@ -12,11 +12,14 @@ public class Laser
 {
     public Rectangle boundingbox;
     public Texture2D texture;
-    public Vector2 origin;
+    public Vector2 Origin;
     public Vector2 position;
+    public Vector2 direction;
+    public float rotation;
     public bool isVisible;
     public float speed;
     public int steps;
+
     public Laser(Texture2D newTexture)
     {
         speed = 10;
@@ -27,6 +30,6 @@ public class Laser
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(texture, position, Color.White);
+        spriteBatch.Draw(texture, position, null, Color.White, rotation, Origin, 1, SpriteEffects.None, 0);
     }
 }
