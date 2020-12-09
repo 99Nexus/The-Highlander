@@ -26,13 +26,13 @@ using GameStateManagement.GameObjects;
 
 namespace GameStateManagement.GameObjects
 {
-    public class Level
+    public class Leveltest
     {
         public Texture2D LevelBackground { get; set; }
         public Vector2 backgroundPosition;
         
         //this will make the change of the background more flexible
-        public Level(Texture2D texture)
+        public Leveltest(Texture2D texture)
         {
             LevelBackground = texture;
             backgroundPosition = new Vector2(0, 0);

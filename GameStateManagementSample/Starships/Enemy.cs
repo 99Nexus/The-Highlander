@@ -19,7 +19,7 @@ namespace GameStateManagement.Starships
         PATROL
     }
 
-    class Enemy
+    public class Enemy
     {
         // Graphical attributes
         private Texture2D[] texture;
