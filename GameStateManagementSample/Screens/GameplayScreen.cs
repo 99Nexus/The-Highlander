@@ -112,7 +112,7 @@ namespace GameStateManagement
             healthBar = new HealthBar(highlander);
             highscore = new Highscore(highlander);
 
-            enemy = new Enemy(new Vector2((lvl.LevelBackground.Width / 2)-150, lvl.LevelBackground.Height - 100), 2, 2, 2f, new Vector2((lvl.LevelBackground.Width / 2) - 150, lvl.LevelBackground.Height - 200),
+            enemy = new Enemy(new Vector2(highlander.Position.X+100, highlander.Position.Y+100), 2, 2, 2f, new Vector2(highlander.Position.X + 100, highlander.Position.Y + 300),
                 highlander.Position, 20.0, MovementMode.VERTICAL);
 
             enemyList.Add(enemy);
