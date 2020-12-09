@@ -26,7 +26,6 @@ namespace GameStateManagement.Starships
         private SpriteFont spriteFont;
         private string shieldString;
         private Vector2 textureSize;
-        public Rectangle enemyBox;
         public bool isVisible;
         public int spriteCounter = 0;
 
@@ -35,6 +34,7 @@ namespace GameStateManagement.Starships
         public Texture2D laserTexture;
         public float laserDelay;
         public List<Laser> laserList;
+        public Laser actualLaser;
         float rotationLaser;
 
         // State attributes
@@ -42,6 +42,8 @@ namespace GameStateManagement.Starships
         private int maxShield;
         private int weaponPower;
         private float linearVelocity;
+        public int damageBuffer;
+        public int maxDamageBuffer;
 
         // Movement attributes
         private Vector2 position;
@@ -53,6 +55,7 @@ namespace GameStateManagement.Starships
         public Vector2 end;
         public Vector2 playerPosition;
         public Vector2 Direction;
+        public Rectangle Rectangle;
         public MovementMode movementMode;
 
         // Properties
@@ -65,7 +68,6 @@ namespace GameStateManagement.Starships
         public Vector2 Origin;
         public MovementMode MovementMode;
 
-        public List<Laser> bulletList;
         #endregion Fields
 
         #region Inialization
@@ -85,6 +87,8 @@ namespace GameStateManagement.Starships
             this.keepDistanceToPlayer = keepDistanceToPlayer;
             this.movementMode = movementMode;
             this.isVisible = true;
+            damageBuffer = 0;
+            maxDamageBuffer = 20;
 
             laserList = new List<Laser>();
             laserDelay = 50;
@@ -111,11 +115,6 @@ namespace GameStateManagement.Starships
         #endregion Initialization
 
         #region Logic
-
-        public void ShootOnPlayer()
-        {
-
-        }
 
         public void MoveHorizontally()
         {
@@ -321,7 +320,6 @@ namespace GameStateManagement.Starships
             {
                 TurnShipToPlayer();
                 Shoot();
-                //UpdateLaser();
             }
         }
 
@@ -356,8 +354,14 @@ namespace GameStateManagement.Starships
 
         public void UpdateActualShieldValue()
         {
-            // Update the shield string
-            shieldString = actualShield + " | " + maxShield;
+            // Shield Value cannot be negative
+            if(actualShield > 0)
+            {
+                actualShield--;
+
+                // Update the shield string
+                shieldString = actualShield + " | " + maxShield;
+            }
         }
 
         public Vector2 CalculateShieldPosition()
@@ -399,15 +403,17 @@ namespace GameStateManagement.Starships
             {
                 Laser newLaser = new Laser(laserTexture);
 
-                newLaser.position = new Vector2(Position.X - (int)Rotation - (newLaser.texture.Width / 2),
-                                                Position.Y + 27 - (texture[0].Height / 2));
+                newLaser.Position = new Vector2(Position.X, Position.Y);
                 newLaser.Origin = new Vector2(laserTexture.Width / 2, laserTexture.Height / 2);
                 newLaser.rotation = rotationLaser;
                 newLaser.direction = Direction;
                 newLaser.isVisible = true;
 
                 if (laserList.Count() < 1000000000)
+                {
                     laserList.Add(newLaser);
+                    newLaser.id = laserList.Count();
+                }
             }
 
             if (laserDelay == 0)
@@ -419,7 +425,7 @@ namespace GameStateManagement.Starships
             foreach (Laser l in laserList.ToList())
             {
                 if (l.steps++ < 80)
-                    l.position += l.direction * (l.speed);
+                    l.Position += l.direction * (l.speed);
                 else
                     l.isVisible = false;
 
@@ -440,19 +446,27 @@ namespace GameStateManagement.Starships
 
         public void Update(GameTime gameTime, Vector2 playerPosition)
         {
-            enemyBox = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
+            Rectangle = new Rectangle((int)Position.X - (texture[spriteCounter].Width / 2), 
+                                      (int)Position.Y - (texture[spriteCounter].Height / 2), 
+                                      texture[spriteCounter].Width, 
+                                      texture[spriteCounter].Height);
 
             // Update player position for movement and action
             this.playerPosition = playerPosition;
 
-            //Update the shield value after hit
-            UpdateActualShieldValue();
-
             // Update laser position
             UpdateLaser();
 
+            foreach (Laser l in laserList.ToList())
+            {
+                l.Update(gameTime);
+                actualLaser = l;
+            }
+
             // Update position and movement
             Move();
+
+            damageBuffer++;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

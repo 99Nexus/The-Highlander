@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GameStateManagement.Screens;
 
 namespace GameStateManagement.Starships
 {
@@ -42,6 +43,9 @@ namespace GameStateManagement.Starships
         public Vector2 Position;
         public Vector2 direction;
 
+        // Other attributes
+        GameplayScreen gameScreen;
+
         //amer, liber das lassen für testen
         private SpriteFont sprite;
         //public int PlayerScore { get; set; }
@@ -52,14 +56,14 @@ namespace GameStateManagement.Starships
 
         #region Initialization
 
-        public TheHighlander(SpriteFont sprite, string playerName, int playerScore)
+        public TheHighlander(SpriteFont sprite, string playerName, int playerScore, GameScreen gameScreen)
         {
             laserList = new List<Laser>();
             this.sprite = sprite;
-            laserDelay = 30;
+            laserDelay = 20;
             Player = new Score(playerName, playerScore);
             this.isVisible = true;
-
+            this.gameScreen = (GameplayScreen)gameScreen;
         }
 
         public void LoadContent(ContentManager content)
@@ -76,13 +80,7 @@ namespace GameStateManagement.Starships
 
         #endregion Initialization
 
-        #region Update and Draw
-
-        public void Update(GameTime gameTime)
-        {
-           highlanderBox = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
-           Rectangle = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
-        }
+        #region Logic and Input
 
         //This Methode will check the Position, whether is vaild or not  
         public bool IsValid()
@@ -157,6 +155,79 @@ namespace GameStateManagement.Starships
             }
         }
 
+        public void DecreaseShieldValue()
+        {
+            // Call game over screen if player has no shield
+            if (shield == 1)
+                gameScreen.CallGameOverScreen();
+            else
+                shield--;
+        }
+
+        #endregion Logic and Input
+
+        #region Shoot
+        public void Shoot()
+        {
+            if (laserDelay >= 0)
+                laserDelay--;
+
+            if (laserDelay <= 0)
+            {
+                Laser newLaser = new Laser(laserTexture);
+
+                newLaser.Position = new Vector2(Position.X, Position.Y);
+                newLaser.Origin = new Vector2(laserTexture.Width / 2, laserTexture.Height / 2);
+                newLaser.rotation = rotation;
+                newLaser.direction = direction;
+                newLaser.isVisible = true;
+
+                if (laserList.Count() < 1000000000)
+                    laserList.Add(newLaser);
+            }
+
+            if (laserDelay == 0)
+                laserDelay = 20;
+        }
+
+        public void updateLaser()
+        {
+            foreach (Laser l in laserList.ToList())
+            {
+                if (l.steps++ < 80)
+                {
+                    l.Position += l.direction * (l.speed);
+                }
+                else
+                    l.isVisible = false;
+
+                for (int i = 0; i < laserList.Count; i++)
+                {
+                    if (!laserList[i].isVisible)
+                    {
+                        laserList.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+        }
+
+        #endregion Shoot
+
+        #region Update and Draw
+
+        public void Update(GameTime gameTime)
+        {
+            highlanderBox = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
+            Rectangle = new Rectangle((int)(Position.X - (texture[spriteCounter].Width / 2)), 
+                                      (int)Position.Y - (texture[spriteCounter].Height / 2), 
+                                      texture[spriteCounter].Width, 
+                                      texture[spriteCounter].Height);
+
+            foreach (Laser l in laserList.ToList())
+                l.Update(gameTime);
+        }
+
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             // Count up to change sprite
@@ -177,52 +248,5 @@ namespace GameStateManagement.Starships
 
         #endregion Update and Draw
 
-        #region Shoot
-        public void Shoot()
-        {
-            if(laserDelay >= 0)
-                laserDelay--;
-
-            if(laserDelay <= 0)
-            {
-                Laser newLaser = new Laser(laserTexture);
-
-                newLaser.position = new Vector2(Position.X - (int)rotation - (newLaser.texture.Width / 2),
-                                                Position.Y + 27 - (texture[0].Height / 2) ) ;
-                newLaser.Origin = new Vector2(laserTexture.Width / 2, laserTexture.Height / 2);
-                newLaser.rotation = rotation;
-                newLaser.direction = direction;
-                newLaser.isVisible = true;
-
-                if(laserList.Count() < 1000000000)
-                    laserList.Add(newLaser);
-            }
-
-            if(laserDelay == 0)
-                laserDelay = 30;
-        }
-
-        public void updateLaser()
-        {
-            foreach(Laser l in laserList.ToList())
-            {
-                if (l.steps++ < 80) { 
-                    l.position += l.direction * (l.speed);
-                }
-                else
-                    l.isVisible = false;
-
-                for (int i = 0; i < laserList.Count; i++)
-                {
-                    if(!laserList[i].isVisible)
-                    {
-                        laserList.RemoveAt(i);
-                        i--;
-                    }
-                }
-            }
-        }
-
-        #endregion Shoot
     }
 }

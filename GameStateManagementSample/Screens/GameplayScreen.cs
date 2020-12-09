@@ -21,6 +21,7 @@ using System.Threading;
 using GameStateManagement.Screens;
 using System.Collections.Generic;
 using GameStateManagement.GameObjects;
+using GameStateManagement.GameManager;
 
 #endregion Using Statements
 
@@ -38,6 +39,7 @@ namespace GameStateManagement
         // Management objects
         private ContentManager content;
         private ScoreManager scoreManager;
+        private CollisionManager collisionManager;
 
         // Game Objects
         private TheHighlander highlander;
@@ -48,6 +50,7 @@ namespace GameStateManagement
         private Camera cameraBar;
         private Camera cameraHighscore;
         private Explosion explosion;
+        private List<Enemy> enemyList;
 
         // Other objects
         private Random random = new Random();
@@ -87,8 +90,10 @@ namespace GameStateManagement
             einFont = content.Load<SpriteFont>("einFont");
             lvl = new Level(content.Load<Texture2D>(@"map"));
 
+            enemyList = new List<Enemy>();
+
             // Objects declaration
-            highlander = new TheHighlander(einFont, "Player1", 0)
+            highlander = new TheHighlander(einFont, "Player1", 0, this)
             {
                 /*Position = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2,
                  ScreenManager.GraphicsDevice.Viewport.Height / 2),*/
@@ -97,8 +102,10 @@ namespace GameStateManagement
             healthBar = new HealthBar(highlander);
             highscore = new Highscore(highlander);
 
-            enemy = new Enemy(new Vector2(400, 500), 2, 2, 2f, new Vector2(200, 400),
+            enemy = new Enemy(new Vector2((lvl.LevelBackground.Width / 2)-150, lvl.LevelBackground.Height - 100), 2, 2, 2f, new Vector2((lvl.LevelBackground.Width / 2) - 150, lvl.LevelBackground.Height - 200),
                 highlander.Position, 20.0, MovementMode.VERTICAL);
+
+            enemyList.Add(enemy);
 
             explosion = new Explosion(new Vector2(enemy.Position.X, enemy.Position.Y));
             // Load content calls
@@ -112,6 +119,9 @@ namespace GameStateManagement
             camera = new Camera(this);
             cameraBar = new Camera(this);
             cameraHighscore = new Camera(this);
+
+            // Manager
+            collisionManager = new CollisionManager();
 
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
@@ -191,14 +201,17 @@ namespace GameStateManagement
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
-            Collison(gameTime);
-
-            //highlander.Update(gameTime);
-            //healthBar.Update(gameTime);
+            highlander.Update(gameTime);
+            healthBar.Update(gameTime);
+            enemy.Update(gameTime, highlander.Position);
 
             camera.Follow(highlander);
             cameraBar.Follow(healthBar);
             cameraHighscore.Follow(highscore);
+
+            collisionManager.CollisionBetweenPlayerAndEnemy(highlander, enemyList);
+            collisionManager.CollisionBetweenPlayerAndLaser(highlander, enemyList);
+            collisionManager.CollissionBetweenEnemyAndLaser(highlander, enemyList);
 
             base.Update(gameTime, otherScreenHasFocus, false);
         }
@@ -233,6 +246,11 @@ namespace GameStateManagement
             {
                 highlander.HandleInput();
             }
+        }
+
+        public void CallGameOverScreen()
+        {
+            ScreenManager.AddScreen(new GameOverScreen(), ControllingPlayer);
         }
 
         /// <summary>
@@ -289,39 +307,6 @@ namespace GameStateManagement
 
         }
 
-        protected void Collison(GameTime gameTime)
-        {
-            if (highlander.highlanderBox.Intersects(enemy.enemyBox))
-            {
-                if (--enemy.AsctualShield <= 0)
-                {
-                    enemy.isVisible = false;
-                    explosion.Update(gameTime);
-                }
-                enemy.UpdateActualShieldValue();
-
-                if (--highlander.shield <= 0)
-                {
-                    highlander.isVisible = false;
-                    explosion.Update(gameTime);
-                }
-                highlander.Update(gameTime);
-            }
-            else
-            {
-                if (highlander.isVisible)
-                {
-                    healthBar.Update(gameTime);
-                    highlander.Update(gameTime);
-                }
-
-                if (enemy.isVisible)
-                {
-                    enemy.Update(gameTime, highlander.Position);
-                }
-            }
-
-            #endregion Update and Draw
-        }
+        #endregion Update and Draw
     }
 }
