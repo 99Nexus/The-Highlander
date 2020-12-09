@@ -81,6 +81,7 @@ namespace GameStateManagement.Starships
         public void Update(GameTime gameTime)
         {
            highlanderBox = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
+           //amer, wozu 2 Rectangle????
            Rectangle = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
         }
 

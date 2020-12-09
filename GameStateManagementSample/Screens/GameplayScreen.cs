@@ -21,6 +21,7 @@ using System.Threading;
 using GameStateManagement.Screens;
 using System.Collections.Generic;
 using GameStateManagement.GameObjects;
+using GameStateManagement.MapClasses;
 
 #endregion Using Statements
 
@@ -54,11 +55,15 @@ namespace GameStateManagement
         private SpriteFont einFont;
         private float pauseAlpha;
 
-        Level lvl;
+        // Map objects
+        Leveltest lvl;
+        MainMap mainMap;
+        Map map;
+        Level level;
 
-        // they have a methode and list maybe helpful for later
-        //private List<Enemy> enemyList = new List<Enemy>();
-        //private List<Explosion> explosionList = new List<Explosion>();
+        ///those have a methode and list maybe helpful for later
+        ///private List<Enemy> enemyList = new List<Enemy>();
+        ///private List<Explosion> explosionList = new List<Explosion>();
 
         #endregion Fields
 
@@ -85,14 +90,19 @@ namespace GameStateManagement
 
             //for testing
             einFont = content.Load<SpriteFont>("einFont");
-            lvl = new Level(content.Load<Texture2D>(@"map"));
+            lvl = new Leveltest(content.Load<Texture2D>(@"map"));
+            map = new Map(content.Load<Texture2D>(@"mapGraphics\map1"), new Vector2(0, 0), null);
+            mainMap = new MainMap();
+            mainMap.maps[0] = map;
+            
+            mainMap.LoadContent(content);
 
             // Objects declaration
             highlander = new TheHighlander(einFont, "Player1", 0)
             {
                 /*Position = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2,
                  ScreenManager.GraphicsDevice.Viewport.Height / 2),*/
-                Position = new Vector2(lvl.LevelBackground.Width / 2 , lvl.LevelBackground.Height-100),
+                Position = new Vector2(250 , 100),
             };
             healthBar = new HealthBar(highlander);
             highscore = new Highscore(highlander);
@@ -101,6 +111,10 @@ namespace GameStateManagement
                 highlander.Position, 20.0, MovementMode.VERTICAL);
 
             explosion = new Explosion(new Vector2(enemy.Position.X, enemy.Position.Y));
+
+
+
+
             // Load content calls
             highlander.LoadContent(content);
             healthBar.LoadContent(content);
@@ -241,7 +255,7 @@ namespace GameStateManagement
         public override void Draw(GameTime gameTime)
         {
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
-                                  Color.CornflowerBlue, 0, 0);
+                                  Color.Black, 0, 0);
             
             ScreenManager screenManager = this.ScreenManager;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
@@ -251,7 +265,9 @@ namespace GameStateManagement
 
             spriteBatch.Begin(transformMatrix: camera.Transform);
 
-            lvl.Draw(spriteBatch);
+            
+            mainMap.Draw(spriteBatch);
+            mainMap.maps[0].Draw(spriteBatch);
 
             if (enemy.isVisible)
             {
