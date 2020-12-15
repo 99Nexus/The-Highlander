@@ -91,35 +91,27 @@ namespace GameStateManagement
 
             scoreManager = ScoreManager.Load();
 
-
             einFont = content.Load<SpriteFont>("einFont");
 
             enemyList = new List<Enemy>();
 
             // Objects declaration
-            highlander = new TheHighlander(einFont, "Player1", 0, this)
-            {
-                Position = mainMap.maps[3].levels[3].spawnPosition,
-            };
+            highlander = new TheHighlander(einFont, "Player1", 0, this);
             healthBar = new HealthBar(highlander);
             highscore = new Highscore(highlander);
 
-            enemy = new Enemy(new Vector2(highlander.Position.X + 100, highlander.Position.Y + 100), 2, 1, 2f, new Vector2(highlander.Position.X + 100, highlander.Position.Y + 300),
-                highlander.Position, 20.0, MovementMode.VERTICAL);
-
-            enemyList.Add(enemy);
-
-            //for testing
-            lvl = new Leveltest(content.Load<Texture2D>(@"map"));
-            map = new Map(content.Load<Texture2D>(@"mapGraphics\map1"), new Vector2(0, 0), enemyList);
-            mainMap = new MainMap();
-            mainMap.maps[0] = map;
-            
+            mainMap = new MainMap(content, highlander);
             mainMap.LoadContent(content);
+
+            highlander.Position = mainMap.maps[3].levels[3].spawnPosition;
+
+            enemy = new Enemy(new Vector2(highlander.Position.X, highlander.Position.Y + 100), 2, 1, 2f, new Vector2(highlander.Position.X + 100, highlander.Position.Y + 300),
+                highlander.Position, 20.0, MovementMode.VERTICAL);
 
             explosion = new Explosion(new Vector2(enemy.Position.X, enemy.Position.Y));
 
-
+            // Manager
+            collisionManager = new CollisionManager(mainMap, highlander);
 
 
             // Load content calls
@@ -129,13 +121,13 @@ namespace GameStateManagement
             explosion.LoadContent(content);
             enemy.LoadContent(content);
 
+            //TEST
+            mainMap.maps[0].enemies.Add(enemy);
+
             // Camera declaration
             camera = new Camera(this);
             cameraBar = new Camera(this);
             cameraHighscore = new Camera(this);
-
-            // Manager
-            collisionManager = new CollisionManager();
 
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
@@ -217,15 +209,14 @@ namespace GameStateManagement
         {
             highlander.Update(gameTime);
             healthBar.Update(gameTime);
-            enemy.Update(gameTime, highlander.Position);
+            mainMap.Update(gameTime);
+            
 
             camera.Follow(highlander);
             cameraBar.Follow(healthBar);
             cameraHighscore.Follow(highscore);
 
-            //collisionManager.CollisionBetweenPlayerAndEnemy(highlander, enemyList);
-            //collisionManager.CollisionBetweenPlayerAndLaser(highlander, enemyList);
-            collisionManager.CollissionBetweenEnemyAndLaser(highlander, enemyList);
+            collisionManager.ManageCollisions();
 
             base.Update(gameTime, otherScreenHasFocus, false);
         }
@@ -295,11 +286,7 @@ namespace GameStateManagement
                 }
             }
             
-
-            if (enemy.isVisible)
-            {
-                enemy.Draw(gameTime, spriteBatch);
-            }
+            enemy.Draw(gameTime, spriteBatch);
 
             highlander.Draw(gameTime, spriteBatch);
 

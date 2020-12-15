@@ -38,6 +38,7 @@ namespace GameStateManagement.MapClasses
             this.mapNumber = mapNumber;
 
             this.levels = new Level[5];
+            this.enemies = new List<Enemy>();
         }
 
         ///assign the background directly in the Constructor
@@ -60,10 +61,19 @@ namespace GameStateManagement.MapClasses
         }
 
         public void ObserveEnemies()
+        {
+            for(int i = 0; i < enemies.Count; i++)
+            {
+                if(enemies[i].actualShield <= 0)
+                {
+                    enemies.Remove(enemies[i]);
+                }
+            }
+        }
 
         public void SetPositions(Level lvl)
         {
-            for (int i = 0; i < enemies.Count; i++)
+            //for (int i = 0; i < enemies.Count; i++)
             switch (lvl.levelNumber)
             {
                 case 1:

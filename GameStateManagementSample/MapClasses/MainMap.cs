@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameStateManagement.Starships;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -19,7 +20,9 @@ namespace GameStateManagement.MapClasses
         public Rectangle bottomMainBorder;
         public Rectangle rightMainBorder;
 
-        public MainMap(ContentManager content)
+        public TheHighlander player;
+
+        public MainMap(ContentManager content, TheHighlander player)
         {
             rectangles = new Rectangle[6];
             rectangles[0] = this.topMainBorder = new Rectangle(0, 0, 4000, 10);
@@ -31,6 +34,7 @@ namespace GameStateManagement.MapClasses
             maps = new Map[4];
             position = new Vector2(0, 0);
             CreateMaps(content);
+            this.player = player;
         }
 
         public override void LoadContent(ContentManager content)
@@ -86,6 +90,24 @@ namespace GameStateManagement.MapClasses
                     break;
             }
             map.CreateLevels();
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            foreach(Map m in maps)
+            {
+                m.Update(gameTime);
+
+                foreach(Enemy e in m.enemies)
+                {
+                    e.Update(gameTime, player.Position);
+                }
+
+                foreach (Level l in m.levels)
+                {
+                    //l.Update();
+                }
+            }
         }
     }
 }
