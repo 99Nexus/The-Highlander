@@ -8,42 +8,84 @@ namespace GameStateManagement.MapClasses
     public class MainMap : MapStructure
     {
         public Map[] maps;
+        public Rectangle[] rectangles;
+        public Rectangle topMainBorder;
+        public Rectangle leftMainBorder;
 
-        public MainMap()
+        public Rectangle verticalMainBorder;
+
+        public Rectangle horizontalMainBorder;
+
+        public Rectangle bottomMainBorder;
+        public Rectangle rightMainBorder;
+
+        public MainMap(ContentManager content)
         {
+            rectangles = new Rectangle[6];
+            rectangles[0] = this.topMainBorder = new Rectangle(0, 0, 4000, 10);
+            rectangles[1] = this.leftMainBorder = new Rectangle(0, 0, 10, 4000);
+            rectangles[2] = this.verticalMainBorder = new Rectangle(2000, 0, 10, 4000);
+            rectangles[3] = this.horizontalMainBorder = new Rectangle(0, 2000, 4000, 10);
+            rectangles[4] = this.bottomMainBorder = new Rectangle(0, 4000, 4000, 10);
+            rectangles[5] = this.leftMainBorder = new Rectangle(4000, 0, 10, 4000);
             maps = new Map[4];
             position = new Vector2(0, 0);
+            CreateMaps(content);
         }
 
         public override void LoadContent(ContentManager content)
         {
             texture2D = content.Load<Texture2D>(@"mapGraphics\mainMap");
-            //we can not declare Rectangle in Constructor
-            rectangle = new Rectangle((int)position.X, (int)position.Y, texture2D.Width, texture2D.Height);
-
+            
+            LoadMapsTextures(content);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture2D, rectangle, Color.White);
+            spriteBatch.Draw(texture2D, position, Color.White);
         }
-        /*
+        
         public void LoadMapsTextures(ContentManager content)
         {
-            maps[0].texture2D = content.Load<Texture2D>(@"mapGraphics\maps\map1");
-            maps[1].texture2D = content.Load<Texture2D>(@"mapGraphics\maps\map2");
-            maps[2].texture2D = content.Load<Texture2D>(@"mapGraphics\maps\map3");
-            maps[3].texture2D = content.Load<Texture2D>(@"mapGraphics\maps\map4");
+            int m = 1;
+            for (int i = 0; i < this.maps.Length; i++)
+            {
+                maps[i].texture2D = content.Load<Texture2D>(@"mapGraphics\map" + m++);
+            }
         }
-        */
+        
 
         //create Maps
-        public void CreateMaps()
+        public void CreateMaps(ContentManager content)
         {
-            foreach (Map m in maps)
+            int m = 1;
+            for (int i = 0; i < this.maps.Length; i++)
             {
-
+                //create new lvl and assign map Number
+                this.maps[i] = new Map(m++);
+                SetPositions(this.maps[i]);
             }
+        }
+
+
+        public void SetPositions(Map map)
+        {
+            switch (map.mapNumber)
+            {
+                case 1:
+                    map.position = new Vector2(0, 0);
+                    break;
+                case 2:
+                    map.position = new Vector2(2000, 0);
+                    break;
+                case 3:
+                    map.position = new Vector2(0, 2000);
+                    break;
+                case 4:
+                    map.position = new Vector2(2000, 2000);
+                    break;
+            }
+            map.CreateLevels();
         }
     }
 }

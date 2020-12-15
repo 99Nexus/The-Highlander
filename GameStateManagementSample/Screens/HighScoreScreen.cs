@@ -55,7 +55,7 @@ namespace GameStateManagement
         {
             content = ScreenManager.Game.Content;
             // assign the font style to the variable score
-            score = content.Load<SpriteFont>(@"graphics\game_menu_graphics\score");
+            score = content.Load<SpriteFont>("einFont");
             // load the saved Score list, if there is not any created list then a new list will be created
             scoreManager = ScoreManager.Load();
         }
