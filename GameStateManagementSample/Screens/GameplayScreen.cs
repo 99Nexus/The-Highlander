@@ -59,7 +59,7 @@ namespace GameStateManagement
         private float pauseAlpha;
 
         // Map objects
-        Leveltest lvl;
+
         MainMap mainMap;
         Map map;
         Level level;
@@ -99,9 +99,7 @@ namespace GameStateManagement
             // Objects declaration
             highlander = new TheHighlander(einFont, "Player1", 0, this)
             {
-                /*Position = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2,
-                 ScreenManager.GraphicsDevice.Viewport.Height / 2),*/
-                Position = new Vector2(250, 100),
+                Position = mainMap.maps[3].levels[3].spawnPosition,
             };
             healthBar = new HealthBar(highlander);
             highscore = new Highscore(highlander);
@@ -225,11 +223,9 @@ namespace GameStateManagement
             cameraBar.Follow(healthBar);
             cameraHighscore.Follow(highscore);
 
-            collisionManager.CollisionBetweenPlayerAndEnemy(highlander, enemyList);
-            collisionManager.CollisionBetweenPlayerAndLaser(highlander, enemyList);
+            //collisionManager.CollisionBetweenPlayerAndEnemy(highlander, enemyList);
+            //collisionManager.CollisionBetweenPlayerAndLaser(highlander, enemyList);
             collisionManager.CollissionBetweenEnemyAndLaser(highlander, enemyList);
-
-            map.Update(gameTime);
 
             base.Update(gameTime, otherScreenHasFocus, false);
         }
@@ -278,30 +274,39 @@ namespace GameStateManagement
         {
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
                                   Color.Black, 0, 0);
-            
+
             ScreenManager screenManager = this.ScreenManager;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-       
+
 
 
             spriteBatch.Begin(transformMatrix: camera.Transform);
 
-            
+
             mainMap.Draw(spriteBatch);
-            mainMap.maps[0].Draw(spriteBatch);
+            foreach (Map m in mainMap.maps)
+            {
+                m.Draw(spriteBatch);
+                m.Draw(spriteBatch,einFont);
+                foreach (Level l in m.levels)
+                {
+                    l.Draw(spriteBatch, einFont);
+                }
+            }
+            
 
             if (enemy.isVisible)
             {
                 enemy.Draw(gameTime, spriteBatch);
             }
-            
+
             highlander.Draw(gameTime, spriteBatch);
-            
-            
+
+
             explosion.Draw(spriteBatch);
-            
-            
+
+
             spriteBatch.End();
 
             spriteBatch.Begin(transformMatrix: cameraBar.Transform);

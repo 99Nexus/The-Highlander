@@ -31,5 +31,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\graphics\menu_graphics\" />
+    <Folder Include="Content\mapGraphics\" />
   </ItemGroup>
 </Project>

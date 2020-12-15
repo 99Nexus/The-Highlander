@@ -8,10 +8,8 @@ namespace GameStateManagement.MapClasses
 {
     public abstract class MapStructure
     {
-        public Rectangle rectangle;
-        public Vector2 position;
-        public Texture2D texture2D;
-
+        public Vector2 position { get; set; }
+        public Texture2D texture2D { get; set; }
         public MapStructure()
         {
 
@@ -23,4 +21,7 @@ namespace GameStateManagement.MapClasses
         public abstract void Draw(SpriteBatch spriteBatch);
 
     }
+
+
+
 }
