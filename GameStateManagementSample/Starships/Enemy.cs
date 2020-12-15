@@ -38,9 +38,9 @@ namespace GameStateManagement.Starships
         float rotationLaser;
 
         // State attributes
-        private static int actualShield;
+        public int actualShield;
         private int maxShield;
-        private int weaponPower;
+        public int weaponPower;
         private float linearVelocity;
         public int damageBuffer;
         public int maxDamageBuffer;
@@ -61,7 +61,6 @@ namespace GameStateManagement.Starships
         // Properties
         public Texture2D Texture;
         public SpriteFont SpriteFont;
-        public int AsctualShield;
         public int WeaponPower;
         public double LinearVelocity;
         public Vector2 Position;
@@ -89,6 +88,7 @@ namespace GameStateManagement.Starships
             this.isVisible = true;
             damageBuffer = 0;
             maxDamageBuffer = 20;
+            weaponPower = weaponPower;
 
             laserList = new List<Laser>();
             laserDelay = 50;
@@ -352,12 +352,15 @@ namespace GameStateManagement.Starships
             }
         }
 
-        public void UpdateActualShieldValue()
+        public void UpdateActualShieldValue(int damage)
         {
-            // Shield Value cannot be negative
-            if(actualShield > 0)
+            if(actualShield - damage < 1)
             {
-                actualShield--;
+                actualShield = 0;
+            }
+            else
+            {
+                actualShield -= damage;
 
                 // Update the shield string
                 shieldString = actualShield + " | " + maxShield;

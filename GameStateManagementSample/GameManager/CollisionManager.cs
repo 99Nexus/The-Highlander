@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using GameStateManagement.MapClasses;
 
 namespace GameStateManagement.GameManager
 {
@@ -30,8 +31,8 @@ namespace GameStateManagement.GameManager
                     // Decrease shield only after damage buffer has reached a few milliseconds
                     if(damageBuffer >= maxDamageBuffer)
                     {
-                        player.DecreaseShieldValue();
-                        e.UpdateActualShieldValue();
+                        player.DecreaseShieldValue(1);
+                        e.UpdateActualShieldValue(1);
                         damageBuffer = 0;
                     }
 
@@ -52,7 +53,7 @@ namespace GameStateManagement.GameManager
                     {
                         l.isVisible = false;
                         e.laserList.Remove(l);
-                        player.DecreaseShieldValue();
+                        player.DecreaseShieldValue(e.weaponPower);
                         damageBuffer = 0;
                         break;
                     }
@@ -72,10 +73,74 @@ namespace GameStateManagement.GameManager
                         {
                             player.laserList[i].isVisible = false;
                             player.laserList.Remove(player.laserList[i]);
-                            e.UpdateActualShieldValue();
+                            e.UpdateActualShieldValue(player.weaponPower);
                             e.damageBuffer = 0;
                             break;
                         }
+                    }
+                }
+            }
+        }
+        
+        public void CollissionBetweenPlayerAndMapObject(TheHighlander player, List<Level> levelList)
+        {
+            damageBuffer++;
+
+            foreach (Level l in levelList)
+            {
+                if (player.Rectangle.Intersects(l.topB) ||
+                    player.Rectangle.Intersects(l.rightB) ||
+                    player.Rectangle.Intersects(l.bottomB) ||
+                    player.Rectangle.Intersects(l.leftB))
+                {
+                    // Set position backwards if player collides with an enemy
+                    player.Position -= player.direction * 4f;
+
+                    // Decrease shield only after damage buffer has reached a few milliseconds
+                    if (damageBuffer >= maxDamageBuffer)
+                    {
+                        player.DecreaseShieldValue(1);
+                        damageBuffer = 0;
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        public void CollisionBetweenLaserAndMapObject(List<Level> levelList, TheHighlander player, List<Enemy> enemyList)
+        {
+            foreach (Level level in levelList)
+            {
+
+                //Enemy laser
+                foreach (Enemy e in enemyList)
+                {
+                    for (int i = 0; i < e.laserList.Count; i++)
+                    {
+                        if (e.laserList[i].Rectangle.Intersects(level.topB) ||
+                            e.laserList[i].Rectangle.Intersects(level.rightB) ||
+                            e.laserList[i].Rectangle.Intersects(level.bottomB) ||
+                            e.laserList[i].Rectangle.Intersects(level.leftB))
+                        {
+                            e.laserList[i].isVisible = false;
+                            e.laserList.Remove(player.laserList[i]);
+                            break;
+                        }
+                    }
+                }
+
+                //Player laser
+                for (int i = 0; i < player.laserList.Count; i++)
+                {
+                    if (player.laserList[i].Rectangle.Intersects(level.topB) ||
+                        player.laserList[i].Rectangle.Intersects(level.rightB) ||
+                        player.laserList[i].Rectangle.Intersects(level.bottomB) ||
+                        player.laserList[i].Rectangle.Intersects(level.leftB))
+                    {
+                        player.laserList[i].isVisible = false;
+                        player.laserList.Remove(player.laserList[i]);
+                        break;
                     }
                 }
             }
@@ -85,16 +150,6 @@ namespace GameStateManagement.GameManager
         public bool CollissionBetweenPlayerAndGameObject(TheHighlander player, GameObject gameObject)
         {
             return player.Rectangle.Intersects(gameObject.Rectangle);
-        }
-
-        public bool CollissionBetweenPlayerAndMapObject(TheHighlander player, MapObject mapObject)
-        {
-            return player.Rectangle.Intersects(mapObject.Rectangle);
-        }
-
-        public bool CollisionBetweenLaserAndMapObject(Laser laser, MapObject mapObject)
-        {
-            return laser.Rectangle.Intersects(mapObject.Rectangle);
         }
         */
     }

@@ -28,6 +28,7 @@ namespace GameStateManagement.Starships
         public int updateLevel = 0;
         public int shield = 10;
         public int score;
+        public int weaponPower;
 
         // Shoot
         public Vector2 speed;
@@ -64,6 +65,7 @@ namespace GameStateManagement.Starships
             Player = new Score(playerName, playerScore);
             this.isVisible = true;
             this.gameScreen = (GameplayScreen)gameScreen;
+            weaponPower = 1;
         }
 
         public void LoadContent(ContentManager content)
@@ -155,13 +157,13 @@ namespace GameStateManagement.Starships
             }
         }
 
-        public void DecreaseShieldValue()
+        public void DecreaseShieldValue(int damage)
         {
             // Call game over screen if player has no shield
-            if (shield == 1)
+            if (shield - damage < 1)
                 gameScreen.CallGameOverScreen();
-            else
-                shield--;
+            else if (shield - damage >= 1)
+                shield -= damage;
         }
 
         #endregion Logic and Input

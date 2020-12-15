@@ -91,14 +91,8 @@ namespace GameStateManagement
 
             scoreManager = ScoreManager.Load();
 
-            //for testing
+
             einFont = content.Load<SpriteFont>("einFont");
-            lvl = new Leveltest(content.Load<Texture2D>(@"map"));
-            map = new Map(content.Load<Texture2D>(@"mapGraphics\map1"), new Vector2(0, 0), null);
-            mainMap = new MainMap();
-            mainMap.maps[0] = map;
-            
-            mainMap.LoadContent(content);
 
             enemyList = new List<Enemy>();
 
@@ -107,15 +101,23 @@ namespace GameStateManagement
             {
                 /*Position = new Vector2(ScreenManager.GraphicsDevice.Viewport.Width / 2,
                  ScreenManager.GraphicsDevice.Viewport.Height / 2),*/
-                Position = new Vector2(250 , 100),
+                Position = new Vector2(250, 100),
             };
             healthBar = new HealthBar(highlander);
             highscore = new Highscore(highlander);
 
-            enemy = new Enemy(new Vector2(highlander.Position.X+100, highlander.Position.Y+100), 2, 2, 2f, new Vector2(highlander.Position.X + 100, highlander.Position.Y + 300),
+            enemy = new Enemy(new Vector2(highlander.Position.X + 100, highlander.Position.Y + 100), 2, 1, 2f, new Vector2(highlander.Position.X + 100, highlander.Position.Y + 300),
                 highlander.Position, 20.0, MovementMode.VERTICAL);
 
             enemyList.Add(enemy);
+
+            //for testing
+            lvl = new Leveltest(content.Load<Texture2D>(@"map"));
+            map = new Map(content.Load<Texture2D>(@"mapGraphics\map1"), new Vector2(0, 0), enemyList);
+            mainMap = new MainMap();
+            mainMap.maps[0] = map;
+            
+            mainMap.LoadContent(content);
 
             explosion = new Explosion(new Vector2(enemy.Position.X, enemy.Position.Y));
 
@@ -226,6 +228,8 @@ namespace GameStateManagement
             collisionManager.CollisionBetweenPlayerAndEnemy(highlander, enemyList);
             collisionManager.CollisionBetweenPlayerAndLaser(highlander, enemyList);
             collisionManager.CollissionBetweenEnemyAndLaser(highlander, enemyList);
+
+            map.Update(gameTime);
 
             base.Update(gameTime, otherScreenHasFocus, false);
         }

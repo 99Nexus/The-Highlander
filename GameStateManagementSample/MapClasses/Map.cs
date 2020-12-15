@@ -53,17 +53,15 @@ namespace GameStateManagement.MapClasses
 
         public void Update(GameTime gameTime)
         {
-            ObserveEnemies(null);
+            ObserveEnemies();
         }
 
-        public void ObserveEnemies(Enemy destroyedEnemy)
+        public void ObserveEnemies()
         {
-            foreach(Enemy e in enemies)
+            for (int i = 0; i < enemies.Count; i++)
             {
-                if (e.Equals(destroyedEnemy))
-                {
-                    enemies.Remove(e);
-                }
+                if (enemies[i].actualShield <= 0)
+                    enemies.Remove(enemies[i]);
             }
         }
 
