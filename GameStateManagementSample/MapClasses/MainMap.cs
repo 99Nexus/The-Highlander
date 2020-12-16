@@ -1,27 +1,30 @@
-﻿using GameStateManagement.Starships;
+﻿#region Using Statements
+using GameStateManagement.Starships;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+#endregion Using Statements
 
 
 namespace GameStateManagement.MapClasses
 {
     public class MainMap : MapStructure
     {
+        #region Fields
         public Map[] maps;
+        //Borders
         public Rectangle[] rectangles;
         public Rectangle topMainBorder;
         public Rectangle leftMainBorder;
-
         public Rectangle verticalMainBorder;
-
         public Rectangle horizontalMainBorder;
-
         public Rectangle bottomMainBorder;
         public Rectangle rightMainBorder;
 
         public TheHighlander player;
+        #endregion Fields
 
+        #region Initialization
         public MainMap(ContentManager content, TheHighlander player)
         {
             rectangles = new Rectangle[6];
@@ -40,15 +43,10 @@ namespace GameStateManagement.MapClasses
         public override void LoadContent(ContentManager content)
         {
             texture2D = content.Load<Texture2D>(@"mapGraphics\mainMap");
-            
+
             LoadMapsTextures(content);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(texture2D, position, Color.White);
-        }
-        
         public void LoadMapsTextures(ContentManager content)
         {
             int m = 1;
@@ -57,7 +55,6 @@ namespace GameStateManagement.MapClasses
                 maps[i].texture2D = content.Load<Texture2D>(@"mapGraphics\map" + m++);
             }
         }
-        
 
         //create Maps
         public void CreateMaps(ContentManager content)
@@ -66,11 +63,10 @@ namespace GameStateManagement.MapClasses
             for (int i = 0; i < this.maps.Length; i++)
             {
                 //create new lvl and assign map Number
-                this.maps[i] = new Map(m++);
+                this.maps[i] = new Map(player, m++);
                 SetPositions(this.maps[i]);
             }
         }
-
 
         public void SetPositions(Map map)
         {
@@ -92,22 +88,22 @@ namespace GameStateManagement.MapClasses
             map.CreateLevels();
         }
 
+        #endregion Initialization
+
+        #region Update and Draw
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture2D, position, Color.White);
+        }
+
         public void Update(GameTime gameTime)
         {
-            foreach(Map m in maps)
+            foreach (Map m in maps)
             {
-                m.Update(gameTime);
-
-                foreach(Enemy e in m.enemies)
-                {
-                    e.Update(gameTime, player.Position);
-                }
-
-                foreach (Level l in m.levels)
-                {
-                    //l.Update();
-                }
+                m.Update(gameTime, player);
             }
         }
+        #endregion Update and Draw
     }
 }

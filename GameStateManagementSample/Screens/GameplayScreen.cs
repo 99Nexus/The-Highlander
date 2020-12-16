@@ -59,10 +59,8 @@ namespace GameStateManagement
         private float pauseAlpha;
 
         // Map objects
-
         MainMap mainMap;
-        Map map;
-        Level level;
+
 
         ///those have a methode and list maybe helpful for later
         ///private List<Enemy> enemyList = new List<Enemy>();
@@ -151,52 +149,6 @@ namespace GameStateManagement
         #endregion Initialization
 
 
-        #region Loading Enemy & Manage Explosions
-        /*
-        public void LoadEnemies()
-        {
-            /*
-            if(enemyList.Count < 1)
-            {
-                enemyList.Add(new Enemy(theEnemy, einFont, 1, 0, 0, 0));
-            }
-            
-
-            enemyList.Add(new Enemy(theEnemy, einFont, 1, 0, 0, 0));
-
-            if (!enemyList[0].isVisible)
-            {
-                enemyList.RemoveAt(0);
-                
-            }
-
-
-            for (int i = 0; i < enemyList.Count; i++)
-            {
-                if (!enemyList[i].isVisible)
-                {
-                    enemyList.RemoveAt(i);
-                    i--;
-                }
-
-            }
-        }
-
-        public void ManageExplosions()
-        {
-            for (int i = 0; i < explosionList.Count; i++)
-            {
-                if (!explosionList[i].isVisible)
-                {
-                    explosionList.RemoveAt(i);
-                    i--;
-                }
-
-            }
-        }
-        */
-        #endregion Loading Enemy & Manage Explosions
-
         #region Update and Draw
 
         /// <summary>
@@ -269,11 +221,7 @@ namespace GameStateManagement
             ScreenManager screenManager = this.ScreenManager;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-
-
-
             spriteBatch.Begin(transformMatrix: camera.Transform);
-
 
             mainMap.Draw(spriteBatch);
             foreach (Map m in mainMap.maps)

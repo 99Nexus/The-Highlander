@@ -161,7 +161,23 @@ namespace GameStateManagement.Starships
         {
             // Call game over screen if player has no shield
             if (shield - damage < 1)
+            {
+                /*
+                public void ManageExplosions()
+                {
+                    for (int i = 0; i < explosionList.Count; i++)
+                    {
+                        if (!explosionList[i].isVisible)
+                        {
+                            explosionList.RemoveAt(i);
+                            i--;
+                        }
+
+                    }
+                }
+                */
                 gameScreen.CallGameOverScreen();
+            }
             else if (shield - damage >= 1)
                 shield -= damage;
         }
