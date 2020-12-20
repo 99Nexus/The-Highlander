@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using GameStateManagement.GameObjects;
 using GameStateManagement.GameManager;
 using GameStateManagement.MapClasses;
+using GameStateManagement.ObjectItem;
 
 #endregion Using Statements
 
@@ -52,6 +53,12 @@ namespace GameStateManagement
         private Camera cameraHighscore;
         private Explosion explosion;
         private List<Enemy> enemyList;
+
+        // Object-Items
+        private Alarm alarm;
+        private Generator generator;
+        private ControlSystem cs;
+        private Crate crate;
 
         // Other objects
         private Random random = new Random();
@@ -87,6 +94,8 @@ namespace GameStateManagement
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
+
+
             scoreManager = ScoreManager.Load();
 
             einFont = content.Load<SpriteFont>("einFont");
@@ -101,12 +110,35 @@ namespace GameStateManagement
             mainMap = new MainMap(content, highlander);
             mainMap.LoadContent(content);
 
-            highlander.Position = mainMap.maps[3].levels[3].spawnPosition;
+
+            //Object-Items
+            generator = new Generator(new Vector2(mainMap.maps[0].levels[0].position.X + 370, mainMap.maps[0].levels[0].position.Y + 500));
+            generator.LoadContent(content);
+
+            alarm = new Alarm(new Vector2(mainMap.maps[0].levels[1].position.X + 500, mainMap.maps[0].levels[1].position.Y + 10));
+            alarm.LoadContent(content);
+
+            cs = new ControlSystem(new Vector2(mainMap.maps[0].levels[3].position.X + 1000, mainMap.maps[0].levels[3].position.Y + 10));
+            cs.LoadContent(content);
+
+
+            // test
+            crate = new Crate(new Vector2(mainMap.maps[0].levels[3].position.X + 1200, mainMap.maps[0].levels[3].position.Y + 150));
+            crate.LoadContent(content);
+
+
+            // spawn-position for the Highlander
+            highlander.Position = mainMap.maps[0].levels[3].spawnPosition;
 
             enemy = new Enemy(new Vector2(highlander.Position.X, highlander.Position.Y + 100), 2, 1, 2f, new Vector2(highlander.Position.X + 100, highlander.Position.Y + 300),
                 highlander.Position, 20.0, MovementMode.VERTICAL);
 
+
             explosion = new Explosion(new Vector2(enemy.Position.X, enemy.Position.Y));
+
+            /*explosion for the level 1
+            explosion = new Explosion(new Vector2(generator.position.X, generator.position.Y));*/
+
 
             // Manager
             collisionManager = new CollisionManager(mainMap, highlander);
@@ -159,6 +191,32 @@ namespace GameStateManagement
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
+
+            if (highlander.Rectangle.Intersects(alarm.rectangle))
+            {
+                // Set position backwards if player collides with an map object
+                highlander.Position -= highlander.direction * 4f;
+            }
+
+            if (highlander.Rectangle.Intersects(generator.rectangle))
+            {
+                // Set position backwards if player collides with an map object
+                highlander.Position -= highlander.direction * 4f;
+            }
+
+            if (highlander.Rectangle.Intersects(cs.rectangle))
+            {
+                // Set position backwards if player collides with an map object
+                highlander.Position -= highlander.direction * 4f;
+            }
+
+            if (highlander.Rectangle.Intersects(crate.rectangle))
+            {
+                // Set position backwards if player collides with an map object
+                highlander.Position -= highlander.direction * 4f;
+            }
+
+
             highlander.Update(gameTime);
             healthBar.Update(gameTime);
             mainMap.Update(gameTime);
@@ -171,6 +229,10 @@ namespace GameStateManagement
             collisionManager.ManageCollisions();
 
             base.Update(gameTime, otherScreenHasFocus, false);
+
+            alarm.Update(gameTime, highlander);
+            generator.UpdateActualShieldValue(1);
+            cs.Update(gameTime, highlander);
         }
 
         /// <summary>
@@ -223,6 +285,8 @@ namespace GameStateManagement
 
             spriteBatch.Begin(transformMatrix: camera.Transform);
 
+            
+
             mainMap.Draw(spriteBatch);
             foreach (Map m in mainMap.maps)
             {
@@ -236,8 +300,17 @@ namespace GameStateManagement
             
             enemy.Draw(gameTime, spriteBatch);
 
+            alarm.Draw(spriteBatch, einFont);
+
+            generator.Draw(spriteBatch, einFont);
+
+            cs.Draw(spriteBatch, einFont);
+
+            crate.Draw(spriteBatch, einFont);
+
             highlander.Draw(gameTime, spriteBatch);
 
+            
 
             explosion.Draw(spriteBatch);
 
