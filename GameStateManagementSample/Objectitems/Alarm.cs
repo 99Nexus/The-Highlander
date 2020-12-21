@@ -13,45 +13,42 @@ namespace GameStateManagement.ObjectItem
 {
     public class Alarm : GameObject
     {
-        private bool ePressed;
         private TheHighlander highlander;
-
-        public Alarm(Vector2 pos)
+        private int spriteCounter = 0;
+        private Texture2D[] alarmList; 
+        public Alarm(Vector2 pos, TheHighlander player) : base(pos, player)
         {
-            isVisible = true;
-            this.position = pos;
+            alarmList = new Texture2D[2];
         }
 
         public void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>(@"graphics\objects_items\AlarmSystem");
-            rectangle = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            alarmList[0] = content.Load<Texture2D>(@"graphics\objects_items\AlarmSystem");
+            alarmList[1] = content.Load<Texture2D>(@"graphics\objects_items\AlarmSystem2");
+            rectangle = new Rectangle((int)position.X - (alarmList[spriteCounter].Width / 2),
+                                      (int)position.Y - (alarmList[spriteCounter].Height / 2),
+                                      alarmList[spriteCounter].Width,
+                                      alarmList[spriteCounter].Height);
+            Origin = new Vector2(alarmList[spriteCounter].Width / 2, alarmList[spriteCounter].Height / 2);
+            Origin = new Vector2(alarmList[spriteCounter].Width / 2, alarmList[spriteCounter].Height / 2);
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime, TheHighlander highlander)
         {
-            
-        }
-
-        public void Update(GameTime gameTime, TheHighlander highlander)
-        {
-            //hier muss eine Bedingung hin und dann wird das Objekt dort visible
-            if(Keyboard.GetState().IsKeyDown(Keys.E) && (highlander.Position.X == this.position.X + 40 || highlander.Position.X == this.position.X - 40
-                                                || highlander.Position.Y == this.position.Y + 40 || highlander.Position.Y == this.position.Y - 40))
-            {
-                ePressed = true;
-            }
-            
+            base.Update(gameTime, highlander);
         }
 
 
         public override void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
-            spriteBatch.Draw(texture, position, Color.White);
-
-            if (!ePressed)
+            spriteBatch.Draw(alarmList[spriteCounter], position, null, Color.White, 0, Origin, 1, SpriteEffects.None, 0);
+            if (CalculateDistanceToPlayer() <= 110 && !keyPressed)
             {
-                spriteBatch.DrawString(sprite, new string("Press 'E' to set \n off the alarm"), new Vector2(position.X, position.Y + 100), Color.Black);
+                spriteBatch.DrawString(sprite, new string("Press 'E' to set \n off the alarm"), new Vector2(position.X - 50, position.Y + 60), Color.Black);
+            }
+            if(keyPressed && CalculateDistanceToPlayer() <= 80)
+            {
+                spriteCounter = 1;
             }
         }
     }

@@ -112,25 +112,25 @@ namespace GameStateManagement
 
 
             //Object-Items
-            generator = new Generator(new Vector2(mainMap.maps[0].levels[0].position.X + 370, mainMap.maps[0].levels[0].position.Y + 500));
+            generator = new Generator(new Vector2(mainMap.maps[0].levels[0].position.X + 370, mainMap.maps[0].levels[0].position.Y + 500), highlander);
             generator.LoadContent(content);
 
-            alarm = new Alarm(new Vector2(mainMap.maps[0].levels[1].position.X + 500, mainMap.maps[0].levels[1].position.Y + 10));
+            alarm = new Alarm(new Vector2(mainMap.maps[0].levels[1].position.X + 500, mainMap.maps[0].levels[1].position.Y + 100), highlander);
             alarm.LoadContent(content);
 
-            cs = new ControlSystem(new Vector2(mainMap.maps[0].levels[3].position.X + 1000, mainMap.maps[0].levels[3].position.Y + 10));
+            cs = new ControlSystem(new Vector2(mainMap.maps[0].levels[3].position.X + 1000, mainMap.maps[0].levels[3].position.Y + 50), highlander);
             cs.LoadContent(content);
 
 
             // test
-            crate = new Crate(new Vector2(mainMap.maps[0].levels[3].position.X + 1200, mainMap.maps[0].levels[3].position.Y + 150));
+            crate = new Crate(new Vector2(mainMap.maps[0].levels[3].position.X + 1200, mainMap.maps[0].levels[3].position.Y + 150), highlander);
             crate.LoadContent(content);
 
 
             // spawn-position for the Highlander
-            highlander.Position = mainMap.maps[0].levels[3].spawnPosition;
+            highlander.Position = mainMap.maps[0].levels[1].spawnPosition;
 
-            enemy = new Enemy(new Vector2(highlander.Position.X, highlander.Position.Y + 100), 2, 1, 2f, new Vector2(highlander.Position.X + 100, highlander.Position.Y + 300),
+            enemy = new Enemy(new Vector2(1000, 900), 2, 1, 2f, new Vector2(1000, 1100),
                 highlander.Position, 20.0, MovementMode.VERTICAL);
 
 
@@ -191,32 +191,6 @@ namespace GameStateManagement
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
-
-            if (highlander.Rectangle.Intersects(alarm.rectangle))
-            {
-                // Set position backwards if player collides with an map object
-                highlander.Position -= highlander.direction * 4f;
-            }
-
-            if (highlander.Rectangle.Intersects(generator.rectangle))
-            {
-                // Set position backwards if player collides with an map object
-                highlander.Position -= highlander.direction * 4f;
-            }
-
-            if (highlander.Rectangle.Intersects(cs.rectangle))
-            {
-                // Set position backwards if player collides with an map object
-                highlander.Position -= highlander.direction * 4f;
-            }
-
-            if (highlander.Rectangle.Intersects(crate.rectangle))
-            {
-                // Set position backwards if player collides with an map object
-                highlander.Position -= highlander.direction * 4f;
-            }
-
-
             highlander.Update(gameTime);
             healthBar.Update(gameTime);
             mainMap.Update(gameTime);
@@ -228,11 +202,10 @@ namespace GameStateManagement
 
             collisionManager.ManageCollisions();
 
-            base.Update(gameTime, otherScreenHasFocus, false);
-
             alarm.Update(gameTime, highlander);
-            generator.UpdateActualShieldValue(1);
             cs.Update(gameTime, highlander);
+
+            base.Update(gameTime, otherScreenHasFocus, false);
         }
 
         /// <summary>

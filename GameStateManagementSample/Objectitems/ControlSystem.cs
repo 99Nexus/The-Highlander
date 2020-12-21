@@ -11,46 +11,37 @@ using GameStateManagement.Starships;
 
 namespace GameStateManagement.ObjectItem
 {
-    class ControlSystem : GameObject
+    public class ControlSystem : GameObject
     {
-        private bool ePressed = false;
-        private TheHighlander highlander;
-        public ControlSystem(Vector2 pos)
+        public ControlSystem(Vector2 pos, TheHighlander player) : base(pos, player)
         {
-            isVisible = true;
-            position = pos;
         }
 
 
         public void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>(@"graphics\objects_items\ControlSystem");
-            rectangle = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+            rectangle = new Rectangle((int)position.X - (texture.Width / 2),
+                                      (int)position.Y - (texture.Height / 2),
+                                      texture.Width,
+                                      texture.Height);
+
+            Origin = new Vector2(texture.Width / 2, texture.Height / 2);
         }
 
 
-        public override void Update()
+        public override void Update(GameTime gameTime, TheHighlander highlander)
         {
-
-        }
-
-        public void Update(GameTime gameTime, TheHighlander highlander)
-        {
-            //hier muss eine Bedingung hin und dann wird das Objekt dort visible
-            if (Keyboard.GetState().IsKeyDown(Keys.E) && (highlander.Position.X == this.position.X + 40 || highlander.Position.X == this.position.X - 40
-                                                || highlander.Position.Y == this.position.Y + 40 || highlander.Position.Y == this.position.Y - 40))
-            {
-                ePressed = true;
-            }
-
+            base.Update(gameTime, highlander);
         }
 
         public override void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            base.Draw(spriteBatch, sprite);
+            spriteBatch.DrawString(sprite, CalculateDistanceToPlayer().ToString(), new Vector2(position.X - 20, position.Y + 100), Color.Black);
 
-            if (!ePressed)
-            {
+            if (CalculateDistanceToPlayer() <= 80 && !keyPressed)
+            { 
                 spriteBatch.DrawString(sprite, new string("Press 'E' to turn on \n the control system"), new Vector2(position.X - 10, position.Y + 75), Color.Black);
             }
         }
