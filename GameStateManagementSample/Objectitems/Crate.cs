@@ -1,0 +1,41 @@
+﻿using GameStateManagement.GameObjects;
+using GameStateManagement.Starships;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace GameStateManagement.ObjectItem
+{
+    public class Crate : GameObject
+    {
+        public Crate(Vector2 pos, TheHighlander player) : base(pos, player)
+        {
+        }
+
+        public void LoadContent(ContentManager content)
+        {
+            texture = content.Load<Texture2D>(@"graphics\objects_items\Crate");
+            rectangle = new Rectangle((int)position.X - (texture.Width / 2),
+                                      (int)position.Y - (texture.Height / 2),
+                                      texture.Width,
+                                      texture.Height);
+            Origin = new Vector2(texture.Width / 2, texture.Height / 2);
+        }
+
+
+        public override void Update(GameTime gameTime, TheHighlander highlander)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public override void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
+        {
+            base.Draw(spriteBatch, sprite);
+        }
+    }
+}

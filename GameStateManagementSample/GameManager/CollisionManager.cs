@@ -23,8 +23,8 @@ namespace GameStateManagement.GameManager
         public void ManageCollisions()
         {
             
-            CollisionBetweenPlayerAndEnemy();
-            CollisionBetweenPlayerAndLaser();
+            //CollisionBetweenPlayerAndEnemy();
+            //CollisionBetweenPlayerAndLaser();
             CollissionBetweenEnemyAndLaser();
             CollissionBetweenPlayerAndMapObject();
             CollisionBetweenPlayerLaserAndMapObject();
