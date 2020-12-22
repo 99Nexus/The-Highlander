@@ -34,9 +34,10 @@ namespace GameStateManagement.Starships
         public Rectangle sourceRect;
         public bool isVisible;
 
-        public Explosion(Vector2 newPosition)
+        public Explosion(Texture2D texture, Vector2 pos)
         {
-            position = newPosition;
+            position = pos;
+            this.texture = texture;
             timer = 0f;
             interval = 30f;
             currentFrame = 0;
@@ -45,16 +46,10 @@ namespace GameStateManagement.Starships
             isVisible = true;
         }
 
-        public void LoadContent(ContentManager Content)
-        {
-            texture = Content.Load<Texture2D>(@"explosion");
-        }
-
         public void Update(GameTime gameTime)
         {
             //increase the timer by the number of millseconds since was last called
             timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-        
         
             //check the timer more than the chosen interval
             if(timer > interval)
@@ -77,8 +72,6 @@ namespace GameStateManagement.Starships
             sourceRect = new Rectangle(currentFrame * spriteWidth, 0, spriteWidth, spriteHeight);
 
             origion = new Vector2(sourceRect.Width/4, sourceRect.Height/4);
-            //origion = new Vector2(0,0);
-
         }
 
         public void Draw(SpriteBatch spriteBatch)

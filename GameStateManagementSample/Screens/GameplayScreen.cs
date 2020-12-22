@@ -50,8 +50,6 @@ namespace GameStateManagement
         private Camera camera;
         private Camera cameraBar;
         private Camera cameraHighscore;
-        private Explosion explosion;
-        private List<Enemy> enemyList;
 
         // Other objects
         private Random random = new Random();
@@ -60,11 +58,6 @@ namespace GameStateManagement
 
         // Map objects
         MainMap mainMap;
-
-
-        ///those have a methode and list maybe helpful for later
-        ///private List<Enemy> enemyList = new List<Enemy>();
-        ///private List<Explosion> explosionList = new List<Explosion>();
 
         #endregion Fields
 
@@ -91,8 +84,6 @@ namespace GameStateManagement
 
             einFont = content.Load<SpriteFont>("einFont");
 
-            enemyList = new List<Enemy>();
-
             // Objects declaration
             highlander = new TheHighlander(einFont, "Player1", 0, this);
             healthBar = new HealthBar(highlander);
@@ -101,12 +92,11 @@ namespace GameStateManagement
             mainMap = new MainMap(content, highlander);
             mainMap.LoadContent(content);
 
-            highlander.Position = mainMap.maps[3].levels[3].spawnPosition;
+            highlander.Position = mainMap.maps[0].levels[0].spawnPosition;
 
             enemy = new Enemy(new Vector2(highlander.Position.X, highlander.Position.Y + 100), 2, 1, 2f, new Vector2(highlander.Position.X + 100, highlander.Position.Y + 300),
                 highlander.Position, 20.0, MovementMode.VERTICAL);
 
-            explosion = new Explosion(new Vector2(enemy.Position.X, enemy.Position.Y));
 
             // Manager
             collisionManager = new CollisionManager(mainMap, highlander);
@@ -116,7 +106,6 @@ namespace GameStateManagement
             highlander.LoadContent(content);
             healthBar.LoadContent(content);
             highscore.LoadContent(content);
-            explosion.LoadContent(content);
             enemy.LoadContent(content);
 
             //TEST
@@ -227,6 +216,7 @@ namespace GameStateManagement
             foreach (Map m in mainMap.maps)
             {
                 m.Draw(spriteBatch);
+                
                 m.Draw(spriteBatch,einFont);
                 foreach (Level l in m.levels)
                 {
@@ -237,9 +227,6 @@ namespace GameStateManagement
             enemy.Draw(gameTime, spriteBatch);
 
             highlander.Draw(gameTime, spriteBatch);
-
-
-            explosion.Draw(spriteBatch);
 
 
             spriteBatch.End();
@@ -264,9 +251,7 @@ namespace GameStateManagement
 
                 ScreenManager.FadeBackBufferToBlack(alpha);
             }
-
         }
-
         #endregion Update and Draw
     }
 }

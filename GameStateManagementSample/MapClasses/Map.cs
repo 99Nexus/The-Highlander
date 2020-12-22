@@ -27,6 +27,9 @@ namespace GameStateManagement.MapClasses
         public int enemiesNumber;
         private bool isCompleted;
 
+        private List<Explosion> explosions;
+        private Texture2D explosionTexture;
+
         #endregion Fields
 
         //vector startposition
@@ -38,16 +41,21 @@ namespace GameStateManagement.MapClasses
         //positions from enemies
 
         #region Initialization
+
         public Map(TheHighlander player, int mapNumber)
         {
             this.mapNumber = mapNumber;
             this.levels = new Level[5];
             this.player = player;
             this.enemies = new List<Enemy>();
+            this.explosions = new List<Explosion>();
         }
 
         ///assign the background directly in the Constructor
-        public override void LoadContent(ContentManager content) { }
+        public override void LoadContent(ContentManager content)
+        {
+            explosionTexture = content.Load<Texture2D>(@"explosion");
+        }
 
         public void SetPositions(Level lvl)
         {
@@ -93,20 +101,6 @@ namespace GameStateManagement.MapClasses
 
         #endregion Initialization
 
-        public void CompleteCheck()
-        {
-            foreach (Level le in levels)
-            {
-                if (le.hasEndBoos)
-                {
-                    if (le.endBossDefeated)
-                    {
-                        this.isCompleted = true;
-                    }
-                }
-            }
-        }
-
         #region Loading Enemy & Manage Explosions
 
         public void ObserveEnemies()
@@ -115,14 +109,25 @@ namespace GameStateManagement.MapClasses
             {
                 if (enemies[i].actualShield <= 0)
                 {
+                    explosions.Add(new Explosion(explosionTexture, new Vector2(enemies[i].Position.X - 50, enemies[i].Position.Y - 25)));
                     enemies.Remove(enemies[i]);
                 }
             }
         }
 
-        /*
-        /*
+        public void ManageExplosions()
+        {
+            for (int i = 0; i < explosions.Count; i++)
+            {
+                if (!explosions[i].isVisible)
+                {
+                    explosions.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
 
+        /*
         public void LoadEnemies()
         {
             /*
@@ -162,15 +167,17 @@ namespace GameStateManagement.MapClasses
         }
         #endregion Loading Enemy & Manage Explosions 
 
-
-
         #region Update and Draw
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture2D, position, Color.White);
+            foreach(Explosion ex in explosions)
+            {
+                ex.Draw(spriteBatch);
+            }
         }
-
+        //for test
         public void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
             spriteBatch.DrawString(sprite, new string("Map" + mapNumber.ToString()), new Vector2(position.X + 50, position.Y + 50), Color.Black);
@@ -188,8 +195,28 @@ namespace GameStateManagement.MapClasses
                 //l.Update();
             }
 
+            foreach (Explosion ex in explosions)
+            {
+                ex.Update(gameTime);
+            }
             ObserveEnemies();
+            ManageExplosions();
         }
+
+        public void CompleteCheck()
+        {
+            foreach (Level le in levels)
+            {
+                if (le.hasEndBoos)
+                {
+                    if (le.endBossDefeated)
+                    {
+                        this.isCompleted = true;
+                    }
+                }
+            }
+        }
+
         #endregion Update and Draw
 
     }

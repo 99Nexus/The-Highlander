@@ -52,6 +52,7 @@ namespace GameStateManagement.MapClasses
             int m = 1;
             for (int i = 0; i < this.maps.Length; i++)
             {
+                maps[i].LoadContent(content);
                 maps[i].texture2D = content.Load<Texture2D>(@"mapGraphics\map" + m++);
             }
         }

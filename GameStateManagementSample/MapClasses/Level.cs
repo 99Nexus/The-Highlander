@@ -35,15 +35,24 @@ namespace GameStateManagement.MapClasses
         #endregion Fields
 
         #region Initialization
+
         public Level(int levelNumber)
         {
             this.levelNumber = levelNumber;
             rectangles = new Rectangle[2];
         }
+
         //no need for this Method
         public override void LoadContent(ContentManager content)
         {
             throw new NotImplementedException();
+        }
+
+        public void SetEndBoss(Enemy enemy, Vector2 EndBossPostion)
+        {
+            this.endBoss = enemy;
+            this.endBoss.Position = new Vector2(this.position.X + 850, this.position.Y + 500);
+            this.hasEndBoos = true;
         }
 
         #endregion Initialization
@@ -90,10 +99,8 @@ namespace GameStateManagement.MapClasses
 
         #region Update and Draw
         //no need for this Method
-        public override void Draw(SpriteBatch spriteBatch)
-        {
+        public override void Draw(SpriteBatch spriteBatch){}
 
-        }
         //no need for this Method
         public void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
@@ -101,12 +108,5 @@ namespace GameStateManagement.MapClasses
         }
 
         #endregion Update and Draw
-
-        public void SetEndBoss(Enemy enemy, Vector2 EndBossPostion)
-        {
-            this.endBoss = enemy;
-            this.endBoss.Position = new Vector2(this.position.X + 850, this.position.Y + 500);
-            this.hasEndBoos = true;
-        }
     }
 }

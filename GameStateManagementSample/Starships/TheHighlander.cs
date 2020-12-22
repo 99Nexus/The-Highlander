@@ -50,8 +50,8 @@ namespace GameStateManagement.Starships
         //amer, liber das lassen für testen
         private SpriteFont sprite;
         //public int PlayerScore { get; set; }
-
-
+        private Explosion explosion;
+        private bool showOne;
 
         #endregion Fields
 
@@ -78,6 +78,7 @@ namespace GameStateManagement.Starships
             Origin = new Vector2(texture[spriteCounter].Width / 2, texture[spriteCounter].Height / 2);
 
             laserTexture = content.Load<Texture2D>(@"graphics\game_objects\theHighlanderLaser");
+            explosion = new Explosion(content.Load<Texture2D>(@"explosion"), new Vector2(this.Position.X - 50, Position.Y - 20));
         }
 
         #endregion Initialization
@@ -91,9 +92,9 @@ namespace GameStateManagement.Starships
             if (Position.Y > GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Height - 35 || Position.Y < 25.0)
             {
                 return false;
-                
+
             }
-            else if (Position.X > GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width - 45  || Position.X < 25.0)
+            else if (Position.X > GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width - 45 || Position.X < 25.0)
             {
                 return false;
             }
@@ -104,7 +105,8 @@ namespace GameStateManagement.Starships
 
         public void HandleInput()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.A)) { 
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
                 rotation -= MathHelper.ToRadians(rotationVelocity);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
@@ -115,8 +117,10 @@ namespace GameStateManagement.Starships
 
             ///First check whether the screen in Fullscreen or Windows size mode is
             ///then if the Player click "w" the methode Mover() will be called
-            if (!GameStateManagementGame.Newgame.Graphics.IsFullScreen) { 
-                if (Keyboard.GetState().IsKeyDown(Keys.W)) {
+            if (!GameStateManagementGame.Newgame.Graphics.IsFullScreen)
+            {
+                if (Keyboard.GetState().IsKeyDown(Keys.W))
+                {
                     // Move(direction);
                     Position += direction * linearVelocity;
                     Player.Value++;
@@ -124,14 +128,15 @@ namespace GameStateManagement.Starships
             }
 
             //In FullScreen case
-            else if (Keyboard.GetState().IsKeyDown(Keys.W)) {
+            else if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
                 //Move(direction);
                 Position += direction * linearVelocity;
                 Player.Value++;
             }
 
             //shoot
-            if(Keyboard.GetState().IsKeyDown(Keys.Space))
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
                 Shoot();
             }
@@ -142,7 +147,7 @@ namespace GameStateManagement.Starships
         ///Methode IsValid()
         ///If the Ship across the screen's borders then the ship will be replaced
         ///in the middle of the screen (respawn)
-        public void Move( Vector2 direction)
+        public void Move(Vector2 direction)
         {
             if (IsValid())
             {
@@ -152,7 +157,7 @@ namespace GameStateManagement.Starships
             else
             {
                 Position = new Vector2(GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width / 2,
-                       GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Height -50);
+                       GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Height - 50);
                 Player.Value = Player.Value - 200;
             }
         }
@@ -162,21 +167,8 @@ namespace GameStateManagement.Starships
             // Call game over screen if player has no shield
             if (shield - damage < 1)
             {
-                /*
-                public void ManageExplosions()
-                {
-                    for (int i = 0; i < explosionList.Count; i++)
-                    {
-                        if (!explosionList[i].isVisible)
-                        {
-                            explosionList.RemoveAt(i);
-                            i--;
-                        }
-
-                    }
-                }
-                */
-                gameScreen.CallGameOverScreen();
+                this.isVisible = false;
+                //gameScreen.CallGameOverScreen();
             }
             else if (shield - damage >= 1)
                 shield -= damage;
@@ -237,13 +229,19 @@ namespace GameStateManagement.Starships
         public void Update(GameTime gameTime)
         {
             highlanderBox = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
-            Rectangle = new Rectangle((int)(Position.X - (texture[spriteCounter].Width / 2)), 
-                                      (int)Position.Y - (texture[spriteCounter].Height / 2), 
-                                      texture[spriteCounter].Width, 
+            Rectangle = new Rectangle((int)(Position.X - (texture[spriteCounter].Width / 2)),
+                                      (int)Position.Y - (texture[spriteCounter].Height / 2),
+                                      texture[spriteCounter].Width,
                                       texture[spriteCounter].Height);
 
             foreach (Laser l in laserList.ToList())
                 l.Update(gameTime);
+
+            if (!this.isVisible)
+            {
+                explosion.position = new Vector2(this.Position.X - 50, Position.Y - 20);
+                explosion.Update(gameTime);
+            }
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -254,14 +252,19 @@ namespace GameStateManagement.Starships
             else
                 spriteCounter = 0;
 
-            //shoot
-            foreach(Laser l in laserList)
-                l.Draw(spriteBatch);
+            if (this.isVisible)
+            {
+                //shoot
+                foreach (Laser l in laserList)
+                    l.Draw(spriteBatch);
+                spriteBatch.Draw(texture[spriteCounter], Position, null, Color.White, rotation, Origin, 1, SpriteEffects.None, 0);
+            }
 
-            spriteBatch.Draw(texture[spriteCounter], Position, null, Color.White, rotation, Origin, 1, SpriteEffects.None, 0);
+            explosion.position = new Vector2(this.Position.X - 50, Position.Y - 20);
+            explosion.Draw(spriteBatch);
+
             spriteBatch.DrawString(sprite, new string("Y " + Position.Y.ToString()), new Vector2(30, 100), Color.Black);
             spriteBatch.DrawString(sprite, new string("X " + Position.X.ToString()), new Vector2(30, 130), Color.Black);
-
         }
 
         #endregion Update and Draw
