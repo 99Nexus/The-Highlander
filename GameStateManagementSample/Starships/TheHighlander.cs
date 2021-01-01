@@ -22,7 +22,7 @@ namespace GameStateManagement.Starships
         public int spriteCounter = 0;
         public Score PlayerScore { get; set; }
         //public string playerName;
-       // public int playerScore;
+        // public int playerScore;
 
         // State attributes
         public float linearVelocity = 4f;
@@ -59,7 +59,6 @@ namespace GameStateManagement.Starships
 
         public TheHighlander(SpriteFont sprite, GameScreen gameScreen)
         {
-            
             PlayerScore = new Score(InputScreen.PlayerNameIS);
             laserList = new List<Laser>();
             this.sprite = sprite;
@@ -89,27 +88,23 @@ namespace GameStateManagement.Starships
         //This Methode will check the Position, whether is vaild or not  
         public bool IsValid()
         {
-
             if (Position.Y > GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Height - 35 || Position.Y < 25.0)
             {
                 return false;
-
             }
             else if (Position.X > GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width - 45 || Position.X < 25.0)
             {
                 return false;
             }
-
             return true;
         }
-
 
         public void HandleInput()
         {
             if (Keyboard.GetState().IsKeyDown(Keys.A))
-            {
                 rotation -= MathHelper.ToRadians(rotationVelocity);
-            }
+
+
             if (Keyboard.GetState().IsKeyDown(Keys.D))
                 rotation += MathHelper.ToRadians(rotationVelocity);
 
@@ -124,7 +119,6 @@ namespace GameStateManagement.Starships
                 {
                     // Move(direction);
                     Position += direction * linearVelocity;
-                    PlayerScore.Value++;
                 }
             }
 
@@ -133,7 +127,6 @@ namespace GameStateManagement.Starships
             {
                 //Move(direction);
                 Position += direction * linearVelocity;
-                PlayerScore.Value++;
             }
 
             //shoot
@@ -153,13 +146,11 @@ namespace GameStateManagement.Starships
             if (IsValid())
             {
                 Position += direction * linearVelocity;
-                PlayerScore.Value++;
             }
             else
             {
                 Position = new Vector2(GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width / 2,
                        GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Height - 50);
-                PlayerScore.Value = PlayerScore.Value - 200;
             }
         }
 
@@ -269,6 +260,5 @@ namespace GameStateManagement.Starships
         }
 
         #endregion Update and Draw
-
     }
 }

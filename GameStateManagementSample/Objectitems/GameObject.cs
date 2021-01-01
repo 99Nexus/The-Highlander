@@ -15,6 +15,9 @@ namespace GameStateManagement.ObjectItem
         public TheHighlander player;
         public bool keyPressed;
         public Vector2 Origin;
+        public int count = 0;
+
+        private bool scoreObserver;
 
         public GameObject(Vector2 pos, TheHighlander theHighlander)
         {
@@ -34,15 +37,17 @@ namespace GameStateManagement.ObjectItem
         public virtual void Update(GameTime gameTime)
         {
             //hier muss eine Bedingung hin und dann wird das Objekt dort visible
-            if (Keyboard.GetState().IsKeyDown(Keys.E) && CalculateDistanceToPlayer() <= 80)
+            if (!scoreObserver && Keyboard.GetState().IsKeyDown(Keys.E) && CalculateDistanceToPlayer() <= 80)
             {
                 keyPressed = true;
+                player.PlayerScore.Value += 250;
+                scoreObserver = true;
             }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
             spriteBatch.Draw(texture, position, null, Color.White, 0, Origin, 1, SpriteEffects.None, 0);
-        }  
+        }
     }
 }

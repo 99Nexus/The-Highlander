@@ -78,7 +78,7 @@ namespace GameStateManagement.MapClasses
                 case 3:
                     lvl.position = new Vector2(position.X + 1500, position.Y + 500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 1400);
-                    gameObjects.Add(new Crate(new Vector2(lvl.position.X + 60, lvl.position.Y + 60), player));
+                    gameObjects.Add(new Crate(new Vector2(lvl.position.X + 40, lvl.position.Y + 40), player));
                     break;
 
                 case 4:
@@ -90,6 +90,9 @@ namespace GameStateManagement.MapClasses
                 case 5:
                     lvl.position = new Vector2(position.X + 500, position.Y + 500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 500, lvl.position.Y + 100);
+                    gameObjects.Add(new Crate(new Vector2(lvl.position.X + 750, lvl.position.Y + 100), player));
+                    gameObjects.Add(new Crate(new Vector2(lvl.position.X + 250, lvl.position.Y + 150), player));
+                    gameObjects.Add(new Crate(new Vector2(lvl.position.X + 200, lvl.position.Y + 300), player));
                     break;
             }
             lvl.MakeBorders();
@@ -119,20 +122,10 @@ namespace GameStateManagement.MapClasses
                 {
                     explosions.Add(new Explosion(explosionTexture, new Vector2(enemies[i].Position.X - 50, enemies[i].Position.Y - 25)));
                     enemies.Remove(enemies[i]);
-                    player.PlayerScore.Value += 10;
+                    player.PlayerScore.Value += 150;
                 }
             }
         }
-
-        public void ObserveItems()
-        {
-            foreach (GameObject go in gameObjects)
-            {
-                if (go.keyPressed)
-                    player.PlayerScore.Value += 15;
-            }
-        }
-
 
         public void ManageExplosions()
         {
@@ -219,7 +212,6 @@ namespace GameStateManagement.MapClasses
                 ex.Update(gameTime);
             }
             ObserveEnemies();
-            ObserveItems();
             ManageExplosions();
         }
 

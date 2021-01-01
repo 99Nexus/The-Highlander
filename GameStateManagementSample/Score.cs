@@ -30,7 +30,7 @@ namespace GameStateManagement
         public Score(string playerName)
         {
             Playername = playerName;
-            Value = 1;
+            Value = 0;
         }
     }
 }
