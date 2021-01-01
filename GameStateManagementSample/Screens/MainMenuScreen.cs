@@ -83,8 +83,11 @@ namespace GameStateManagement
         /// </summary>
         private void StartGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
+            ScreenManager.AddScreen(new InputScreen(sender, e), e.PlayerIndex);
+            /*
             LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
                                new GameplayScreen());
+            */
         }
 
         /// <summary>

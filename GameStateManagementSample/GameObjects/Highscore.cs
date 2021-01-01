@@ -19,7 +19,7 @@ namespace GameStateManagement.GameObjects
         public Highscore(TheHighlander player)
         {
             this.player = player;
-            highscore = player.playerName + "\n Score: " + player.score;
+            highscore = player.PlayerScore.Playername + "\n Score: " + player.PlayerScore.Value;
             Position = new Vector2(GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width - 125, 30);
         }
 

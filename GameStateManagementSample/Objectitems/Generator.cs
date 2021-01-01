@@ -1,12 +1,7 @@
-﻿using GameStateManagement.GameObjects;
-using GameStateManagement.Starships;
+﻿using GameStateManagement.Starships;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GameStateManagement.ObjectItem
 {
@@ -17,18 +12,24 @@ namespace GameStateManagement.ObjectItem
         private string shieldString;
         public int damageBuffer;
         public int maxDamageBuffer;
-        private SpriteFont spriteFont;
-        private TheHighlander highlander;
 
-        public Generator(Vector2 pos, TheHighlander player) : base(pos, player)
+        public Generator(Vector2 pos, TheHighlander theHighlander) : base(pos, theHighlander)
         {
-            this.maxShield = 5;
+            maxShield = 5;
             actualShield = maxShield;
             damageBuffer = 0;
             maxDamageBuffer = 20;
         }
 
-
+        public override void LoadContent(ContentManager content)
+        {
+            texture = content.Load<Texture2D>(@"graphics\objects_items\Generator");
+            rectangle = new Rectangle((int)position.X - (texture.Width / 2),
+                                      (int)position.Y - (texture.Height / 2),
+                                      texture.Width,
+                                      texture.Height);
+            Origin = new Vector2(texture.Width / 2, texture.Height / 2);
+        }
 
         public void UpdateActualShieldValue(int damage)
         {
@@ -46,29 +47,18 @@ namespace GameStateManagement.ObjectItem
             }
         }
 
-
-        public void LoadContent(ContentManager content)
+        public override void Update(GameTime gameTime)
         {
-            texture = content.Load<Texture2D>(@"graphics\objects_items\Generator");
-            rectangle = new Rectangle((int)position.X - (texture.Width / 2),
-                                      (int)position.Y - (texture.Height / 2),
-                                      texture.Width,
-                                      texture.Height);
-            Origin = new Vector2(texture.Width / 2, texture.Height / 2);
+            base.Update(gameTime);
+            /*
+             * UpdateActualShieldValue
+             */
         }
-
-
-        public override void Update(GameTime gameTime, TheHighlander highlander)
-        {
-            
-        }
-
 
         public override void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
             base.Draw(spriteBatch, sprite);
             spriteBatch.DrawString(sprite, new string("Destroy the \n generator"), new Vector2(position.X + 20, position.Y + 126), Color.Black);
         }
-
     }
 }

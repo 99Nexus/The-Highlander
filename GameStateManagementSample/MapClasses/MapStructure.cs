@@ -1,10 +1,18 @@
-﻿#region Using Statements
+﻿#region File Description
+
+//-----------------------------------------------------------------------------
+// MapStructure.cs
+//
+// Microsoft XNA Community Game Platform
+// Copyright (C) Microsoft Corporation. All rights reserved.
+//-----------------------------------------------------------------------------
+
+#endregion File Description
+#region Using Statements
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 #endregion Using Statements
-
-
 
 namespace GameStateManagement.MapClasses
 {
@@ -16,18 +24,11 @@ namespace GameStateManagement.MapClasses
         #endregion Fields
 
         #region Initialization
-        public MapStructure()
-        {
-
-        }
+        public MapStructure() { }
 
         public abstract void LoadContent(ContentManager content);
-
 
         public abstract void Draw(SpriteBatch spriteBatch);
         #endregion Initialization
     }
-
-
-
 }

@@ -51,14 +51,6 @@ namespace GameStateManagement
         private Camera camera;
         private Camera cameraBar;
         private Camera cameraHighscore;
-        private Explosion explosion;
-        private List<Enemy> enemyList;
-
-        // Object-Items
-        private Alarm alarm;
-        private Generator generator;
-        private ControlSystem cs;
-        private Crate crate;
 
         // Other objects
         private Random random = new Random();
@@ -94,46 +86,27 @@ namespace GameStateManagement
             einFont = content.Load<SpriteFont>("einFont");
 
             // Objects declaration
-            highlander = new TheHighlander(einFont, "Player1", 0, this);
+            highlander = new TheHighlander(einFont, this);
             healthBar = new HealthBar(highlander);
             highscore = new Highscore(highlander);
 
             mainMap = new MainMap(content, highlander);
-            mainMap.LoadContent(content);
-
-
-            //Object-Items
-            generator = new Generator(new Vector2(mainMap.maps[0].levels[0].position.X + 370, mainMap.maps[0].levels[0].position.Y + 500), highlander);
-            generator.LoadContent(content);
-
-            alarm = new Alarm(new Vector2(mainMap.maps[0].levels[1].position.X + 500, mainMap.maps[0].levels[1].position.Y + 100), highlander);
-            alarm.LoadContent(content);
-
-            cs = new ControlSystem(new Vector2(mainMap.maps[0].levels[3].position.X + 1000, mainMap.maps[0].levels[3].position.Y + 50), highlander);
-            cs.LoadContent(content);
-
-
-            // test
-            crate = new Crate(new Vector2(mainMap.maps[0].levels[3].position.X + 1200, mainMap.maps[0].levels[3].position.Y + 150), highlander);
-            crate.LoadContent(content);
-
 
             // spawn-position for the Highlander
-            highlander.Position = mainMap.maps[0].levels[1].spawnPosition;
+            highlander.Position = mainMap.maps[0].levels[4].spawnPosition;
 
             enemy = new Enemy(new Vector2(1000, 900), 2, 1, 2f, new Vector2(1000, 1100),
                 highlander.Position, 20.0, MovementMode.VERTICAL);
 
-
             // Manager
             collisionManager = new CollisionManager(mainMap, highlander);
-
 
             // Load content calls
             highlander.LoadContent(content);
             healthBar.LoadContent(content);
             highscore.LoadContent(content);
             enemy.LoadContent(content);
+            mainMap.LoadContent(content);
 
             //TEST
             mainMap.maps[0].enemies.Add(enemy);
@@ -177,17 +150,13 @@ namespace GameStateManagement
         {
             highlander.Update(gameTime);
             healthBar.Update(gameTime);
-            mainMap.Update(gameTime);
-            
+            mainMap.Update(gameTime, highlander);
 
             camera.Follow(highlander);
             cameraBar.Follow(healthBar);
             cameraHighscore.Follow(highscore);
 
             collisionManager.ManageCollisions();
-
-            alarm.Update(gameTime, highlander);
-            cs.Update(gameTime, highlander);
 
             base.Update(gameTime, otherScreenHasFocus, false);
         }
@@ -234,8 +203,7 @@ namespace GameStateManagement
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
-            ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
-                                  Color.Black, 0, 0);
+            ScreenManager.GraphicsDevice.Clear(ClearOptions.Target, Color.Black, 0, 0);
 
             ScreenManager screenManager = this.ScreenManager;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
@@ -246,25 +214,18 @@ namespace GameStateManagement
             foreach (Map m in mainMap.maps)
             {
                 m.Draw(spriteBatch);
-                m.Draw(spriteBatch,einFont);
+                m.Draw(spriteBatch, einFont);
+                /*
                 foreach (Level l in m.levels)
                 {
                     l.Draw(spriteBatch, einFont);
                 }
+                */
             }
-            
+
             enemy.Draw(gameTime, spriteBatch);
 
-            alarm.Draw(spriteBatch, einFont);
-
-            generator.Draw(spriteBatch, einFont);
-
-            cs.Draw(spriteBatch, einFont);
-
-            crate.Draw(spriteBatch, einFont);
-
             highlander.Draw(gameTime, spriteBatch);
-
 
             spriteBatch.End();
 
@@ -273,7 +234,6 @@ namespace GameStateManagement
             healthBar.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
-
 
             spriteBatch.Begin(transformMatrix: cameraHighscore.Transform);
 
@@ -288,7 +248,6 @@ namespace GameStateManagement
 
                 ScreenManager.FadeBackBufferToBlack(alpha);
             }
-
         }
         #endregion Update and Draw
     }

@@ -1,8 +1,7 @@
 ﻿#region Using Statements
-using System;
 using System.Collections.Generic;
-using System.Text;
 using GameStateManagement.Starships;
+using GameStateManagement.ObjectItem;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
@@ -30,6 +29,8 @@ namespace GameStateManagement.MapClasses
         private List<Explosion> explosions;
         private Texture2D explosionTexture;
 
+
+        public List<GameObject> gameObjects;
         #endregion Fields
 
         //vector startposition
@@ -42,13 +43,14 @@ namespace GameStateManagement.MapClasses
 
         #region Initialization
 
-        public Map(TheHighlander player, int mapNumber)
+        public Map(TheHighlander theHighlander, int mNumber)
         {
-            this.mapNumber = mapNumber;
-            this.levels = new Level[5];
-            this.player = player;
-            this.enemies = new List<Enemy>();
-            this.explosions = new List<Explosion>();
+            mapNumber = mNumber;
+            levels = new Level[5];
+            player = theHighlander;
+            enemies = new List<Enemy>();
+            explosions = new List<Explosion>();
+            gameObjects = new List<GameObject>();
         }
 
         ///assign the background directly in the Constructor
@@ -59,31 +61,37 @@ namespace GameStateManagement.MapClasses
 
         public void SetPositions(Level lvl)
         {
-            //for (int i = 0; i < enemies.Count; i++)
             switch (lvl.levelNumber)
             {
                 case 1:
-                    lvl.position = new Vector2(this.position.X, this.position.Y);
-                    this.playerStartPosition = (lvl.spawnPosition = new Vector2(lvl.position.X + 250, 100 + lvl.position.Y));
+                    lvl.position = new Vector2(position.X, position.Y);
+                    playerStartPosition = (lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 100));
+                    gameObjects.Add(new ControlSystem(new Vector2(lvl.position.X + 45, lvl.position.Y + 400), player));
                     break;
+
                 case 2:
-                    lvl.position = new Vector2(this.position.X, this.position.Y + 1500);
+                    lvl.position = new Vector2(position.X, position.Y + 1500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 250);
+                    gameObjects.Add(new Alarm(new Vector2(lvl.position.X + 750, lvl.position.Y + 60), player));
                     break;
+
                 case 3:
-                    lvl.position = new Vector2(1500 + this.position.X, 500 + this.position.Y);
+                    lvl.position = new Vector2(position.X + 1500, position.Y + 500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 1400);
+                    gameObjects.Add(new Crate(new Vector2(lvl.position.X + 60, lvl.position.Y + 60), player));
                     break;
+
                 case 4:
-                    lvl.position = new Vector2(500 + this.position.X, 0 + this.position.Y);
-                    lvl.spawnPosition = new Vector2(lvl.position.X + 1400, 250 + this.position.Y);
+                    lvl.position = new Vector2(position.X + 500, position.Y);
+                    lvl.spawnPosition = new Vector2(lvl.position.X + 1400, position.Y + 250);
+                    gameObjects.Add(new Generator(new Vector2(lvl.position.X + 1000, lvl.position.Y + 70), player));
                     break;
+
                 case 5:
-                    lvl.position = new Vector2(500 + this.position.X, 500 + this.position.Y);
-                    lvl.spawnPosition = new Vector2(lvl.position.X + 500, 100 + this.position.X);
+                    lvl.position = new Vector2(position.X + 500, position.Y + 500);
+                    lvl.spawnPosition = new Vector2(lvl.position.X + 500, lvl.position.Y + 100);
                     break;
             }
-
             lvl.MakeBorders();
         }
 
@@ -91,11 +99,11 @@ namespace GameStateManagement.MapClasses
         public void CreateLevels()
         {
             int l = 1;
-            for (int i = 0; i < this.levels.Length; i++)
+            for (int i = 0; i < levels.Length; i++)
             {
                 //create new lvl and assign levelNumber
-                this.levels[i] = new Level(l++);
-                SetPositions(this.levels[i]);
+                levels[i] = new Level(l++);
+                SetPositions(levels[i]);
             }
         }
 
@@ -111,19 +119,27 @@ namespace GameStateManagement.MapClasses
                 {
                     explosions.Add(new Explosion(explosionTexture, new Vector2(enemies[i].Position.X - 50, enemies[i].Position.Y - 25)));
                     enemies.Remove(enemies[i]);
+                    player.PlayerScore.Value += 10;
                 }
             }
         }
+
+        public void ObserveItems()
+        {
+            foreach (GameObject go in gameObjects)
+            {
+                if (go.keyPressed)
+                    player.PlayerScore.Value += 15;
+            }
+        }
+
 
         public void ManageExplosions()
         {
             for (int i = 0; i < explosions.Count; i++)
             {
                 if (!explosions[i].isVisible)
-                {
-                    explosions.RemoveAt(i);
-                    i--;
-                }
+                    explosions.RemoveAt(i--);
             }
         }
 
@@ -135,16 +151,13 @@ namespace GameStateManagement.MapClasses
             {
                 enemyList.Add(new Enemy(theEnemy, einFont, 1, 0, 0, 0));
             }
-            
 
             enemyList.Add(new Enemy(theEnemy, einFont, 1, 0, 0, 0));
 
             if (!enemyList[0].isVisible)
             {
                 enemyList.RemoveAt(0);
-                
             }
-
 
             for (int i = 0; i < enemyList.Count; i++)
             {
@@ -153,11 +166,8 @@ namespace GameStateManagement.MapClasses
                     enemyList.RemoveAt(i);
                     i--;
                 }
-
             }
         }
-
-
         */
 
         //load enemies
@@ -172,7 +182,7 @@ namespace GameStateManagement.MapClasses
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture2D, position, Color.White);
-            foreach(Explosion ex in explosions)
+            foreach (Explosion ex in explosions)
             {
                 ex.Draw(spriteBatch);
             }
@@ -180,14 +190,23 @@ namespace GameStateManagement.MapClasses
         //for test
         public void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
-            spriteBatch.DrawString(sprite, new string("Map" + mapNumber.ToString()), new Vector2(position.X + 50, position.Y + 50), Color.Black);
+            spriteBatch.DrawString(sprite, new string("Map " + mapNumber.ToString()), new Vector2(position.X + 50, position.Y + 50), Color.Black);
+            foreach (GameObject go in gameObjects)
+            {
+                go.Draw(spriteBatch, sprite);
+            }
         }
 
-        public void Update(GameTime gameTime, TheHighlander player)
+        public void Update(GameTime gameTime, TheHighlander theHighlander)
         {
             foreach (Enemy e in enemies)
             {
-                e.Update(gameTime, player.Position);
+                e.Update(gameTime, theHighlander.Position);
+            }
+
+            foreach (GameObject go in gameObjects)
+            {
+                go.Update(gameTime);
             }
 
             foreach (Level l in levels)
@@ -200,6 +219,7 @@ namespace GameStateManagement.MapClasses
                 ex.Update(gameTime);
             }
             ObserveEnemies();
+            ObserveItems();
             ManageExplosions();
         }
 
@@ -211,13 +231,11 @@ namespace GameStateManagement.MapClasses
                 {
                     if (le.endBossDefeated)
                     {
-                        this.isCompleted = true;
+                        isCompleted = true;
                     }
                 }
             }
         }
-
         #endregion Update and Draw
-
     }
 }

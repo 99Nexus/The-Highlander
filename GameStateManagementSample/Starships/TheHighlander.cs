@@ -20,8 +20,9 @@ namespace GameStateManagement.Starships
         public Rectangle highlanderBox;
         public bool isVisible;
         public int spriteCounter = 0;
-        public Score Player { get; set; }
-        public string playerName = "Player1";
+        public Score PlayerScore { get; set; }
+        //public string playerName;
+       // public int playerScore;
 
         // State attributes
         public float linearVelocity = 4f;
@@ -51,18 +52,18 @@ namespace GameStateManagement.Starships
         private SpriteFont sprite;
         //public int PlayerScore { get; set; }
         private Explosion explosion;
-        private bool showOne;
 
         #endregion Fields
 
         #region Initialization
 
-        public TheHighlander(SpriteFont sprite, string playerName, int playerScore, GameScreen gameScreen)
+        public TheHighlander(SpriteFont sprite, GameScreen gameScreen)
         {
+            
+            PlayerScore = new Score(InputScreen.PlayerNameIS);
             laserList = new List<Laser>();
             this.sprite = sprite;
             laserDelay = 20;
-            Player = new Score(playerName, playerScore);
             this.isVisible = true;
             this.gameScreen = (GameplayScreen)gameScreen;
             weaponPower = 1;
@@ -123,7 +124,7 @@ namespace GameStateManagement.Starships
                 {
                     // Move(direction);
                     Position += direction * linearVelocity;
-                    Player.Value++;
+                    PlayerScore.Value++;
                 }
             }
 
@@ -132,7 +133,7 @@ namespace GameStateManagement.Starships
             {
                 //Move(direction);
                 Position += direction * linearVelocity;
-                Player.Value++;
+                PlayerScore.Value++;
             }
 
             //shoot
@@ -152,13 +153,13 @@ namespace GameStateManagement.Starships
             if (IsValid())
             {
                 Position += direction * linearVelocity;
-                Player.Value++;
+                PlayerScore.Value++;
             }
             else
             {
                 Position = new Vector2(GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width / 2,
                        GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Height - 50);
-                Player.Value = Player.Value - 200;
+                PlayerScore.Value = PlayerScore.Value - 200;
             }
         }
 

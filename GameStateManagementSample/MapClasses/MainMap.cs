@@ -1,10 +1,21 @@
-﻿#region Using Statements
+﻿#region File Description
+
+//-----------------------------------------------------------------------------
+// MainMap.cs
+//
+// Microsoft XNA Community Game Platform
+// Copyright (C) Microsoft Corporation. All rights reserved.
+//-----------------------------------------------------------------------------
+
+#endregion File Description
+
+#region Using Statements
 using GameStateManagement.Starships;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using GameStateManagement.ObjectItem;
 #endregion Using Statements
-
 
 namespace GameStateManagement.MapClasses
 {
@@ -12,6 +23,7 @@ namespace GameStateManagement.MapClasses
     {
         #region Fields
         public Map[] maps;
+
         //Borders
         public Rectangle[] rectangles;
         public Rectangle topMainBorder;
@@ -25,7 +37,7 @@ namespace GameStateManagement.MapClasses
         #endregion Fields
 
         #region Initialization
-        public MainMap(ContentManager content, TheHighlander player)
+        public MainMap(ContentManager content, TheHighlander theHighlander)
         {
             rectangles = new Rectangle[6];
             rectangles[0] = this.topMainBorder = new Rectangle(0, 0, 4000, 10);
@@ -36,8 +48,8 @@ namespace GameStateManagement.MapClasses
             rectangles[5] = this.leftMainBorder = new Rectangle(4000, 0, 10, 4000);
             maps = new Map[4];
             position = new Vector2(0, 0);
+            player = theHighlander;
             CreateMaps(content);
-            this.player = player;
         }
 
         public override void LoadContent(ContentManager content)
@@ -54,6 +66,11 @@ namespace GameStateManagement.MapClasses
             {
                 maps[i].LoadContent(content);
                 maps[i].texture2D = content.Load<Texture2D>(@"mapGraphics\map" + m++);
+                
+                foreach (GameObject go in maps[i].gameObjects)
+                {
+                    go.LoadContent(content);
+                }
             }
         }
 
@@ -61,11 +78,11 @@ namespace GameStateManagement.MapClasses
         public void CreateMaps(ContentManager content)
         {
             int m = 1;
-            for (int i = 0; i < this.maps.Length; i++)
+            for (int i = 0; i < maps.Length; i++)
             {
                 //create new lvl and assign map Number
-                this.maps[i] = new Map(player, m++);
-                SetPositions(this.maps[i]);
+                maps[i] = new Map(player, m++);
+                SetPositions(maps[i]);
             }
         }
 
@@ -98,11 +115,11 @@ namespace GameStateManagement.MapClasses
             spriteBatch.Draw(texture2D, position, Color.White);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, TheHighlander theHighlander)
         {
             foreach (Map m in maps)
             {
-                m.Update(gameTime, player);
+                m.Update(gameTime, theHighlander);
             }
         }
         #endregion Update and Draw

@@ -1,27 +1,21 @@
-﻿using GameStateManagement.GameObjects;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Xna.Framework.Input;
 using GameStateManagement.Starships;
 
 namespace GameStateManagement.ObjectItem
 {
     public class Alarm : GameObject
     {
-        private TheHighlander highlander;
         private int spriteCounter = 0;
         private Texture2D[] alarmList; 
-        public Alarm(Vector2 pos, TheHighlander player) : base(pos, player)
+
+        public Alarm(Vector2 pos, TheHighlander theHighlander) : base(pos, theHighlander)
         {
             alarmList = new Texture2D[2];
         }
 
-        public void LoadContent(ContentManager content)
+        public override void LoadContent(ContentManager content)
         {
             alarmList[0] = content.Load<Texture2D>(@"graphics\objects_items\AlarmSystem");
             alarmList[1] = content.Load<Texture2D>(@"graphics\objects_items\AlarmSystem2");
@@ -32,12 +26,6 @@ namespace GameStateManagement.ObjectItem
             Origin = new Vector2(alarmList[spriteCounter].Width / 2, alarmList[spriteCounter].Height / 2);
             Origin = new Vector2(alarmList[spriteCounter].Width / 2, alarmList[spriteCounter].Height / 2);
         }
-
-        public override void Update(GameTime gameTime, TheHighlander highlander)
-        {
-            base.Update(gameTime, highlander);
-        }
-
 
         public override void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
