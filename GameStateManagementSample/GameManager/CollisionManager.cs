@@ -24,7 +24,7 @@ namespace GameStateManagement.GameManager
         {
             
             //CollisionBetweenPlayerAndEnemy();
-            //CollisionBetweenPlayerAndLaser();
+            CollisionBetweenPlayerAndLaser();
             CollissionBetweenEnemyAndLaser();
             CollissionBetweenPlayerAndMapObject();
             CollisionBetweenPlayerLaserAndMapObject();

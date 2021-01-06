@@ -160,7 +160,7 @@ namespace GameStateManagement.Starships
             if (shield - damage < 1)
             {
                 this.isVisible = false;
-                //gameScreen.CallGameOverScreen();
+                gameScreen.CallGameOverScreen();
             }
             else if (shield - damage >= 1)
                 shield -= damage;

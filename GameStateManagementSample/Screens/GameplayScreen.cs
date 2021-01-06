@@ -60,6 +60,11 @@ namespace GameStateManagement
         // Map objects
         MainMap mainMap;
 
+        /// <summary>
+        ///  for GameOverScreen
+        /// </summary>
+        bool pause;
+
         #endregion Fields
 
         #region Initialization
@@ -148,16 +153,18 @@ namespace GameStateManagement
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
-            highlander.Update(gameTime);
-            healthBar.Update(gameTime);
-            mainMap.Update(gameTime, highlander);
+            if (highlander.isVisible && !pause)
+            {
+                highlander.Update(gameTime);
+                healthBar.Update(gameTime);
+                mainMap.Update(gameTime, highlander);
 
-            camera.Follow(highlander);
-            cameraBar.Follow(healthBar);
-            cameraHighscore.Follow(highscore);
+                camera.Follow(highlander);
+                cameraBar.Follow(healthBar);
+                cameraHighscore.Follow(highscore);
 
-            collisionManager.ManageCollisions();
-
+                collisionManager.ManageCollisions();
+            }
             base.Update(gameTime, otherScreenHasFocus, false);
         }
 
@@ -185,10 +192,12 @@ namespace GameStateManagement
 
             if (input.IsPauseGame(ControllingPlayer) || gamePadDisconnected)
             {
+                pause = true;
                 ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
             }
             else
             {
+                pause = false;
                 highlander.HandleInput();
             }
         }
