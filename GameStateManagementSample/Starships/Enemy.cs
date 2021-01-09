@@ -355,6 +355,7 @@ namespace GameStateManagement.Starships
         {
             if(actualShield - damage < 1)
             {
+                //public void ManageExplosions()
                 actualShield = 0;
             }
             else

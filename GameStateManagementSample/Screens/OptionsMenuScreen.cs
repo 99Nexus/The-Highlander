@@ -47,8 +47,8 @@ namespace GameStateManagement
         */
 
         private static string[] KeyMapping = { "Move Forward \"W\"", "Move Backward \"S\"",
-                                                "Move Right \"D\"", "Move Left \"A\"" };
-        
+                                                "Move Right \"D\"", "Move Left \"A\"", "Shot \"Space\"", "Interact \"E\"" };
+
         private static bool currentfullscreen = false;
 
         private static bool currentmusic = true;
@@ -111,7 +111,7 @@ namespace GameStateManagement
 
             effectsMenuEntry.Text = "Effects: " + (currenteffecs ? "unmuted" : "muted");
 
-            keyMapMenuEntry.Text = "KeyMap: " + string.Join(",",KeyMapping[currentKeyMap]);
+            keyMapMenuEntry.Text = "KeyMap: " + string.Join(",", KeyMapping[currentKeyMap]);
 
         }
 

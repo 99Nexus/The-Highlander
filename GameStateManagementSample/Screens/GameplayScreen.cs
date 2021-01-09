@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using GameStateManagement.GameObjects;
 using GameStateManagement.GameManager;
 using GameStateManagement.MapClasses;
+using GameStateManagement.ObjectItem;
 
 #endregion Using Statements
 
@@ -51,8 +52,6 @@ namespace GameStateManagement
         private Camera camera;
         private Camera cameraBar;
         private Camera cameraHighscore;
-        private Explosion explosion;
-        private List<Enemy> enemyList;
 
         // Other objects
         private Random random = new Random();
@@ -60,14 +59,12 @@ namespace GameStateManagement
         private float pauseAlpha;
 
         // Map objects
-
         MainMap mainMap;
-        Map map;
-        Level level;
 
-        ///those have a methode and list maybe helpful for later
-        ///private List<Enemy> enemyList = new List<Enemy>();
-        ///private List<Explosion> explosionList = new List<Explosion>();
+        /// <summary>
+        ///  for GameOverScreen
+        /// </summary>
+        bool pause;
 
         #endregion Fields
 
@@ -94,38 +91,30 @@ namespace GameStateManagement
 
             einFont = content.Load<SpriteFont>("einFont");
 
-            enemyList = new List<Enemy>();
-
             // Objects declaration
-            highlander = new TheHighlander(einFont, "Player1", 0, this);
+            highlander = new TheHighlander(einFont, this);
             healthBar = new HealthBar(highlander);
             highscore = new Highscore(highlander);
 
             mainMap = new MainMap(content, highlander);
-            mainMap.LoadContent(content);
 
-            //highlander.Position = mainMap.maps[3].levels[3].spawnPosition;
-            highlander.Position = new Vector2(3000, 800);
+            // spawn-position for the Highlander
+            highlander.Position = mainMap.maps[0].levels[4].spawnPosition;
 
-            tanker = new Tanker(new Vector2(1000, 1000), 15, 1, 2f, new Vector2(1000, 1000),
-                highlander.Position, 20.0, MovementMode.PATROL);
+            enemy = new Enemy(new Vector2(1000, 900), 2, 1, 2f, new Vector2(1000, 1100),
+                highlander.Position, 20.0, MovementMode.VERTICAL);
 
-            sprinter = new Sprinter(new Vector2(3000, 1000), 11, 1, 3f, new Vector2(2000, 1000),
-                highlander.Position, 20.0, MovementMode.PATROL);
-
-            explosion = new Explosion(new Vector2(tanker.Position.X, tanker.Position.Y));
+            explosion = new Explosion(new Vector2(enemy.Position.X, enemy.Position.Y));
 
             // Manager
             collisionManager = new CollisionManager(mainMap, highlander);
-
 
             // Load content calls
             highlander.LoadContent(content);
             healthBar.LoadContent(content);
             highscore.LoadContent(content);
-            explosion.LoadContent(content);
-            tanker.LoadContent(content);
-            sprinter.LoadContent(content);
+            enemy.LoadContent(content);
+            mainMap.LoadContent(content);
 
             //TEST
             mainMap.maps[0].enemies.Add(tanker);
@@ -158,52 +147,6 @@ namespace GameStateManagement
         #endregion Initialization
 
 
-        #region Loading Enemy & Manage Explosions
-        /*
-        public void LoadEnemies()
-        {
-            /*
-            if(enemyList.Count < 1)
-            {
-                enemyList.Add(new Enemy(theEnemy, einFont, 1, 0, 0, 0));
-            }
-            
-
-            enemyList.Add(new Enemy(theEnemy, einFont, 1, 0, 0, 0));
-
-            if (!enemyList[0].isVisible)
-            {
-                enemyList.RemoveAt(0);
-                
-            }
-
-
-            for (int i = 0; i < enemyList.Count; i++)
-            {
-                if (!enemyList[i].isVisible)
-                {
-                    enemyList.RemoveAt(i);
-                    i--;
-                }
-
-            }
-        }
-
-        public void ManageExplosions()
-        {
-            for (int i = 0; i < explosionList.Count; i++)
-            {
-                if (!explosionList[i].isVisible)
-                {
-                    explosionList.RemoveAt(i);
-                    i--;
-                }
-
-            }
-        }
-        */
-        #endregion Loading Enemy & Manage Explosions
-
         #region Update and Draw
 
         /// <summary>
@@ -214,17 +157,18 @@ namespace GameStateManagement
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
-            highlander.Update(gameTime);
-            healthBar.Update(gameTime);
-            mainMap.Update(gameTime);
-            
+            if (highlander.isVisible && !pause)
+            {
+                highlander.Update(gameTime);
+                healthBar.Update(gameTime);
+                mainMap.Update(gameTime, highlander);
 
-            camera.Follow(highlander);
-            cameraBar.Follow(healthBar);
-            cameraHighscore.Follow(highscore);
+                camera.Follow(highlander);
+                cameraBar.Follow(healthBar);
+                cameraHighscore.Follow(highscore);
 
-            collisionManager.ManageCollisions();
-
+                collisionManager.ManageCollisions();
+            }
             base.Update(gameTime, otherScreenHasFocus, false);
         }
 
@@ -252,10 +196,12 @@ namespace GameStateManagement
 
             if (input.IsPauseGame(ControllingPlayer) || gamePadDisconnected)
             {
+                pause = true;
                 ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
             }
             else
             {
+                pause = false;
                 highlander.HandleInput();
             }
         }
@@ -270,38 +216,29 @@ namespace GameStateManagement
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
-            ScreenManager.GraphicsDevice.Clear(ClearOptions.Target,
-                                  Color.Black, 0, 0);
+            ScreenManager.GraphicsDevice.Clear(ClearOptions.Target, Color.Black, 0, 0);
 
             ScreenManager screenManager = this.ScreenManager;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
-
-
-
             spriteBatch.Begin(transformMatrix: camera.Transform);
-
 
             mainMap.Draw(spriteBatch);
             foreach (Map m in mainMap.maps)
             {
                 m.Draw(spriteBatch);
-                m.Draw(spriteBatch,einFont);
+                m.Draw(spriteBatch, einFont);
+                /*
                 foreach (Level l in m.levels)
                 {
                     l.Draw(spriteBatch, einFont);
                 }
+                */
             }
-            
-            tanker.Draw(gameTime, spriteBatch);
 
-            sprinter.Draw(gameTime, spriteBatch);
+            enemy.Draw(gameTime, spriteBatch);
 
             highlander.Draw(gameTime, spriteBatch);
-
-
-            explosion.Draw(spriteBatch);
-
 
             spriteBatch.End();
 
@@ -310,7 +247,6 @@ namespace GameStateManagement
             healthBar.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
-
 
             spriteBatch.Begin(transformMatrix: cameraHighscore.Transform);
 
@@ -325,9 +261,7 @@ namespace GameStateManagement
 
                 ScreenManager.FadeBackBufferToBlack(alpha);
             }
-
         }
-
         #endregion Update and Draw
     }
 }

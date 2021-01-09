@@ -1,18 +1,24 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace GameStateManagement.Screens
 {
     class GameOverScreen : MenuScreen
     {
+        public Texture2D texture;
         #region Initialization
 
         /// <summary>
         /// Constructor.
         /// </summary>
         public GameOverScreen()
-            : base("")
+            : base("Try harder next time!")
         {
             // Create our menu entries.
             MenuEntry quitGameMenuEntry = new MenuEntry("Quit Game");
@@ -54,5 +60,15 @@ namespace GameStateManagement.Screens
         }
 
         #endregion Handle Input
+
+        public void loadContent(ContentManager content)
+        {
+            texture = content.Load<Texture2D>(@"graphics\screen_graphics\gameOver");
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, new Vector2(100, 200), Color.White);
+        }
     }
 }

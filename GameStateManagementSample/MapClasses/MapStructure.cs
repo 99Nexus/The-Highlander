@@ -1,27 +1,34 @@
-﻿using Microsoft.Xna.Framework;
+﻿#region File Description
+
+//-----------------------------------------------------------------------------
+// MapStructure.cs
+//
+// Microsoft XNA Community Game Platform
+// Copyright (C) Microsoft Corporation. All rights reserved.
+//-----------------------------------------------------------------------------
+
+#endregion File Description
+#region Using Statements
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-
-
+#endregion Using Statements
 
 namespace GameStateManagement.MapClasses
 {
     public abstract class MapStructure
     {
+        #region Fields
         public Vector2 position { get; set; }
         public Texture2D texture2D { get; set; }
-        public MapStructure()
-        {
+        #endregion Fields
 
-        }
+        #region Initialization
+        public MapStructure() { }
 
         public abstract void LoadContent(ContentManager content);
 
-
         public abstract void Draw(SpriteBatch spriteBatch);
-
+        #endregion Initialization
     }
-
-
-
 }

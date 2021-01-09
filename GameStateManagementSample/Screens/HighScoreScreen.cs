@@ -11,10 +11,10 @@
 
 #region Using Statements
 
-using GameStateManagementSample;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Linq;
 
 #endregion Using Statements
@@ -26,7 +26,7 @@ namespace GameStateManagement
     /// screen, and gives the user a chance to configure the game
     /// in various hopefully useful ways.
     /// </summary>
-    internal class HighScoreScreen : MenuScreen
+    class HighScoreScreen : MenuScreen
     {
 
         #region Fields
@@ -34,7 +34,7 @@ namespace GameStateManagement
         private ScoreManager scoreManager;
         private ContentManager content;
         SpriteBatch spriteBatch;
-        private SpriteFont score;
+        private SpriteFont scoreFont;
 
         #endregion Fields
 
@@ -44,25 +44,30 @@ namespace GameStateManagement
         /// <summary>
         /// Constructor.
         /// </summary>
-        public HighScoreScreen()
-            : base("")
+        public HighScoreScreen() : base("")
         {
+            TransitionOnTime = TimeSpan.FromSeconds(0.0);
+            TransitionOffTime = TimeSpan.FromSeconds(0.0);
         }
 
-
-        
         public override void LoadContent()
         {
             content = ScreenManager.Game.Content;
             // assign the font style to the variable score
-            score = content.Load<SpriteFont>("einFont");
+            scoreFont = content.Load<SpriteFont>("einFont");
             // load the saved Score list, if there is not any created list then a new list will be created
             scoreManager = ScoreManager.Load();
         }
 
+        /// <summary>
+        /// Handler for when the user has chosen a menu entry.
+        /// </summary>
+        protected override void OnSelectEntry(int entryIndex, PlayerIndex playerIndex)
+        {
+            ExitScreen();
+        }
 
         #endregion Initialization
-
 
         #region Draw
 
@@ -70,13 +75,13 @@ namespace GameStateManagement
         {
 
             spriteBatch = ScreenManager.SpriteBatch;
-            
+
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(score,"TEST TEST: \n" + string.Join("\n",
+            spriteBatch.DrawString(scoreFont, "TEST TEST: \n" + string.Join("\n",
                 scoreManager.Highscore.Select(c => c.Playername + ": " + c.Value).ToArray()),
-                new Vector2(GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width / 2 -75,
-                GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Height / 2 -150),
+                new Vector2(GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width / 2 - 75,
+                GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Height / 2 - 150),
                 Color.White);
 
             spriteBatch.End();
