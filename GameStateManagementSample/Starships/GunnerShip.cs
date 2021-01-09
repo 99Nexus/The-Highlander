@@ -14,6 +14,7 @@ namespace GameStateManagement.Starships
             Vector2 end, Vector2 playerPosition, double keepDistanceToPlayer, MovementMode movementMode) :
             base(position, maxShield, weaponPower, linearVelocity, end, playerPosition, keepDistanceToPlayer, movementMode)
         {
+            score = 200;
         }
 
         public override void LoadContent(ContentManager content)
@@ -21,9 +22,9 @@ namespace GameStateManagement.Starships
             base.LoadContent(content);
 
             texture = new Texture2D[3];
-            texture[0] = content.Load<Texture2D>(@"graphics\starships\sprinter1");
-            texture[1] = content.Load<Texture2D>(@"graphics\starships\sprinter2");
-            texture[2] = content.Load<Texture2D>(@"graphics\starships\sprinter3");
+            texture[0] = content.Load<Texture2D>(@"graphics\starships\gunnerShip1");
+            texture[1] = content.Load<Texture2D>(@"graphics\starships\gunnerShip2");
+            texture[2] = content.Load<Texture2D>(@"graphics\starships\gunnerShip3");
         }
     }
 }

@@ -14,6 +14,7 @@ namespace GameStateManagement.Starships
             Vector2 end, Vector2 playerPosition, double keepDistanceToPlayer, MovementMode movementMode) : 
             base(position, maxShield, weaponPower, linearVelocity, end, playerPosition, keepDistanceToPlayer, movementMode)
         {
+            score = 1000;
         }
 
         public override void LoadContent(ContentManager content)

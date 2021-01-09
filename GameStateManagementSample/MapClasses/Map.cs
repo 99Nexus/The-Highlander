@@ -90,7 +90,7 @@ namespace GameStateManagement.MapClasses
                 case 5:
                     lvl.position = new Vector2(position.X + 500, position.Y + 500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 500, lvl.position.Y + 100);
-                    gameObjects.Add(new Crate(new Vector2(lvl.position.X + 750, lvl.position.Y + 100), player));
+                    gameObjects.Add(new Generator(new Vector2(lvl.position.X + 750, lvl.position.Y + 100), player));
                     gameObjects.Add(new Crate(new Vector2(lvl.position.X + 250, lvl.position.Y + 150), player));
                     gameObjects.Add(new Crate(new Vector2(lvl.position.X + 200, lvl.position.Y + 300), player));
                     break;

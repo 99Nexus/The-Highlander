@@ -32,5 +32,6 @@
   <ItemGroup>
     <Folder Include="Content\graphics\menu_graphics\" />
     <Folder Include="Content\mapGraphics\" />
+    <Folder Include="Content\spritefonts\starship_fonts\" />
   </ItemGroup>
 </Project>

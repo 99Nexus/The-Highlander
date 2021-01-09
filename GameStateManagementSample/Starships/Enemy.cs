@@ -44,6 +44,7 @@ namespace GameStateManagement.Starships
         public float linearVelocity;
         public int damageBuffer;
         public int maxDamageBuffer;
+        public int score = 0;
 
         // Movement attributes
         public Vector2 position;

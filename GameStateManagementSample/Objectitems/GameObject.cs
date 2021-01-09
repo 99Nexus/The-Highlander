@@ -34,6 +34,10 @@ namespace GameStateManagement.ObjectItem
             return distanceVector.Length();
         }
 
+        public void UpdateActualShieldValue(int damage)
+        {
+        }
+
         public virtual void Update(GameTime gameTime)
         {
             //hier muss eine Bedingung hin und dann wird das Objekt dort visible
