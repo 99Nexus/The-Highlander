@@ -46,7 +46,8 @@ namespace GameStateManagement
         private TheHighlander highlander;
         private HealthBar healthBar;
         private Highscore highscore;
-        private Enemy enemy;
+        private Enemy tanker;
+        private Enemy sprinter;
         private Camera camera;
         private Camera cameraBar;
         private Camera cameraHighscore;
@@ -103,12 +104,16 @@ namespace GameStateManagement
             mainMap = new MainMap(content, highlander);
             mainMap.LoadContent(content);
 
-            highlander.Position = mainMap.maps[3].levels[3].spawnPosition;
+            //highlander.Position = mainMap.maps[3].levels[3].spawnPosition;
+            highlander.Position = new Vector2(3000, 800);
 
-            enemy = new Enemy(new Vector2(highlander.Position.X, highlander.Position.Y + 100), 2, 1, 2f, new Vector2(highlander.Position.X + 100, highlander.Position.Y + 300),
-                highlander.Position, 20.0, MovementMode.VERTICAL);
+            tanker = new Tanker(new Vector2(1000, 1000), 15, 1, 2f, new Vector2(1000, 1000),
+                highlander.Position, 20.0, MovementMode.PATROL);
 
-            explosion = new Explosion(new Vector2(enemy.Position.X, enemy.Position.Y));
+            sprinter = new Sprinter(new Vector2(3000, 1000), 11, 1, 3f, new Vector2(2000, 1000),
+                highlander.Position, 20.0, MovementMode.PATROL);
+
+            explosion = new Explosion(new Vector2(tanker.Position.X, tanker.Position.Y));
 
             // Manager
             collisionManager = new CollisionManager(mainMap, highlander);
@@ -119,10 +124,12 @@ namespace GameStateManagement
             healthBar.LoadContent(content);
             highscore.LoadContent(content);
             explosion.LoadContent(content);
-            enemy.LoadContent(content);
+            tanker.LoadContent(content);
+            sprinter.LoadContent(content);
 
             //TEST
-            mainMap.maps[0].enemies.Add(enemy);
+            mainMap.maps[0].enemies.Add(tanker);
+            mainMap.maps[1].enemies.Add(sprinter);
 
             // Camera declaration
             camera = new Camera(this);
@@ -286,7 +293,9 @@ namespace GameStateManagement
                 }
             }
             
-            enemy.Draw(gameTime, spriteBatch);
+            tanker.Draw(gameTime, spriteBatch);
+
+            sprinter.Draw(gameTime, spriteBatch);
 
             highlander.Draw(gameTime, spriteBatch);
 
