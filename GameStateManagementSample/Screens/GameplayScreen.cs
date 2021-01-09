@@ -47,7 +47,7 @@ namespace GameStateManagement
         private TheHighlander highlander;
         private HealthBar healthBar;
         private Highscore highscore;
-        private Enemy tanker;
+        private Enemy enemy;
         private Enemy sprinter;
         private Camera camera;
         private Camera cameraBar;
