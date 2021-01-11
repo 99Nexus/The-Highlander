@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using GameStateManagement.Starships;
+using GameStateManagement.GameItems;
 #endregion Using Statements
 
 namespace GameStateManagement.MapClasses
@@ -39,6 +40,9 @@ namespace GameStateManagement.MapClasses
         public Rectangle topB;
         public Rectangle bottomB;
 
+        //Items
+        public Teleport teleport;
+
         #endregion Fields
 
         #region Initialization
@@ -59,6 +63,8 @@ namespace GameStateManagement.MapClasses
             hasEndBoos = true;
         }
 
+
+        
         #endregion Initialization
 
         #region Borders Initialization
@@ -103,12 +109,17 @@ namespace GameStateManagement.MapClasses
 
         #region Update and Draw
         //no need for this Method
+
         public override void Draw(SpriteBatch spriteBatch) { }
 
         //no need for this Method
         public void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
             spriteBatch.DrawString(sprite, new string("Level" + levelNumber.ToString()), position, Color.Black);
+           if (!(teleport.texture is null) )
+            {
+                teleport.Draw(spriteBatch);
+            }
         }
         #endregion Update and Draw
     }

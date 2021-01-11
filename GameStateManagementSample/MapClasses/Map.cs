@@ -5,6 +5,7 @@ using GameStateManagement.ObjectItem;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using GameStateManagement.GameItems;
 #endregion Using Statements
 
 namespace GameStateManagement.MapClasses
@@ -28,6 +29,10 @@ namespace GameStateManagement.MapClasses
 
         private List<Explosion> explosions;
         private Texture2D explosionTexture;
+
+        // Mission-Test
+        private Texture2D teleportTexture;
+
 
 
         public List<GameObject> gameObjects;
@@ -57,6 +62,7 @@ namespace GameStateManagement.MapClasses
         public override void LoadContent(ContentManager content)
         {
             explosionTexture = content.Load<Texture2D>(@"explosion");
+            teleportTexture = content.Load<Texture2D>(@"graphics\objects_items\Crate");
         }
 
         public void SetPositions(Level lvl)
@@ -67,24 +73,28 @@ namespace GameStateManagement.MapClasses
                     lvl.position = new Vector2(position.X, position.Y);
                     playerStartPosition = (lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 100));
                     gameObjects.Add(new ControlSystem(new Vector2(lvl.position.X + 45, lvl.position.Y + 400), player));
+                    lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 250, lvl.position.Y + 1440));
                     break;
 
                 case 2:
                     lvl.position = new Vector2(position.X, position.Y + 1500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 250);
                     gameObjects.Add(new Alarm(new Vector2(lvl.position.X + 750, lvl.position.Y + 60), player));
+                    lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 1450, lvl.position.Y + 240));
                     break;
 
                 case 3:
                     lvl.position = new Vector2(position.X + 1500, position.Y + 500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 1400);
                     gameObjects.Add(new Crate(new Vector2(lvl.position.X + 40, lvl.position.Y + 40), player));
+                    lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 250, lvl.position.Y + 40));
                     break;
 
                 case 4:
                     lvl.position = new Vector2(position.X + 500, position.Y);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 1400, position.Y + 250);
                     gameObjects.Add(new Generator(new Vector2(lvl.position.X + 1000, lvl.position.Y + 70), player));
+                    lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 50, lvl.position.Y + 240));
                     break;
 
                 case 5:
@@ -93,6 +103,7 @@ namespace GameStateManagement.MapClasses
                     gameObjects.Add(new Generator(new Vector2(lvl.position.X + 750, lvl.position.Y + 100), player));
                     gameObjects.Add(new Crate(new Vector2(lvl.position.X + 250, lvl.position.Y + 150), player));
                     gameObjects.Add(new Crate(new Vector2(lvl.position.X + 200, lvl.position.Y + 300), player));
+                    lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 500, lvl.position.Y + 940));
                     break;
             }
             lvl.MakeBorders();
@@ -179,6 +190,7 @@ namespace GameStateManagement.MapClasses
             {
                 ex.Draw(spriteBatch);
             }
+
         }
         //for test
         public void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
@@ -187,6 +199,12 @@ namespace GameStateManagement.MapClasses
             foreach (GameObject go in gameObjects)
             {
                 go.Draw(spriteBatch, sprite);
+            }
+
+            foreach(Level l in levels)
+            {
+                l.Draw(spriteBatch, sprite);
+                l.teleport.Draw(spriteBatch);
             }
         }
 
