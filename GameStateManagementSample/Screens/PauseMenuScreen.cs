@@ -12,6 +12,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace GameStateManagement
 {
@@ -22,17 +23,17 @@ namespace GameStateManagement
     internal class PauseMenuScreen : MenuScreen
     {
         #region Initialization
-
+        ScoreManager scoreManager;
         /// <summary>
         /// Constructor.
         /// </summary>
-        public PauseMenuScreen()
+        public PauseMenuScreen(ScoreManager sM)
             : base("")
         {
             // Create our menu entries.
             MenuEntry resumeGameMenuEntry = new MenuEntry("Resume Game");
             MenuEntry quitGameMenuEntry = new MenuEntry("Quit Game");
-
+            scoreManager = sM;
             // Hook up menu event handlers.
             resumeGameMenuEntry.Selected += OnCancel;
             quitGameMenuEntry.Selected += QuitGameMenuEntrySelected;
@@ -67,6 +68,8 @@ namespace GameStateManagement
         /// </summary>
         private void ConfirmQuitMessageBoxAccepted(object sender, PlayerIndexEventArgs e)
         {
+            ScoreManager.Save(scoreManager);
+            InputScreen.PlayerNameIS = String.Empty;
             LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(),
                                                            new MainMenuScreen());
         }

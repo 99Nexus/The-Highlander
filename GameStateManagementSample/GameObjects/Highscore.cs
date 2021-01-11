@@ -37,7 +37,7 @@ namespace GameStateManagement.GameObjects
 
         public void LoadContent(ContentManager content)
         {
-            sprite = content.Load<SpriteFont>(@"spritefonts\game_menu_fonts\score_font");
+            sprite = content.Load<SpriteFont>(@"spritefonts\game_menu_fonts\score_font_screen");
             Rectangle = new Rectangle((int)Position.X, (int)Position.Y, 100, 55);
         }
         #endregion Initialization

@@ -22,6 +22,10 @@ namespace GameStateManagement
         public string Playername { get; set; }
         public int Value { get; set; }
 
+        public Score()
+        {
+        }
+
         public Score(string playerName, int playerScore)
         {
             Playername = playerName;

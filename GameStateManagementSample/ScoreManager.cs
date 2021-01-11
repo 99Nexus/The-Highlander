@@ -30,7 +30,7 @@ namespace GameStateManagement
     public class ScoreManager
     {
         //the filename to save or load the score list to our system
-        private static string _fileName = "score.xml";
+        private static string _fileName = "d:\\score.xml";
 
         //this list to represent the first 5 high scores
         public List<Score> Highscore { get; private set; }

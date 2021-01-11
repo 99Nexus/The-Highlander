@@ -54,7 +54,7 @@ namespace GameStateManagement
         {
             content = ScreenManager.Game.Content;
             // assign the font style to the variable score
-            scoreFont = content.Load<SpriteFont>("einFont");
+            scoreFont = content.Load<SpriteFont>(@"spritefonts\game_menu_fonts\score_font");
             // load the saved Score list, if there is not any created list then a new list will be created
             scoreManager = ScoreManager.Load();
         }
@@ -78,11 +78,11 @@ namespace GameStateManagement
 
             spriteBatch.Begin();
 
-            spriteBatch.DrawString(scoreFont, "TEST TEST: \n" + string.Join("\n",
+            spriteBatch.DrawString(scoreFont, string.Join("\n",
                 scoreManager.Highscore.Select(c => c.Playername + ": " + c.Value).ToArray()),
                 new Vector2(GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Width / 2 - 75,
                 GameStateManagementGame.Newgame.Graphics.GraphicsDevice.Viewport.Height / 2 - 150),
-                Color.White);
+                Color.GreenYellow);
 
             spriteBatch.End();
 

@@ -61,9 +61,8 @@ namespace GameStateManagement
         // Map objects
         MainMap mainMap;
 
-        /// <summary>
-        ///  for GameOverScreen
-        /// </summary>
+
+        //  for GameOverScreen
         bool pause;
 
         #endregion Fields
@@ -125,6 +124,7 @@ namespace GameStateManagement
             cameraBar = new Camera(this);
             cameraHighscore = new Camera(this);
 
+            scoreManager.Add(highlander.PlayerScore);
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
             // while, giving you a chance to admire the beautiful loading screen.
@@ -197,7 +197,7 @@ namespace GameStateManagement
             if (input.IsPauseGame(ControllingPlayer) || gamePadDisconnected)
             {
                 pause = true;
-                ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
+                ScreenManager.AddScreen(new PauseMenuScreen(scoreManager), ControllingPlayer);
             }
             else
             {
@@ -208,6 +208,8 @@ namespace GameStateManagement
 
         public void CallGameOverScreen()
         {
+            ScoreManager.Save(scoreManager);
+            InputScreen.PlayerNameIS = String.Empty;
             ScreenManager.AddScreen(new GameOverScreen(), ControllingPlayer);
         }
 
@@ -228,12 +230,12 @@ namespace GameStateManagement
             {
                 m.Draw(spriteBatch);
                 m.Draw(spriteBatch, einFont);
-                /*
+                
                 foreach (Level l in m.levels)
                 {
                     l.Draw(spriteBatch, einFont);
                 }
-                */
+                
             }
 
             tanker.Draw(gameTime, spriteBatch);
