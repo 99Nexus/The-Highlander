@@ -47,8 +47,6 @@ namespace GameStateManagement
         private TheHighlander highlander;
         private HealthBar healthBar;
         private Highscore highscore;
-        private Tanker tanker;
-        private Sprinter sprinter;
         private Camera camera;
         private Camera cameraBar;
         private Camera cameraHighscore;
@@ -98,12 +96,7 @@ namespace GameStateManagement
             mainMap = new MainMap(content, highlander);
 
             // spawn-position for the Highlander
-            highlander.Position = mainMap.maps[0].levels[4].spawnPosition;
-
-            tanker = new Tanker(new Vector2(1000, 900), 2, 1, 2f, new Vector2(1000, 1100),
-                highlander.Position, 20.0, MovementMode.VERTICAL);
-
-            //explosion = new Explosion(new Vector2(tanker.Position.X, tanker.Position.Y));
+            highlander.Position = mainMap.maps[0].levels[3].spawnPosition;
 
             // Manager
             collisionManager = new CollisionManager(mainMap, highlander);
@@ -113,11 +106,6 @@ namespace GameStateManagement
             healthBar.LoadContent(content);
             highscore.LoadContent(content);
             mainMap.LoadContent(content);
-            tanker.LoadContent(content);
-
-            //TEST
-            mainMap.maps[0].enemies.Add(tanker);
-            //mainMap.maps[1].enemies.Add(sprinter);
 
             // Camera declaration
             camera = new Camera(this);
@@ -225,20 +213,12 @@ namespace GameStateManagement
 
             spriteBatch.Begin(transformMatrix: camera.Transform);
 
-            mainMap.Draw(spriteBatch);
+            mainMap.Draw(spriteBatch, einFont, gameTime);
+
             foreach (Map m in mainMap.maps)
             {
-                m.Draw(spriteBatch);
-                m.Draw(spriteBatch, einFont);
-                
-                foreach (Level l in m.levels)
-                {
-                    l.Draw(spriteBatch, einFont);
-                }
-                
+                m.Draw(spriteBatch, einFont, gameTime);
             }
-
-            tanker.Draw(gameTime, spriteBatch);
 
             highlander.Draw(gameTime, spriteBatch);
 

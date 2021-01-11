@@ -12,13 +12,14 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using GameStateManagement.GameObjects;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using GameStateManagement.Starships;
 using GameStateManagement.GameItems;
+using GameStateManagement.ObjectItem;
+using System.Linq;
 #endregion Using Statements
 
 namespace GameStateManagement.MapClasses
@@ -26,19 +27,38 @@ namespace GameStateManagement.MapClasses
     public class Level : MapStructure
     {
         #region Fields
-        
-        private Enemy endBoss;
-        public bool hasEndBoos;
-        private bool isCompleted;
-        public bool endBossDefeated;
-        public Vector2 spawnPosition;
+
         public int levelNumber;
         public int mapNumber;
+        public Vector2 spawnPosition;
+        public bool isCompleted;
+
+        public TheHighlander theHighlander;
+
+        //endboss
+        private Enemy endBoss;
+        public bool hasEndBoos;
+        public bool endBossDefeated;
+
+        public List<Enemy> enemies;
+        public List<GameObject> gameObjects;
+        public List<GameItem> gameItems;
+
+        private List<Explosion> explosions;
+        private Texture2D explosionTexture;
+
+        //borders
         public Rectangle[] rectangles;
         public Rectangle leftB;
         public Rectangle rightB;
         public Rectangle topB;
         public Rectangle bottomB;
+
+        //Position borders
+        private float topLeft;
+        private float topRight;
+        private float bottomLeft;
+        private float bottomRight;
 
         //Items
         public Teleport teleport;
@@ -47,14 +67,21 @@ namespace GameStateManagement.MapClasses
 
         #region Initialization
 
-        public Level(int levelNumber)
+        public Level(int lvlNumber, TheHighlander player)
         {
-            this.levelNumber = levelNumber;
+            levelNumber = lvlNumber;
+            theHighlander = player;
+
             rectangles = new Rectangle[2];
+
+            enemies = new List<Enemy>();
+            explosions = new List<Explosion>();
+            gameObjects = new List<GameObject>();
         }
 
-        //no need for this Method
-        public override void LoadContent(ContentManager content) { }
+        public override void LoadContent(ContentManager content) {
+            explosionTexture = content.Load<Texture2D>(@"explosion");
+        }
 
         public void SetEndBoss(Enemy enemy, Vector2 EndBossPostion)
         {
@@ -63,8 +90,6 @@ namespace GameStateManagement.MapClasses
             hasEndBoos = true;
         }
 
-
-        
         #endregion Initialization
 
         #region Borders Initialization
@@ -108,19 +133,134 @@ namespace GameStateManagement.MapClasses
         #endregion Borders Initialization
 
         #region Update and Draw
-        //no need for this Method
 
-        public override void Draw(SpriteBatch spriteBatch) { }
-
-        //no need for this Method
-        public void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
+        public override void Draw(SpriteBatch spriteBatch, SpriteFont sprite, GameTime gameTime)
         {
             spriteBatch.DrawString(sprite, new string("Level" + levelNumber.ToString()), position, Color.Black);
-           if (!(teleport.texture is null) )
+
+            foreach(Enemy e in enemies)
+            {
+                e.Draw(gameTime, spriteBatch);
+            }
+
+            foreach (GameObject go in gameObjects)
+            {
+                go.Draw(spriteBatch, sprite);
+            }
+
+            foreach (Explosion ex in explosions)
+            {
+                ex.Draw(spriteBatch);
+            }
+
+            if (true)
             {
                 teleport.Draw(spriteBatch);
             }
         }
+
+        public override void Update(GameTime gameTime, TheHighlander theHighlander)
+        {
+
+            foreach (Enemy e in enemies)
+            {
+                e.Update(gameTime, theHighlander.Position);
+            }
+
+            foreach (GameObject go in gameObjects)
+            {
+                go.Update(gameTime);
+            }
+
+            foreach (Explosion ex in explosions)
+            {
+                ex.Update(gameTime);
+            }
+            ObserveEnemies();
+            ManageExplosions();
+        }
         #endregion Update and Draw
+
+        #region Loading & Manage Enemies, Objects and Explosions
+
+
+        public void CompleteCheck()
+        {
+                if (hasEndBoos)
+                {
+                    if (endBossDefeated)
+                    {
+                        isCompleted = true;
+                    }
+                }
+        }
+
+        public void ObserveEnemies()
+        {
+            foreach (Enemy e in enemies.ToList())
+            {
+                if (e.actualShield <= 0)
+                {
+                    explosions.Add(new Explosion(explosionTexture, new Vector2(e.Position.X - 50, e.Position.Y - 25)));
+                    theHighlander.PlayerScore.Value += e.score;
+                    enemies.Remove(e);
+                }
+            }
+        }
+        /*
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            if (enemies[i].actualShield <= 0)
+            {
+                explosions.Add(new Explosion(explosionTexture, new Vector2(enemies[i].Position.X - 50, enemies[i].Position.Y - 25)));
+                enemies.Remove(enemies[i]);
+                theHighlander.PlayerScore.Value += 150;
+            }
+        }
+        */
+
+
+        public void ManageExplosions()
+        {
+            for (int i = 0; i < explosions.Count; i++)
+            {
+                if (!explosions[i].isVisible)
+                    explosions.RemoveAt(i--);
+            }
+        }
+
+        /*
+        public void LoadEnemies()
+        {
+            /*
+            if(enemyList.Count < 1)
+            {
+                enemyList.Add(new Enemy(theEnemy, einFont, 1, 0, 0, 0));
+            }
+
+            enemyList.Add(new Enemy(theEnemy, einFont, 1, 0, 0, 0));
+
+            if (!enemyList[0].isVisible)
+            {
+                enemyList.RemoveAt(0);
+            }
+
+            for (int i = 0; i < enemyList.Count; i++)
+            {
+                if (!enemyList[i].isVisible)
+                {
+                    enemyList.RemoveAt(i);
+                    i--;
+                }
+            }
+        }
+        */
+
+        //load enemies
+        public void LoadEnemies(MovementMode movementMode, int enemiesNumber)
+        {
+
+        }
+        #endregion Loading Enemy & Manage Explosions 
     }
 }

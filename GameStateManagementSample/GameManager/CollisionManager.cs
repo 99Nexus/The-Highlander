@@ -1,10 +1,8 @@
 ﻿using GameStateManagement.Starships;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Xna.Framework;
 using GameStateManagement.MapClasses;
 using GameStateManagement.ObjectItem;
+using System.Linq;
 
 namespace GameStateManagement.GameManager
 {
@@ -23,9 +21,9 @@ namespace GameStateManagement.GameManager
 
         public void ManageCollisions()
         {
-            
+
             CollisionBetweenPlayerAndEnemy();
-            //CollisionBetweenPlayerAndLaser();
+            CollisionBetweenPlayerAndLaser();
             CollissionBetweenEnemyAndLaser();
             CollissionBetweenPlayerAndMapObject();
             CollisionBetweenPlayerLaserAndMapObject();
@@ -41,22 +39,25 @@ namespace GameStateManagement.GameManager
 
             foreach (Map m in mainMap.maps)
             {
-                foreach (Enemy e in m.enemies)
+                foreach (Level lv in m.levels)
                 {
-                    if (player.Rectangle.Intersects(e.Rectangle))
+                    foreach (Enemy e in lv.enemies)
                     {
-                        // Set position backwards if player collides with an enemy
-                        player.Position -= player.direction * 4f;
-
-                        // Decrease shield only after damage buffer has reached a few milliseconds
-                        if (damageBuffer >= maxDamageBuffer)
+                        if (player.Rectangle.Intersects(e.Rectangle))
                         {
-                            player.DecreaseShieldValue(1);
-                            e.UpdateActualShieldValue(1);
-                            damageBuffer = 0;
-                        }
+                            // Set position backwards if player collides with an enemy
+                            player.Position -= player.direction * 4f;
 
-                        break;
+                            // Decrease shield only after damage buffer has reached a few milliseconds
+                            if (damageBuffer >= maxDamageBuffer)
+                            {
+                                player.DecreaseShieldValue(1);
+                                e.UpdateActualShieldValue(1);
+                                damageBuffer = 0;
+                            }
+
+                            break;
+                        }
                     }
                 }
             }
@@ -68,17 +69,20 @@ namespace GameStateManagement.GameManager
 
             foreach (Map m in mainMap.maps)
             {
-                foreach (Enemy e in m.enemies)
+                foreach (Level lv in m.levels)
                 {
-                    foreach (Laser l in e.laserList)
+                    foreach (Enemy e in lv.enemies)
                     {
-                        if (player.Rectangle.Intersects(l.Rectangle) && damageBuffer >= maxDamageBuffer)
+                        foreach (Laser l in e.laserList)
                         {
-                            l.isVisible = false;
-                            e.laserList.Remove(l);
-                            player.DecreaseShieldValue(e.weaponPower);
-                            damageBuffer = 0;
-                            break;
+                            if (player.Rectangle.Intersects(l.Rectangle) && damageBuffer >= maxDamageBuffer)
+                            {
+                                l.isVisible = false;
+                                e.laserList.Remove(l);
+                                player.DecreaseShieldValue(e.weaponPower);
+                                damageBuffer = 0;
+                                break;
+                            }
                         }
                     }
                 }
@@ -91,45 +95,46 @@ namespace GameStateManagement.GameManager
             {
                 for (int i = 0; i < player.laserList.Count; i++)
                 {
-
                     foreach (Map m in mainMap.maps)
                     {
-                        foreach (Enemy e in m.enemies)
+                        foreach (Level lv in m.levels)
                         {
-                            if (player.laserList[i].Rectangle.Intersects(e.Rectangle) && e.damageBuffer >= e.maxDamageBuffer)
+                            foreach (Enemy e in lv.enemies)
                             {
-                                player.laserList[i].isVisible = false;
-                                player.laserList.Remove(player.laserList[i]);
-                                e.UpdateActualShieldValue(player.weaponPower);
-                                e.damageBuffer = 0;
-                                break;
+                                if (player.laserList[i].Rectangle.Intersects(e.Rectangle) && e.damageBuffer >= e.maxDamageBuffer)
+                                {
+                                    player.laserList[i].isVisible = false;
+                                    player.laserList.Remove(player.laserList[i]);
+                                    e.UpdateActualShieldValue(player.weaponPower);
+                                    e.damageBuffer = 0;
+                                    break;
+                                }
                             }
                         }
                     }
                 }
             }
         }
-        
+
         public void CollissionBetweenPlayerAndMapObject()
         {
-            foreach(Rectangle r in mainMap.rectangles)
+            foreach (Rectangle r in mainMap.rectangles)
             {
-                if(player.Rectangle.Intersects(r)) 
+                if (player.Rectangle.Intersects(r))
                 {
                     // Set position backwards if player collides with an map object
                     player.Position -= player.direction * 4f;
                     break;
                 }
             }
-
-
-            foreach(Map m in mainMap.maps)
+            foreach (Map m in mainMap.maps)
             {
-                foreach(Level l in m.levels)
+                foreach (Level l in m.levels)
                 {
-                    foreach(Rectangle r in l.rectangles) {
+                    foreach (Rectangle r in l.rectangles)
+                    {
 
-                        if(player.Rectangle.Intersects(r))
+                        if (player.Rectangle.Intersects(r))
                         {
                             // Set position backwards if player collides with an map object
                             player.Position -= player.direction * 4f;
@@ -183,33 +188,11 @@ namespace GameStateManagement.GameManager
         {
             foreach (Rectangle r in mainMap.rectangles)
             {
-                foreach(Map m in mainMap.maps)
+                foreach (Map m in mainMap.maps)
                 {
-                    foreach(Enemy e in m.enemies)
+                    foreach (Level lv in m.levels)
                     {
-                        // Enemy laser
-                        for (int i = 0; i < e.laserList.Count; i++)
-                        {
-                            if (e.laserList[i].Rectangle.Intersects(r))
-                            {
-                                e.laserList[i].isVisible = false;
-                                e.laserList.Remove(e.laserList[i]);
-                                break;
-                            }
-                        }
-                    }
-                }
-
-            }
-
-
-            foreach (Map m in mainMap.maps)
-            {
-                foreach (Level l in m.levels)
-                {
-                    foreach (Rectangle r in l.rectangles)
-                    {
-                        foreach (Enemy e in m.enemies)
+                        foreach (Enemy e in lv.enemies)
                         {
                             // Enemy laser
                             for (int i = 0; i < e.laserList.Count; i++)
@@ -224,38 +207,69 @@ namespace GameStateManagement.GameManager
                         }
                     }
                 }
+
+            }
+
+
+            foreach (Map m in mainMap.maps)
+            {
+                foreach (Level l in m.levels)
+                {
+                    foreach (Rectangle r in l.rectangles)
+                    {
+                        foreach (Level lv in m.levels)
+                        {
+                            foreach (Enemy e in lv.enemies)
+                            {
+                                // Enemy laser
+                                for (int i = 0; i < e.laserList.Count; i++)
+                                {
+                                    if (e.laserList[i].Rectangle.Intersects(r))
+                                    {
+                                        e.laserList[i].isVisible = false;
+                                        e.laserList.Remove(e.laserList[i]);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        
+
         public void CollissionBetweenPlayerAndGameObject()
         {
-            foreach(Map m in mainMap.maps)
+            foreach (Map m in mainMap.maps)
             {
-                for(int i = 0; i < m.gameObjects.Count; i++)
+                foreach (Level lv in m.levels)
                 {
-                    if (player.Rectangle.Intersects(m.gameObjects[i].rectangle))
+                    for (int i = 0; i < lv.gameObjects.Count; i++)
                     {
-                        if (m.gameObjects[i].GetType() == typeof(Generator))
+                        if (player.Rectangle.Intersects(lv.gameObjects[i].rectangle))
                         {
-                            Generator generator = (Generator)m.gameObjects[i];
-
-                            if(generator.damageBuffer <= generator.maxDamageBuffer)
+                            if (lv.gameObjects[i].GetType() == typeof(Generator))
                             {
-                                m.gameObjects[i].UpdateActualShieldValue(1);
-                                generator.damageBuffer = 0;
+                                Generator generator = (Generator)lv.gameObjects[i];
+
+                                if (generator.damageBuffer <= generator.maxDamageBuffer)
+                                {
+                                    lv.gameObjects[i].UpdateActualShieldValue(1);
+                                    generator.damageBuffer = 0;
+                                }
+
+                                if (damageBuffer >= maxDamageBuffer)
+                                {
+                                    player.DecreaseShieldValue(1);
+                                    damageBuffer = 0;
+                                }
                             }
 
-                            if(damageBuffer >= maxDamageBuffer)
-                            {
-                                player.DecreaseShieldValue(1);
-                                damageBuffer = 0;
-                            }
+                            // Set position backwards if player collides with an map object
+                            player.Position -= player.direction * 4f;
+                            break;
                         }
-
-                        // Set position backwards if player collides with an map object
-                        player.Position -= player.direction * 4f;
-                        break;
                     }
                 }
             }
@@ -266,26 +280,23 @@ namespace GameStateManagement.GameManager
         {
             foreach (Map m in mainMap.maps)
             {
-                for (int i = 0; i < m.gameObjects.Count; i++)
+                foreach (Level lv in m.levels)
                 {
-                    for (int j = 0; j < player.laserList.Count; j++)
+                    foreach (Generator g in lv.gameObjects.OfType<Generator>())
                     {
-                        if (player.laserList[j].Rectangle.Intersects(m.gameObjects[i].rectangle))
+                        foreach(Laser l in player.laserList)
                         {
-                            if (m.gameObjects[i].GetType() == typeof(Generator))
+                            if (l.Rectangle.Intersects(g.rectangle))
                             {
-                                Generator generator = (Generator)m.gameObjects[i];
-
-                                if (generator.damageBuffer <= generator.maxDamageBuffer)
+                                if (g.damageBuffer <= g.maxDamageBuffer)
                                 {
-                                    m.gameObjects[i].UpdateActualShieldValue(1);
-                                    generator.damageBuffer = 0;
+                                    g.UpdateActualShieldValue(1);
+                                    g.damageBuffer = 0;
                                 }
+                                l.isVisible = false;
+                                player.laserList.Remove(l);
+                                break;
                             }
-
-                            player.laserList[j].isVisible = false;
-                            player.laserList.Remove(player.laserList[j]);
-                            break;
                         }
                     }
                 }
@@ -295,19 +306,22 @@ namespace GameStateManagement.GameManager
 
         public void CollisionBetweenEnemyLaserAndGameObject()
         {
-            foreach(Map m in mainMap.maps)
+            foreach (Map m in mainMap.maps)
             {
-                foreach(GameObject go in m.gameObjects)
+                foreach (Level lv in m.levels)
                 {
-                    foreach(Enemy e in m.enemies)
+                    foreach (Enemy e in lv.enemies)
                     {
-                        for (int i = 0; i < e.laserList.Count; i++)
+                        foreach (GameObject go in lv.gameObjects)
                         {
-                            if (e.laserList[i].Rectangle.Intersects(go.rectangle))
+                            foreach (Laser l in e.laserList)
                             {
-                                e.laserList[i].isVisible = false;
-                                e.laserList.Remove(e.laserList[i]);
-                                break;
+                                if (l.Rectangle.Intersects(go.rectangle))
+                                {
+                                    l.isVisible = false;
+                                    e.laserList.Remove(l);
+                                    break;
+                                }
                             }
                         }
                     }

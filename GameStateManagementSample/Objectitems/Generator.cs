@@ -12,53 +12,56 @@ namespace GameStateManagement.ObjectItem
         private string shieldString;
         public int damageBuffer;
         public int maxDamageBuffer;
+        private Texture2D explosionTexture;
+        private Texture2D texture2;
 
         public Generator(Vector2 pos, TheHighlander theHighlander) : base(pos, theHighlander)
         {
-            maxShield = 5;
-            actualShield = maxShield;
+            actualShield = (maxShield = 3);
             damageBuffer = 0;
             maxDamageBuffer = 20;
+            shieldString = actualShield + " | " + maxShield;
         }
 
         public override void LoadContent(ContentManager content)
         {
+            explosionTexture = content.Load<Texture2D>(@"explosion");
             texture = content.Load<Texture2D>(@"graphics\objects_items\Generator");
-            rectangle = new Rectangle((int)position.X - (texture.Width / 2),
-                                      (int)position.Y - (texture.Height / 2),
-                                      texture.Width,
-                                      texture.Height);
+            texture2 = content.Load<Texture2D>(@"graphics\objects_items\Generator_damaged");
+            rectangle = new Rectangle((int)position.X - (texture.Width / 2), (int)position.Y - (texture.Height / 2), texture.Width, texture.Height);
             Origin = new Vector2(texture.Width / 2, texture.Height / 2);
         }
 
-        public void UpdateActualShieldValue(int damage)
+        public new void UpdateActualShieldValue(int damage)
         {
-            if (actualShield - damage < 1)
+            if (actualShield - damage < 0)
             {
-                //public void ManageExplosions()
                 actualShield = 0;
+                isVisible = false;
             }
             else
             {
                 actualShield -= damage;
-
-                // Update the shield string
-                shieldString = actualShield + " | " + maxShield;
             }
+                shieldString = actualShield + " | " + maxShield;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            /*
-             * UpdateActualShieldValue
-             */
+             
         }
 
         public override void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
+            if (isVisible) { 
             base.Draw(spriteBatch, sprite);
-            spriteBatch.DrawString(sprite, new string("Destroy the \n generator"), new Vector2(position.X + 20, position.Y + 126), Color.Black);
+                spriteBatch.DrawString(sprite, new string(shieldString + "Destroy the generator"), new Vector2(position.X - 75, position.Y + 65), Color.Black);
+            }
+            else
+            {
+                spriteBatch.Draw(texture2, position, null, Color.White, 0, Origin, 1, SpriteEffects.None, 0);
+            }
         }
     }
 }

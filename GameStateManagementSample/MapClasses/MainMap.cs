@@ -64,13 +64,8 @@ namespace GameStateManagement.MapClasses
             int m = 1;
             for (int i = 0; i < this.maps.Length; i++)
             {
-                //maps[i].LoadContent(content);
+                maps[i].LoadContent(content);
                 maps[i].texture2D = content.Load<Texture2D>(@"mapGraphics\map" + m++);
-                
-                foreach (GameObject go in maps[i].gameObjects)
-                {
-                    go.LoadContent(content);
-                }
             }
         }
 
@@ -83,11 +78,11 @@ namespace GameStateManagement.MapClasses
                 //create new lvl and assign map Number
                 maps[i] = new Map(player, m++);
                 maps[i].LoadContent(content);
-                SetPositions(maps[i]);
+                SetPositions(maps[i],content);
             }
         }
 
-        public void SetPositions(Map map)
+        public void SetPositions(Map map, ContentManager content)
         {
             switch (map.mapNumber)
             {
@@ -104,19 +99,19 @@ namespace GameStateManagement.MapClasses
                     map.position = new Vector2(2000, 2000);
                     break;
             }
-            map.CreateLevels();
+            map.CreateLevels(content);
         }
 
         #endregion Initialization
 
         #region Update and Draw
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch, SpriteFont sprite, GameTime gameTime)
         {
             spriteBatch.Draw(texture2D, position, Color.White);
         }
 
-        public void Update(GameTime gameTime, TheHighlander theHighlander)
+        public override void Update(GameTime gameTime, TheHighlander theHighlander)
         {
             foreach (Map m in maps)
             {
