@@ -22,10 +22,10 @@ namespace GameStateManagement.Starships
     public class Enemy
     {
         // Graphical attributes
-        private Texture2D[] texture;
-        private SpriteFont spriteFont;
-        private string shieldString;
-        private Vector2 textureSize;
+        public Texture2D[] texture;
+        public SpriteFont spriteFont;
+        public string shieldString;
+        public Vector2 textureSize;
         public bool isVisible;
         public int spriteCounter = 0;
 
@@ -35,20 +35,21 @@ namespace GameStateManagement.Starships
         public float laserDelay;
         public List<Laser> laserList;
         public Laser actualLaser;
-        float rotationLaser;
+        public float rotationLaser;
 
         // State attributes
         public int actualShield;
-        private int maxShield;
+        public int maxShield;
         public int weaponPower;
-        private float linearVelocity;
+        public float linearVelocity;
         public int damageBuffer;
         public int maxDamageBuffer;
+        public int score = 0;
 
         // Movement attributes
-        private Vector2 position;
-        private float Rotation;
-        private double keepDistanceToPlayer;
+        public Vector2 position;
+        public float Rotation;
+        public double keepDistanceToPlayer;
         public float rotationVelocity = 3f;
         public bool turnDirectionToStartPoint = false;
         public Vector2 start;
@@ -88,7 +89,6 @@ namespace GameStateManagement.Starships
             this.isVisible = true;
             damageBuffer = 0;
             maxDamageBuffer = 20;
-            weaponPower = weaponPower;
 
             laserList = new List<Laser>();
             laserDelay = 50;
@@ -97,7 +97,7 @@ namespace GameStateManagement.Starships
             changeMovementMode(movementMode);
         }
 
-        public void LoadContent(ContentManager content)
+        public virtual void LoadContent(ContentManager content)
         {
             texture = new Texture2D[3];
             texture[0] = content.Load<Texture2D>(@"graphics\starships\tanker1");
@@ -448,7 +448,7 @@ namespace GameStateManagement.Starships
 
         #region Update and Draw
 
-        public void Update(GameTime gameTime, Vector2 playerPosition)
+        public virtual void Update(GameTime gameTime, Vector2 playerPosition)
         {
             Rectangle = new Rectangle((int)Position.X - (texture[spriteCounter].Width / 2), 
                                       (int)Position.Y - (texture[spriteCounter].Height / 2), 

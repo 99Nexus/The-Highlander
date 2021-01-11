@@ -47,7 +47,8 @@ namespace GameStateManagement
         private TheHighlander highlander;
         private HealthBar healthBar;
         private Highscore highscore;
-        private Enemy enemy;
+        private Tanker tanker;
+        private Sprinter sprinter;
         private Camera camera;
         private Camera cameraBar;
         private Camera cameraHighscore;
@@ -100,8 +101,10 @@ namespace GameStateManagement
             // spawn-position for the Highlander
             highlander.Position = mainMap.maps[0].levels[4].spawnPosition;
 
-            enemy = new Enemy(new Vector2(1000, 900), 2, 1, 2f, new Vector2(1000, 1100),
+            tanker = new Tanker(new Vector2(1000, 900), 2, 1, 2f, new Vector2(1000, 1100),
                 highlander.Position, 20.0, MovementMode.VERTICAL);
+
+            //explosion = new Explosion(new Vector2(tanker.Position.X, tanker.Position.Y));
 
             // Manager
             collisionManager = new CollisionManager(mainMap, highlander);
@@ -110,11 +113,12 @@ namespace GameStateManagement
             highlander.LoadContent(content);
             healthBar.LoadContent(content);
             highscore.LoadContent(content);
-            enemy.LoadContent(content);
             mainMap.LoadContent(content);
+            tanker.LoadContent(content);
 
             //TEST
-            mainMap.maps[0].enemies.Add(enemy);
+            mainMap.maps[0].enemies.Add(tanker);
+            //mainMap.maps[1].enemies.Add(sprinter);
 
             // Camera declaration
             camera = new Camera(this);
@@ -232,7 +236,7 @@ namespace GameStateManagement
                 */
             }
 
-            enemy.Draw(gameTime, spriteBatch);
+            tanker.Draw(gameTime, spriteBatch);
 
             highlander.Draw(gameTime, spriteBatch);
 
