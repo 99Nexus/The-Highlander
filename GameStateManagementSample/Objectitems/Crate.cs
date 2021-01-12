@@ -7,7 +7,7 @@ namespace GameStateManagement.ObjectItem
 {
     public class Crate : GameObject
     {
-        public Crate(Vector2 pos, TheHighlander theHighlander) : base(pos, theHighlander) { }
+        public Crate(Vector2 pos, TheHighlander theHighlander) : base(pos, theHighlander) { keyPressed = true; }
 
         public override void LoadContent(ContentManager content)
         {

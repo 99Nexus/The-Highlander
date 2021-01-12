@@ -30,10 +30,12 @@ namespace GameStateManagement.ObjectItem
         public override void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
             spriteBatch.Draw(alarmList[spriteCounter], position, null, Color.White, 0, Origin, 1, SpriteEffects.None, 0);
-            if (CalculateDistanceToPlayer() <= 110 && !keyPressed)
+
+            if (CalculateDistanceToPlayer() <= 120 && !keyPressed)
             {
                 spriteBatch.DrawString(sprite, new string("Press 'E' to set \n off the alarm"), new Vector2(position.X - 50, position.Y + 60), Color.Black);
             }
+
             if(keyPressed && CalculateDistanceToPlayer() <= 80)
             {
                 spriteCounter = 1;

@@ -21,7 +21,6 @@ namespace GameStateManagement.GameManager
 
         public void ManageCollisions()
         {
-
             CollisionBetweenPlayerAndEnemy();
             CollisionBetweenPlayerAndLaser();
             CollissionBetweenEnemyAndLaser();
@@ -161,7 +160,6 @@ namespace GameStateManagement.GameManager
                 }
             }
 
-
             foreach (Map m in mainMap.maps)
             {
                 foreach (Level l in m.levels)
@@ -182,7 +180,6 @@ namespace GameStateManagement.GameManager
                 }
             }
         }
-
 
         public void CollisionBetweenEnemyLaserAndMapObject()
         {
@@ -209,7 +206,6 @@ namespace GameStateManagement.GameManager
                 }
 
             }
-
 
             foreach (Map m in mainMap.maps)
             {
@@ -238,35 +234,34 @@ namespace GameStateManagement.GameManager
             }
         }
 
-
         public void CollissionBetweenPlayerAndGameObject()
         {
             foreach (Map m in mainMap.maps)
             {
                 foreach (Level lv in m.levels)
                 {
-                    for (int i = 0; i < lv.gameObjects.Count; i++)
+                    foreach (GameObject go in lv.gameObjects)
                     {
-                        if (player.Rectangle.Intersects(lv.gameObjects[i].rectangle))
+                        if (player.Rectangle.Intersects(go.rectangle))
                         {
-                            if (lv.gameObjects[i].GetType() == typeof(Generator))
+                            // Set position backwards if player collides with an map object
+                            player.Position -= player.direction * 4f;
+                            break;
+                        }
+                        if (lv.levelNumber == 4 && player.Rectangle.Intersects(lv.generator.rectangle))
+                        {
+                            if (lv.generator.damageBuffer <= lv.generator.maxDamageBuffer)
                             {
-                                Generator generator = (Generator)lv.gameObjects[i];
-
-                                if (generator.damageBuffer <= generator.maxDamageBuffer)
-                                {
-                                    lv.gameObjects[i].UpdateActualShieldValue(1);
-                                    generator.damageBuffer = 0;
-                                }
-
-                                if (damageBuffer >= maxDamageBuffer)
-                                {
-                                    player.DecreaseShieldValue(1);
-                                    damageBuffer = 0;
-                                }
+                                lv.generator.UpdateActualShieldValue(1);
+                                lv.generator.damageBuffer = 0;
                             }
 
-                            // Set position backwards if player collides with an map object
+                            if (damageBuffer >= maxDamageBuffer)
+                            {
+                                player.DecreaseShieldValue(1);
+                                damageBuffer = 0;
+                            }
+
                             player.Position -= player.direction * 4f;
                             break;
                         }
@@ -275,23 +270,29 @@ namespace GameStateManagement.GameManager
             }
         }
 
-
         public void CollisionBetweenPlayerLaserAndGameObject()
         {
             foreach (Map m in mainMap.maps)
             {
                 foreach (Level lv in m.levels)
                 {
-                    foreach (Generator g in lv.gameObjects.OfType<Generator>())
+                    foreach (GameObject go in lv.gameObjects)
                     {
-                        foreach(Laser l in player.laserList)
+                        foreach (Laser l in player.laserList)
                         {
-                            if (l.Rectangle.Intersects(g.rectangle))
+                            if (l.Rectangle.Intersects(go.rectangle))
                             {
-                                if (g.damageBuffer <= g.maxDamageBuffer)
+
+                                l.isVisible = false;
+                                player.laserList.Remove(l);
+                                break;
+                            }
+                            if (lv.levelNumber == 4 && l.Rectangle.Intersects(lv.generator.rectangle))
+                            {
+                                if (lv.generator.damageBuffer <= lv.generator.maxDamageBuffer)
                                 {
-                                    g.UpdateActualShieldValue(1);
-                                    g.damageBuffer = 0;
+                                    lv.generator.UpdateActualShieldValue(1);
+                                    lv.generator.damageBuffer = 0;
                                 }
                                 l.isVisible = false;
                                 player.laserList.Remove(l);
@@ -302,7 +303,6 @@ namespace GameStateManagement.GameManager
                 }
             }
         }
-
 
         public void CollisionBetweenEnemyLaserAndGameObject()
         {

@@ -11,7 +11,7 @@ namespace GameStateManagement.ObjectItem
         public Rectangle rectangle;
         public Vector2 position;
         public Texture2D texture;
-        public bool isVisible;
+
         public TheHighlander player;
         public bool keyPressed;
         public Vector2 Origin;
@@ -21,7 +21,6 @@ namespace GameStateManagement.ObjectItem
 
         public GameObject(Vector2 pos, TheHighlander theHighlander)
         {
-            isVisible = true;
             position = pos;
             player = theHighlander;
         }
@@ -32,10 +31,6 @@ namespace GameStateManagement.ObjectItem
         {
             Vector2 distanceVector = new Vector2(player.Position.X - position.X, player.Position.Y - position.Y);
             return distanceVector.Length();
-        }
-
-        public void UpdateActualShieldValue(int damage)
-        {
         }
 
         public virtual void Update(GameTime gameTime)

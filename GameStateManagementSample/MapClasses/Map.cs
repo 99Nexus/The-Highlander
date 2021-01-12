@@ -84,44 +84,74 @@ namespace GameStateManagement.MapClasses
                 case 1:
                     lvl.position = new Vector2(position.X, position.Y);
                     playerStartPosition = (lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 100));
-                    lvl.gameObjects.Add(new ControlSystem(new Vector2(lvl.position.X + 45, lvl.position.Y + 400), player));
                     lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 250, lvl.position.Y + 1440));
+
+                    lvl.gameObjects.Add(new ControlSystem(new Vector2(lvl.position.X + 45, lvl.position.Y + 400), player));
+
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 380, lvl.position.Y + 1200), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 140, lvl.position.Y + 900), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 150, lvl.position.Y + 1300), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 370, lvl.position.Y + 370), player));
                     break;
 
                 case 2:
                     lvl.position = new Vector2(position.X, position.Y + 1500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 250);
-                    lvl.gameObjects.Add(new Alarm(new Vector2(lvl.position.X + 750, lvl.position.Y + 60), player));
                     lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 1450, lvl.position.Y + 240));
+
+                    lvl.gameObjects.Add(new Alarm(new Vector2(lvl.position.X + 750, lvl.position.Y + 60), player));
+
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 350, lvl.position.Y + 50), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 1350, lvl.position.Y + 100), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 800, lvl.position.Y + 275), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 1000, lvl.position.Y + 400), player));
                     break;
 
                 case 3:
                     lvl.position = new Vector2(position.X + 1500, position.Y + 500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 1400);
-                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 40, lvl.position.Y + 40), player));
                     lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 250, lvl.position.Y + 40));
+
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 400, lvl.position.Y + 660), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 300, lvl.position.Y + 780), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 100, lvl.position.Y + 1300), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 150, lvl.position.Y + 440), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 170, lvl.position.Y + 975), player));
+
                     break;
 
                 case 4:
                     lvl.position = new Vector2(position.X + 500, position.Y);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 1400, position.Y + 250);
-                    lvl.gameObjects.Add(new Generator(new Vector2(lvl.position.X + 1000, lvl.position.Y + 70), player));
                     lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 50, lvl.position.Y + 240));
+
+                    lvl.generator = new Generator(new Vector2(lvl.position.X + 1000, lvl.position.Y + 70), player);
+                    lvl.generator.LoadContent(content);
+
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 1300, lvl.position.Y + 350), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 550, lvl.position.Y + 400), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 740, lvl.position.Y + 280), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 370, lvl.position.Y + 140), player));
+
                     break;
 
                 case 5:
                     lvl.position = new Vector2(position.X + 500, position.Y + 500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 500, lvl.position.Y + 100);
-
-                    lvl.enemies.Add(new Tanker(new Vector2(lvl.position.X + 500, lvl.position.Y + 500), 2, 1, 2f, new Vector2(lvl.position.X + 800, lvl.position.Y + 800),
-                player.Position, 20.0, MovementMode.VERTICAL));
-
-                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 250, lvl.position.Y + 150), player));
-                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 200, lvl.position.Y + 300), player));
-
                     lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 500, lvl.position.Y + 940));
+
+                    lvl.SetEndBoss(mapNumber);
+
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 150, lvl.position.Y + 150), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 250, lvl.position.Y + 500), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 240, lvl.position.Y + 900), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 400, lvl.position.Y + 880), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 700, lvl.position.Y + 866), player));
+                    lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 690, lvl.position.Y + 170), player));
+
                     break;
             }
+
             foreach (GameObject go in lvl.gameObjects)
             {
                 go.LoadContent(content);
@@ -141,7 +171,7 @@ namespace GameStateManagement.MapClasses
         public override void Draw(SpriteBatch spriteBatch, SpriteFont sprite, GameTime gameTime)
         {
             spriteBatch.Draw(texture2D, position, Color.White);
-            
+
             spriteBatch.DrawString(sprite, new string("Map " + mapNumber.ToString()), new Vector2(position.X + 50, position.Y + 50), Color.Black);
 
             foreach (Level l in levels)
@@ -154,7 +184,7 @@ namespace GameStateManagement.MapClasses
         {
             foreach (Level l in levels)
             {
-                l.Update(gameTime,theHighlander);
+                l.Update(gameTime, theHighlander);
             }
         }
         #endregion Update and Draw

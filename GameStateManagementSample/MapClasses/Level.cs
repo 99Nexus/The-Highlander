@@ -29,19 +29,21 @@ namespace GameStateManagement.MapClasses
         #region Fields
 
         public int levelNumber;
-        public int mapNumber;
+        //public int mapNumber;
         public Vector2 spawnPosition;
         public bool isCompleted;
 
         public TheHighlander theHighlander;
 
         //endboss
-        private Enemy endBoss;
-        public bool hasEndBoos;
-        public bool endBossDefeated;
+        public Enemy endBoss;
 
         public List<Enemy> enemies;
         public List<GameObject> gameObjects;
+        public Generator generator;
+
+        //Items
+        public Teleport teleport;
         public List<GameItem> gameItems;
 
         private List<Explosion> explosions;
@@ -60,9 +62,6 @@ namespace GameStateManagement.MapClasses
         private float bottomLeft;
         private float bottomRight;
 
-        //Items
-        public Teleport teleport;
-
         #endregion Fields
 
         #region Initialization
@@ -79,15 +78,29 @@ namespace GameStateManagement.MapClasses
             gameObjects = new List<GameObject>();
         }
 
-        public override void LoadContent(ContentManager content) {
+        public override void LoadContent(ContentManager content)
+        {
             explosionTexture = content.Load<Texture2D>(@"explosion");
         }
 
-        public void SetEndBoss(Enemy enemy, Vector2 EndBossPostion)
+        public void SetEndBoss(int mapNumber)
         {
-            endBoss = enemy;
-            endBoss.Position = new Vector2(position.X + 850, position.Y + 500);
-            hasEndBoos = true;
+            switch (mapNumber)
+            {
+
+                case 1:
+                   enemies.Add((endBoss = new Tanker(new Vector2(position.X + 500, position.Y + 900), 2, 1, 2f, new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    break;
+                case 2:
+                    enemies.Add((endBoss = new Sprinter(new Vector2(position.X + 500, position.Y + 900), 2, 1, 2f, new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    break;
+                case 3:
+                    enemies.Add((endBoss = new Gunner(new Vector2(position.X + 500, position.Y + 900), 2, 1, 2f, new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    break;
+                case 4:
+                    enemies.Add((endBoss = new Doomer(new Vector2(position.X + 500, position.Y + 900), 2, 1, 2f, new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    break;
+            }
         }
 
         #endregion Initialization
@@ -138,7 +151,7 @@ namespace GameStateManagement.MapClasses
         {
             spriteBatch.DrawString(sprite, new string("Level" + levelNumber.ToString()), position, Color.Black);
 
-            foreach(Enemy e in enemies)
+            foreach (Enemy e in enemies)
             {
                 e.Draw(gameTime, spriteBatch);
             }
@@ -147,13 +160,15 @@ namespace GameStateManagement.MapClasses
             {
                 go.Draw(spriteBatch, sprite);
             }
+            if (levelNumber == 4)
+                generator.Draw(spriteBatch, sprite);
 
             foreach (Explosion ex in explosions)
             {
                 ex.Draw(spriteBatch);
             }
 
-            if (true)
+            if (CheckIfCompleted())
             {
                 teleport.Draw(spriteBatch);
             }
@@ -171,6 +186,8 @@ namespace GameStateManagement.MapClasses
             {
                 go.Update(gameTime);
             }
+            if (levelNumber == 4)
+                generator.Update(gameTime);
 
             foreach (Explosion ex in explosions)
             {
@@ -184,15 +201,38 @@ namespace GameStateManagement.MapClasses
         #region Loading & Manage Enemies, Objects and Explosions
 
 
-        public void CompleteCheck()
+        public bool CheckIfCompleted()
         {
-                if (hasEndBoos)
-                {
-                    if (endBossDefeated)
+            switch (levelNumber)
+            {
+                case 1:
+                    foreach (GameObject go in gameObjects)
                     {
-                        isCompleted = true;
+                        if (!go.keyPressed)
+                            return false;
                     }
-                }
+                    break;
+                case 2:
+                    foreach (GameObject go in gameObjects)
+                    {
+                        if (!go.keyPressed)
+                            return false;
+                    }
+                    break;
+                case 3:
+                    if (enemies.Any())
+                        return false;
+                    break;
+                case 4:
+                    if (!generator.damaged)
+                        return false;
+                    break;
+                case 5:
+                    if (!(endBoss is null))
+                        return false;
+                    break;
+            }
+            return (isCompleted = true);
         }
 
         public void ObserveEnemies()
@@ -207,18 +247,6 @@ namespace GameStateManagement.MapClasses
                 }
             }
         }
-        /*
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            if (enemies[i].actualShield <= 0)
-            {
-                explosions.Add(new Explosion(explosionTexture, new Vector2(enemies[i].Position.X - 50, enemies[i].Position.Y - 25)));
-                enemies.Remove(enemies[i]);
-                theHighlander.PlayerScore.Value += 150;
-            }
-        }
-        */
-
 
         public void ManageExplosions()
         {
