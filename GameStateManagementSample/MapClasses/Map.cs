@@ -109,6 +109,9 @@ namespace GameStateManagement.MapClasses
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 1350, lvl.position.Y + 100), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 800, lvl.position.Y + 275), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 1000, lvl.position.Y + 400), player));
+
+                    //when finish with rest positions call it down and delete the call here
+                    lvl.SetEnemiesPositions();
                     break;
 
                 case 3:

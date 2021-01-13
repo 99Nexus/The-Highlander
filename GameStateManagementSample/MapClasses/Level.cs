@@ -98,7 +98,6 @@ namespace GameStateManagement.MapClasses
             switch (levelNumber)
             {
                 case 1:
-                    positionElements.Add(new positionElement(new Vector2(position.X + 119, position.Y + 359), new Vector2(position.X + 303, position.Y + 359), MovementMode.HORIZONTAL));
                     positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y + 984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
 
                     positionElements.Add(new positionElement(new Vector2(position.X + 375, position.Y + 435), new Vector2(position.X + 375, position.Y + 635), MovementMode.VERTICAL));
@@ -111,16 +110,16 @@ namespace GameStateManagement.MapClasses
                     break;
 
                 case 2:
-                    positionElements.Add(new positionElement(new Vector2(position.X + 119, position.Y + 359), new Vector2(position.X + 303, position.Y + 359), MovementMode.HORIZONTAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y +  984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 860, position.Y + 1554), new Vector2(position.X + 1248, position.Y + 1554), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 786, position.Y +  1695), new Vector2(position.X + 434, position.Y + 1695), MovementMode.HORIZONTAL));
 
-                    positionElements.Add(new positionElement(new Vector2(position.X + 375, position.Y + 435), new Vector2(position.X + 375, position.Y + 635), MovementMode.VERTICAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 53, position.Y + 489), new Vector2(position.X + 53, position.Y + 705), MovementMode.VERTICAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 284, position.Y + 1263), new Vector2(position.X + 284, position.Y + 1059), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 1347, position.Y + 1680), new Vector2(position.X + 1347, position.Y + 1884), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 712, position.Y + 1936), new Vector2(position.X + 712, position.Y + 1844), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 1163, position.Y + 1882), new Vector2(position.X + 1163, position.Y + 1754), MovementMode.VERTICAL));
 
-                    positionElements.Add(new positionElement(new Vector2(position.X + 228, position.Y + 633), new Vector2(position.X + 228, position.Y + 633), MovementMode.PATROL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 434, position.Y + 1419), new Vector2(position.X + 434, position.Y + 1419), MovementMode.PATROL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 71, position.Y + 1419), new Vector2(position.X + 71, position.Y + 1419), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 803, position.Y + 1702), new Vector2(position.X + 803, position.Y + 1702), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 638, position.Y + 1556), new Vector2(position.X + 638, position.Y + 1556), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 431, position.Y + 1876), new Vector2(position.X + 431, position.Y + 1876), MovementMode.PATROL));
                     break;
 
                 case 3:
