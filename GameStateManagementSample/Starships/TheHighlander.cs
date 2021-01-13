@@ -255,8 +255,8 @@ namespace GameStateManagement.Starships
             explosion.position = new Vector2(this.Position.X - 50, Position.Y - 20);
             explosion.Draw(spriteBatch);
 
-            spriteBatch.DrawString(sprite, new string("Y " + Position.Y.ToString()), new Vector2(30, 100), Color.Black);
-            spriteBatch.DrawString(sprite, new string("X " + Position.X.ToString()), new Vector2(30, 130), Color.Black);
+            spriteBatch.DrawString(sprite, new string("Y " + Position.Y.ToString()), new Vector2(Position.X, Position.Y - 40), Color.Black);
+            spriteBatch.DrawString(sprite, new string("X " + Position.X.ToString()), Position, Color.Black);
         }
 
         #endregion Update and Draw

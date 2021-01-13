@@ -21,12 +21,13 @@ namespace GameStateManagement.GameManager
 
         public void ManageCollisions()
         {
+
             CollisionBetweenPlayerAndEnemy();
-            CollisionBetweenPlayerAndLaser();
+            //CollisionBetweenPlayerAndLaser();
             CollissionBetweenEnemyAndLaser();
-            CollissionBetweenPlayerAndMapObject();
-            CollisionBetweenPlayerLaserAndMapObject();
-            CollisionBetweenEnemyLaserAndMapObject();
+            //CollissionBetweenPlayerAndMapObject();
+            //CollisionBetweenPlayerLaserAndMapObject();
+            //CollisionBetweenEnemyLaserAndMapObject();
             CollissionBetweenPlayerAndGameObject();
             CollisionBetweenPlayerLaserAndGameObject();
             CollisionBetweenEnemyLaserAndGameObject();
@@ -90,26 +91,24 @@ namespace GameStateManagement.GameManager
 
         public void CollissionBetweenEnemyAndLaser()
         {
-            if (player.laserList.Count > 0)
+            foreach (Map m in mainMap.maps)
             {
-                for (int i = 0; i < player.laserList.Count; i++)
+                foreach (Level lv in m.levels)
                 {
-                    foreach (Map m in mainMap.maps)
+                    foreach (Enemy e in lv.enemies)
                     {
-                        foreach (Level lv in m.levels)
+                        foreach (Laser l in player.laserList)
                         {
-                            foreach (Enemy e in lv.enemies)
+                            if (l.Rectangle.Intersects(e.Rectangle) && e.damageBuffer >= e.maxDamageBuffer)
                             {
-                                if (player.laserList[i].Rectangle.Intersects(e.Rectangle) && e.damageBuffer >= e.maxDamageBuffer)
-                                {
-                                    player.laserList[i].isVisible = false;
-                                    player.laserList.Remove(player.laserList[i]);
-                                    e.UpdateActualShieldValue(player.weaponPower);
-                                    e.damageBuffer = 0;
-                                    break;
-                                }
+                                l.isVisible = false;
+                                player.laserList.Remove(l);
+                                e.UpdateActualShieldValue(player.weaponPower);
+                                e.damageBuffer = 0;
+                                break;
                             }
                         }
+
                     }
                 }
             }
@@ -192,12 +191,12 @@ namespace GameStateManagement.GameManager
                         foreach (Enemy e in lv.enemies)
                         {
                             // Enemy laser
-                            for (int i = 0; i < e.laserList.Count; i++)
+                            foreach (Laser l in e.laserList)
                             {
-                                if (e.laserList[i].Rectangle.Intersects(r))
+                                if (l.Rectangle.Intersects(r))
                                 {
-                                    e.laserList[i].isVisible = false;
-                                    e.laserList.Remove(e.laserList[i]);
+                                    l.isVisible = false;
+                                    e.laserList.Remove(l);
                                     break;
                                 }
                             }
@@ -209,26 +208,24 @@ namespace GameStateManagement.GameManager
 
             foreach (Map m in mainMap.maps)
             {
-                foreach (Level l in m.levels)
+                foreach (Level lv in m.levels)
                 {
-                    foreach (Rectangle r in l.rectangles)
+                    foreach (Rectangle r in lv.rectangles)
                     {
-                        foreach (Level lv in m.levels)
+                        foreach (Enemy e in lv.enemies)
                         {
-                            foreach (Enemy e in lv.enemies)
+                            // Enemy laser
+                            foreach (Laser l in e.laserList)
                             {
-                                // Enemy laser
-                                for (int i = 0; i < e.laserList.Count; i++)
+                                if (l.Rectangle.Intersects(r))
                                 {
-                                    if (e.laserList[i].Rectangle.Intersects(r))
-                                    {
-                                        e.laserList[i].isVisible = false;
-                                        e.laserList.Remove(e.laserList[i]);
-                                        break;
-                                    }
+                                    l.isVisible = false;
+                                    e.laserList.Remove(l);
+                                    break;
                                 }
                             }
                         }
+
                     }
                 }
             }
@@ -310,9 +307,9 @@ namespace GameStateManagement.GameManager
             {
                 foreach (Level lv in m.levels)
                 {
-                    foreach (Enemy e in lv.enemies)
+                    foreach (GameObject go in lv.gameObjects)
                     {
-                        foreach (GameObject go in lv.gameObjects)
+                        foreach (Enemy e in lv.enemies)
                         {
                             foreach (Laser l in e.laserList)
                             {

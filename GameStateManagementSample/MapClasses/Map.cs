@@ -71,7 +71,7 @@ namespace GameStateManagement.MapClasses
             for (int i = 0; i < levels.Length; i++)
             {
                 //create new lvl and assign levelNumber
-                levels[i] = new Level(l++, player);
+                levels[i] = new Level(l++, player, mapNumber);
                 levels[i].LoadContent(content); //3
                 SetPositions(levels[i], content);
             }
@@ -86,12 +86,16 @@ namespace GameStateManagement.MapClasses
                     playerStartPosition = (lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 100));
                     lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 250, lvl.position.Y + 1440));
 
+
                     lvl.gameObjects.Add(new ControlSystem(new Vector2(lvl.position.X + 45, lvl.position.Y + 400), player));
 
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 380, lvl.position.Y + 1200), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 140, lvl.position.Y + 900), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 150, lvl.position.Y + 1300), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 370, lvl.position.Y + 370), player));
+
+                    //when finish with rest positions call it down and delete the call here
+                    lvl.SetEnemiesPositions();
                     break;
 
                 case 2:
@@ -151,7 +155,8 @@ namespace GameStateManagement.MapClasses
 
                     break;
             }
-
+            //when finish with rest positions call it from here
+            //lvl.SetEnemiesPositions();
             foreach (GameObject go in lvl.gameObjects)
             {
                 go.LoadContent(content);

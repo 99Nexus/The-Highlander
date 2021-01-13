@@ -51,7 +51,7 @@ namespace GameStateManagement.Starships
         public float Rotation;
         public double keepDistanceToPlayer;
         public float rotationVelocity = 3f;
-        public bool turnDirectionToStartPoint = false;
+        public bool turnDirectionToStartPoint;
         public Vector2 start;
         public Vector2 end;
         public Vector2 playerPosition;
@@ -72,13 +72,9 @@ namespace GameStateManagement.Starships
 
         #region Inialization
 
-        public Enemy(Vector2 position, int maxShield, int weaponPower, float linearVelocity,
-            Vector2 end, Vector2 playerPosition, double keepDistanceToPlayer, MovementMode movementMode) 
+        public Enemy(Vector2 position, Vector2 end, Vector2 playerPosition, double keepDistanceToPlayer, MovementMode movementMode)
         {
             this.Position = position;
-            this.maxShield = maxShield;
-            this.weaponPower = weaponPower;
-            this.linearVelocity = linearVelocity;
             actualShield = maxShield;
             this.shieldString = actualShield + " | " + maxShield;
             this.start = position;
@@ -97,19 +93,46 @@ namespace GameStateManagement.Starships
             changeMovementMode(movementMode);
         }
 
+
+        public Enemy(Vector2 position, int maxShield, int weaponPower, float linearVelocity,
+            Vector2 end, Vector2 playerPosition, double keepDistanceToPlayer, MovementMode movementMode, int score)
+        {
+            this.Position = position;
+            this.maxShield = maxShield;
+            this.weaponPower = weaponPower;
+            this.linearVelocity = linearVelocity;
+            actualShield = maxShield;
+            this.shieldString = actualShield + " | " + maxShield;
+            this.start = position;
+            this.end = end;
+            this.playerPosition = playerPosition;
+            this.keepDistanceToPlayer = keepDistanceToPlayer;
+            this.movementMode = movementMode;
+            this.isVisible = true;
+            damageBuffer = 0;
+            maxDamageBuffer = 20;
+            this.score = score;
+
+            laserList = new List<Laser>();
+            laserDelay = 50;
+
+            // Set values for the actual movement mode
+            changeMovementMode(movementMode);
+        }
+
         public virtual void LoadContent(ContentManager content)
         {
-            texture = new Texture2D[3];
-            texture[0] = content.Load<Texture2D>(@"graphics\starships\tanker1");
-            texture[1] = content.Load<Texture2D>(@"graphics\starships\tanker2");
-            texture[2] = content.Load<Texture2D>(@"graphics\starships\tanker3");
-
             spriteFont = content.Load<SpriteFont>(@"spritefonts\starship_fonts\enemy_health_font");
 
             textureSize = new Vector2(texture[spriteCounter].Width, texture[spriteCounter].Height);
             Origin = new Vector2(texture[spriteCounter].Width / 2, texture[spriteCounter].Height / 2);
 
             laserTexture = content.Load<Texture2D>(@"graphics\game_objects\theHighlanderLaser");
+
+            Rectangle = new Rectangle((int)Position.X - (texture[spriteCounter].Width / 2),
+                          (int)Position.Y - (texture[spriteCounter].Height / 2),
+                          texture[spriteCounter].Width,
+                          texture[spriteCounter].Height);
         }
 
         #endregion Initialization
@@ -130,7 +153,7 @@ namespace GameStateManagement.Starships
                     else
                         turnDirectionToStartPoint = true;
                 }
-                    
+
                 // If start point is reached
                 if (Position.X <= start.X)
                 {
@@ -202,7 +225,7 @@ namespace GameStateManagement.Starships
         public void MoveVertically()
         {
             // If the end point has a greater y value
-            if(start.Y < end.Y)
+            if (start.Y < end.Y)
             {
                 // If end point is reached
                 if (Position.Y == end.Y)
@@ -332,7 +355,7 @@ namespace GameStateManagement.Starships
             turnDirectionToStartPoint = false;
 
             // set start Rotation for actual movement mode
-            switch(movementMode)
+            switch (movementMode)
             {
                 case MovementMode.HORIZONTAL:
                     if (start.X > end.X)
@@ -354,7 +377,7 @@ namespace GameStateManagement.Starships
 
         public void UpdateActualShieldValue(int damage)
         {
-            if(actualShield - damage < 1)
+            if (actualShield - damage < 1)
             {
                 //public void ManageExplosions()
                 actualShield = 0;
@@ -450,9 +473,9 @@ namespace GameStateManagement.Starships
 
         public virtual void Update(GameTime gameTime, Vector2 playerPosition)
         {
-            Rectangle = new Rectangle((int)Position.X - (texture[spriteCounter].Width / 2), 
-                                      (int)Position.Y - (texture[spriteCounter].Height / 2), 
-                                      texture[spriteCounter].Width, 
+            Rectangle = new Rectangle((int)Position.X - (texture[spriteCounter].Width / 2),
+                                      (int)Position.Y - (texture[spriteCounter].Height / 2),
+                                      texture[spriteCounter].Width,
                                       texture[spriteCounter].Height);
 
             // Update player position for movement and action
@@ -476,7 +499,7 @@ namespace GameStateManagement.Starships
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             // If not defeated
-            if(actualShield > 0)
+            if (actualShield > 0)
             {
                 // Count up to change sprite
                 if (spriteCounter < 2)

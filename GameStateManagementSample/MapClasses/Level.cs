@@ -12,10 +12,8 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using GameStateManagement.Starships;
 using GameStateManagement.GameItems;
 using GameStateManagement.ObjectItem;
@@ -28,26 +26,22 @@ namespace GameStateManagement.MapClasses
     {
         #region Fields
 
+        public struct positionElement
+        {
+            public Vector2 start;
+            public Vector2 end;
+            public MovementMode MovementMode;
+            public positionElement(Vector2 s, Vector2 e, MovementMode mMode)
+            {
+                start = s;
+                end = e;
+                MovementMode = mMode;
+            }
+        }
+
         public int levelNumber;
-        //public int mapNumber;
-        public Vector2 spawnPosition;
+        public int mapNumber;
         public bool isCompleted;
-
-        public TheHighlander theHighlander;
-
-        //endboss
-        public Enemy endBoss;
-
-        public List<Enemy> enemies;
-        public List<GameObject> gameObjects;
-        public Generator generator;
-
-        //Items
-        public Teleport teleport;
-        public List<GameItem> gameItems;
-
-        private List<Explosion> explosions;
-        private Texture2D explosionTexture;
 
         //borders
         public Rectangle[] rectangles;
@@ -56,26 +50,38 @@ namespace GameStateManagement.MapClasses
         public Rectangle topB;
         public Rectangle bottomB;
 
-        //Position borders
-        private float topLeft;
-        private float topRight;
-        private float bottomLeft;
-        private float bottomRight;
+        public TheHighlander theHighlander;
+        public Vector2 spawnPosition;
+
+        public Enemy endBoss;
+        public List<Enemy> enemies;
+        public List<positionElement> positionElements;
+        static Random rnd = new Random();
+
+        public List<GameObject> gameObjects;
+        public Generator generator;
+
+        //Items
+        public List<GameItem> gameItems;
+        public Teleport teleport;
+
+        private List<Explosion> explosions;
+        private Texture2D explosionTexture;
 
         #endregion Fields
 
         #region Initialization
 
-        public Level(int lvlNumber, TheHighlander player)
+        public Level(int lvlNumber, TheHighlander player, int mNumber)
         {
             levelNumber = lvlNumber;
+            mapNumber = mNumber;
             theHighlander = player;
-
             rectangles = new Rectangle[2];
-
             enemies = new List<Enemy>();
             explosions = new List<Explosion>();
             gameObjects = new List<GameObject>();
+            positionElements = new List<positionElement>();
         }
 
         public override void LoadContent(ContentManager content)
@@ -83,27 +89,180 @@ namespace GameStateManagement.MapClasses
             explosionTexture = content.Load<Texture2D>(@"explosion");
         }
 
-        public void SetEndBoss(int mapNumber)
+        #endregion Initialization
+
+        #region Enemies Initialization
+
+        public void SetEnemiesPositions()
+        {
+            switch (levelNumber)
+            {
+                case 1:
+                    positionElements.Add(new positionElement(new Vector2(position.X + 119, position.Y + 359), new Vector2(position.X + 303, position.Y + 359), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y + 984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
+
+                    positionElements.Add(new positionElement(new Vector2(position.X + 375, position.Y + 435), new Vector2(position.X + 375, position.Y + 635), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 53, position.Y + 489), new Vector2(position.X + 53, position.Y + 705), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 284, position.Y + 1263), new Vector2(position.X + 284, position.Y + 1059), MovementMode.VERTICAL));
+
+                    positionElements.Add(new positionElement(new Vector2(position.X + 228, position.Y + 633), new Vector2(position.X + 228, position.Y + 633), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 434, position.Y + 1419), new Vector2(position.X + 434, position.Y + 1419), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 71, position.Y + 1419), new Vector2(position.X + 71, position.Y + 1419), MovementMode.PATROL));
+                    break;
+
+                case 2:
+                    positionElements.Add(new positionElement(new Vector2(position.X + 119, position.Y + 359), new Vector2(position.X + 303, position.Y + 359), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y +  984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
+
+                    positionElements.Add(new positionElement(new Vector2(position.X + 375, position.Y + 435), new Vector2(position.X + 375, position.Y + 635), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 53, position.Y + 489), new Vector2(position.X + 53, position.Y + 705), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 284, position.Y + 1263), new Vector2(position.X + 284, position.Y + 1059), MovementMode.VERTICAL));
+
+                    positionElements.Add(new positionElement(new Vector2(position.X + 228, position.Y + 633), new Vector2(position.X + 228, position.Y + 633), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 434, position.Y + 1419), new Vector2(position.X + 434, position.Y + 1419), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 71, position.Y + 1419), new Vector2(position.X + 71, position.Y + 1419), MovementMode.PATROL));
+                    break;
+
+                case 3:
+                    positionElements.Add(new positionElement(new Vector2(position.X + 119, position.Y + 359), new Vector2(position.X + 303, position.Y + 359), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y + 984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
+
+                    positionElements.Add(new positionElement(new Vector2(position.X + 375, position.Y + 435), new Vector2(position.X + 375, position.Y + 635), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 53, position.Y + 489), new Vector2(position.X + 53, position.Y + 705), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 284, position.Y + 1263), new Vector2(position.X + 284, position.Y + 1059), MovementMode.VERTICAL));
+
+                    positionElements.Add(new positionElement(new Vector2(position.X + 228, position.Y + 633), new Vector2(position.X + 228, position.Y + 633), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 434, position.Y + 1419), new Vector2(position.X + 434, position.Y + 1419), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 71, position.Y + 1419), new Vector2(position.X + 71, position.Y + 1419), MovementMode.PATROL));
+                    break;
+
+                case 4:
+                    positionElements.Add(new positionElement(new Vector2(position.X + 119, position.Y + 359), new Vector2(position.X + 303, position.Y + 359), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y + 984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
+
+                    positionElements.Add(new positionElement(new Vector2(position.X + 375, position.Y + 435), new Vector2(position.X + 375, position.Y + 635), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 53, position.Y + 489), new Vector2(position.X + 53, position.Y + 705), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 284, position.Y + 1263), new Vector2(position.X + 284, position.Y + 1059), MovementMode.VERTICAL));
+
+                    positionElements.Add(new positionElement(new Vector2(position.X + 228, position.Y + 633), new Vector2(position.X + 228, position.Y + 633), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 434, position.Y + 1419), new Vector2(position.X + 434, position.Y + 1419), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 71, position.Y + 1419), new Vector2(position.X + 71, position.Y + 1419), MovementMode.PATROL));
+                    break;
+
+                case 5:
+                    positionElements.Add(new positionElement(new Vector2(position.X + 119, position.Y + 359), new Vector2(position.X + 303, position.Y + 359), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y + 984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
+
+                    positionElements.Add(new positionElement(new Vector2(position.X + 375, position.Y + 435), new Vector2(position.X + 375, position.Y + 635), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 53, position.Y + 489), new Vector2(position.X + 53, position.Y + 705), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 284, position.Y + 1263), new Vector2(position.X + 284, position.Y + 1059), MovementMode.VERTICAL));
+
+                    positionElements.Add(new positionElement(new Vector2(position.X + 228, position.Y + 633), new Vector2(position.X + 228, position.Y + 633), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 434, position.Y + 1419), new Vector2(position.X + 434, position.Y + 1419), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 71, position.Y + 1419), new Vector2(position.X + 71, position.Y + 1419), MovementMode.PATROL));
+                    break;
+
+            }
+            SpawnEnemies();
+        }
+
+        public void FullEnemiesList(int numberOfEnemies)
+        {
+            int randomPosition;
+
+            int[] orderOfEnemiesObj = OrderOfEnemies();
+
+            // list [1,1,1,1,1]
+            // list [2, 1, 2, 2, 2]
+            // list [1, 3, 2, 3, 3]
+            // list [3, 2, 1, 3, 2]
+
+            for (int k = 0; k < numberOfEnemies; k++)
+            {
+                randomPosition = rnd.Next(positionElements.Count);
+
+                if (orderOfEnemiesObj[k] == 1)
+                {
+                    enemies.Add(new TankerShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 20.0, positionElements[randomPosition].MovementMode));
+                }
+
+                if (orderOfEnemiesObj[k] == 2)
+                {
+                    enemies.Add(new SprinterShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 20.0, positionElements[randomPosition].MovementMode));
+                }
+
+                if (orderOfEnemiesObj[k] == 3)
+                {
+                    enemies.Add(new GunnerShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 20.0, positionElements[randomPosition].MovementMode));
+                }
+                positionElements.RemoveAt(randomPosition);
+            }
+        }
+
+        public int[] OrderOfEnemies()
         {
             switch (mapNumber)
             {
+                // list [1,1,1,1,1]
+                // list [2, 1, 2, 2, 2]
+                // list [1, 3, 2, 3, 3]
+                // list [3, 2, 1, 3, 2]
 
-                case 1:
-                   enemies.Add((endBoss = new Tanker(new Vector2(position.X + 500, position.Y + 900), 2, 1, 2f, new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
-                    break;
                 case 2:
-                    enemies.Add((endBoss = new Sprinter(new Vector2(position.X + 500, position.Y + 900), 2, 1, 2f, new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
-                    break;
+                    return new int[] { 2, 1, 2, 2, 2 };
                 case 3:
-                    enemies.Add((endBoss = new Gunner(new Vector2(position.X + 500, position.Y + 900), 2, 1, 2f, new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
-                    break;
+                    return new int[] { 1, 3, 2, 3, 3 };
                 case 4:
-                    enemies.Add((endBoss = new Doomer(new Vector2(position.X + 500, position.Y + 900), 2, 1, 2f, new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    return new int[] { 3, 2, 1, 3, 2 };
+                default:
+                    return new int[] { 1, 1, 1, 1, 1 };
+            }
+        }
+
+        public void SpawnEnemies()
+        {
+            int numberOfEnemies;
+
+            switch (levelNumber)
+            {
+                case 3:
+                    numberOfEnemies = 5;
+                    FullEnemiesList(numberOfEnemies);
+                    break;
+
+                case 5:
+                    numberOfEnemies = 3;
+                    FullEnemiesList(numberOfEnemies);
+                    break;
+
+                default:
+                    numberOfEnemies = 4;
+                    FullEnemiesList(numberOfEnemies);
                     break;
             }
         }
 
-        #endregion Initialization
+        public void SetEndBoss(int mapNumber)
+        {
+            switch (mapNumber)
+            {
+                case 1:
+                    enemies.Add((endBoss = new Tanker(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    break;
+
+                case 2:
+                    enemies.Add((endBoss = new Sprinter(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    break;
+                case 3:
+                    enemies.Add((endBoss = new Gunner(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    break;
+                case 4:
+                    enemies.Add((endBoss = new Doomer(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    break;
+            }
+        }
+
+        #endregion Enemies Initialization
 
         #region Borders Initialization
         public void MakeBorders()
@@ -198,7 +357,25 @@ namespace GameStateManagement.MapClasses
         }
         #endregion Update and Draw
 
-        #region Loading & Manage Enemies, Objects and Explosions
+        #region Loading & Manage Enemies
+
+        public void ObserveEnemies()
+        {
+            foreach (Enemy e in enemies.ToList())
+            {
+                if (e.actualShield <= 0)
+                {
+                    explosions.Add(new Explosion(explosionTexture, new Vector2(e.Position.X - 50, e.Position.Y - 25)));
+                    theHighlander.PlayerScore.Value += e.score;
+                    enemies.Remove(e);
+                }
+            }
+        }
+
+        #endregion Loading & Manage Enemies
+
+
+        #region Manage Level and Explosions
 
 
         public bool CheckIfCompleted()
@@ -235,18 +412,6 @@ namespace GameStateManagement.MapClasses
             return (isCompleted = true);
         }
 
-        public void ObserveEnemies()
-        {
-            foreach (Enemy e in enemies.ToList())
-            {
-                if (e.actualShield <= 0)
-                {
-                    explosions.Add(new Explosion(explosionTexture, new Vector2(e.Position.X - 50, e.Position.Y - 25)));
-                    theHighlander.PlayerScore.Value += e.score;
-                    enemies.Remove(e);
-                }
-            }
-        }
 
         public void ManageExplosions()
         {
@@ -257,38 +422,6 @@ namespace GameStateManagement.MapClasses
             }
         }
 
-        /*
-        public void LoadEnemies()
-        {
-            /*
-            if(enemyList.Count < 1)
-            {
-                enemyList.Add(new Enemy(theEnemy, einFont, 1, 0, 0, 0));
-            }
-
-            enemyList.Add(new Enemy(theEnemy, einFont, 1, 0, 0, 0));
-
-            if (!enemyList[0].isVisible)
-            {
-                enemyList.RemoveAt(0);
-            }
-
-            for (int i = 0; i < enemyList.Count; i++)
-            {
-                if (!enemyList[i].isVisible)
-                {
-                    enemyList.RemoveAt(i);
-                    i--;
-                }
-            }
-        }
-        */
-
-        //load enemies
-        public void LoadEnemies(MovementMode movementMode, int enemiesNumber)
-        {
-
-        }
-        #endregion Loading Enemy & Manage Explosions 
+        #endregion Manage Level and Explosions
     }
 }
