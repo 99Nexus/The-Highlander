@@ -54,6 +54,7 @@ namespace GameStateManagement.MapClasses
         public Vector2 spawnPosition;
 
         public Enemy endBoss;
+        public bool isEndBossDestroyed;
         public List<Enemy> enemies;
         public List<positionElement> positionElements;
         static Random rnd = new Random();
@@ -112,7 +113,7 @@ namespace GameStateManagement.MapClasses
 
                 case 2:
                     positionElements.Add(new positionElement(new Vector2(position.X + 119, position.Y + 359), new Vector2(position.X + 303, position.Y + 359), MovementMode.HORIZONTAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y +  984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y + 984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
 
                     positionElements.Add(new positionElement(new Vector2(position.X + 375, position.Y + 435), new Vector2(position.X + 375, position.Y + 635), MovementMode.VERTICAL));
                     positionElements.Add(new positionElement(new Vector2(position.X + 53, position.Y + 489), new Vector2(position.X + 53, position.Y + 705), MovementMode.VERTICAL));
@@ -377,7 +378,6 @@ namespace GameStateManagement.MapClasses
 
         #region Manage Level and Explosions
 
-
         public bool CheckIfCompleted()
         {
             switch (levelNumber)
@@ -405,8 +405,15 @@ namespace GameStateManagement.MapClasses
                         return false;
                     break;
                 case 5:
-                    if (!(endBoss is null))
+                    if (endBoss.actualShield > 0)
+                    {
                         return false;
+                    }
+                    else if (theHighlander.updateLevel < 2 && !isEndBossDestroyed)
+                    {
+                        theHighlander.updateLevel++;
+                        isEndBossDestroyed = true;
+                    }
                     break;
             }
             return (isCompleted = true);
