@@ -14,11 +14,16 @@ namespace GameStateManagement.GameItems
         public Rectangle rectangle;
         public Vector2 position;
         public Texture2D texture;
-        public bool isVisible;
+        public bool isVisible = false;
         public Vector2 Origin;
 
 
         public virtual void LoadContent(ContentManager content) {}
+
+        public void Update()
+        {
+            isVisible = true;
+        }
 
         public abstract void Draw(SpriteBatch spriteBatch);
         

@@ -35,7 +35,6 @@ namespace GameStateManagement.ObjectItem
 
         public virtual void Update(GameTime gameTime)
         {
-            //hier muss eine Bedingung hin und dann wird das Objekt dort visible
             if (!scoreObserver && Keyboard.GetState().IsKeyDown(Keys.E) && CalculateDistanceToPlayer() <= 80)
             {
                 keyPressed = true;
