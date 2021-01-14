@@ -9,11 +9,6 @@ namespace GameStateManagement.GameItems
 {
     public class Teleport : GameItem
     {
-        public Teleport(Texture2D texture, Vector2 pos)
-        {
-            position = pos;
-            this.texture = texture;       
-        }
 
         public Teleport(Vector2 pos)
         {
@@ -23,7 +18,6 @@ namespace GameStateManagement.GameItems
         public override void LoadContent(ContentManager content)
         {
             texture = content.Load<Texture2D>(@"graphics\game_items\Teleport");
-
 
             // Rectangle für die Kollision, um den Spieler, wenn er den Teleporter berührt woanders zu spawnen
             rectangle = new Rectangle((int)position.X - (texture.Width / 2),

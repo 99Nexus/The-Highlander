@@ -7,8 +7,8 @@ namespace GameStateManagement.ObjectItem
 {
     public class Alarm : GameObject
     {
-        private int spriteCounter = 0;
-        private Texture2D[] alarmList; 
+        private int spriteCounter;
+        private Texture2D[] alarmList;
 
         public Alarm(Vector2 pos, TheHighlander theHighlander) : base(pos, theHighlander)
         {
@@ -24,21 +24,25 @@ namespace GameStateManagement.ObjectItem
                                       alarmList[spriteCounter].Width,
                                       alarmList[spriteCounter].Height);
             Origin = new Vector2(alarmList[spriteCounter].Width / 2, alarmList[spriteCounter].Height / 2);
-            Origin = new Vector2(alarmList[spriteCounter].Width / 2, alarmList[spriteCounter].Height / 2);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            if (keyPressed)
+            {
+                spriteCounter = 1;
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
             spriteBatch.Draw(alarmList[spriteCounter], position, null, Color.White, 0, Origin, 1, SpriteEffects.None, 0);
 
-            if (CalculateDistanceToPlayer() <= 120 && !keyPressed)
+            if (CalculateDistanceToPlayer() <= 130 && !keyPressed)
             {
                 spriteBatch.DrawString(sprite, new string("Press 'E' to set \n off the alarm"), new Vector2(position.X - 50, position.Y + 60), Color.Black);
-            }
-
-            if(keyPressed && CalculateDistanceToPlayer() <= 80)
-            {
-                spriteCounter = 1;
             }
         }
     }

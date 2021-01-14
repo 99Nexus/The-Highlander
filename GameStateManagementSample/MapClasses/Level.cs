@@ -57,6 +57,7 @@ namespace GameStateManagement.MapClasses
         public Vector2 spawnPosition;
 
         public Enemy endBoss;
+        public bool isEndBossDestroyed;
         public List<Enemy> enemies;
         public List<positionElement> positionElements;
         static Random rnd = new Random();
@@ -106,7 +107,6 @@ namespace GameStateManagement.MapClasses
             switch (levelNumber)
             {
                 case 1:
-                    positionElements.Add(new positionElement(new Vector2(position.X + 119, position.Y + 359), new Vector2(position.X + 303, position.Y + 359), MovementMode.HORIZONTAL));
                     positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y + 984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
 
                     positionElements.Add(new positionElement(new Vector2(position.X + 375, position.Y + 435), new Vector2(position.X + 375, position.Y + 635), MovementMode.VERTICAL));
@@ -119,55 +119,46 @@ namespace GameStateManagement.MapClasses
                     break;
 
                 case 2:
-                    positionElements.Add(new positionElement(new Vector2(position.X + 119, position.Y + 359), new Vector2(position.X + 303, position.Y + 359), MovementMode.HORIZONTAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y +  984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 860, position.Y + 54), new Vector2(position.X + 1248, position.Y + 54), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 786, position.Y +  195), new Vector2(position.X + 434, position.Y + 195), MovementMode.HORIZONTAL));
 
-                    positionElements.Add(new positionElement(new Vector2(position.X + 375, position.Y + 435), new Vector2(position.X + 375, position.Y + 635), MovementMode.VERTICAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 53, position.Y + 489), new Vector2(position.X + 53, position.Y + 705), MovementMode.VERTICAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 284, position.Y + 1263), new Vector2(position.X + 284, position.Y + 1059), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 1347, position.Y + 180), new Vector2(position.X + 1347, position.Y + 384), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 712, position.Y + 436), new Vector2(position.X + 712, position.Y + 344), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 1163, position.Y + 382), new Vector2(position.X + 1163, position.Y + 254), MovementMode.VERTICAL));
 
-                    positionElements.Add(new positionElement(new Vector2(position.X + 228, position.Y + 633), new Vector2(position.X + 228, position.Y + 633), MovementMode.PATROL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 434, position.Y + 1419), new Vector2(position.X + 434, position.Y + 1419), MovementMode.PATROL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 71, position.Y + 1419), new Vector2(position.X + 71, position.Y + 1419), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 803, position.Y + 202), new Vector2(position.X + 803, position.Y + 202), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 638, position.Y + 56), new Vector2(position.X + 638, position.Y + 56), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 431, position.Y + 376), new Vector2(position.X + 431, position.Y + 376), MovementMode.PATROL));
                     break;
 
                 case 3:
-                    positionElements.Add(new positionElement(new Vector2(position.X + 119, position.Y + 359), new Vector2(position.X + 303, position.Y + 359), MovementMode.HORIZONTAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y + 984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 61, position.Y + 1132), new Vector2(position.X + 1273, position.Y + 1143), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 59, position.Y + 58), new Vector2(position.X + 195, position.Y + 58), MovementMode.HORIZONTAL));
 
-                    positionElements.Add(new positionElement(new Vector2(position.X + 375, position.Y + 435), new Vector2(position.X + 375, position.Y + 635), MovementMode.VERTICAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 53, position.Y + 489), new Vector2(position.X + 53, position.Y + 705), MovementMode.VERTICAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 284, position.Y + 1263), new Vector2(position.X + 284, position.Y + 1059), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 147, position.Y + 347), new Vector2(position.X + 147, position.Y + 184), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y + 519), new Vector2(position.X + 142, position.Y + 647), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 409, position.Y + 736), new Vector2(position.X + 409, position.Y + 916), MovementMode.VERTICAL));
 
-                    positionElements.Add(new positionElement(new Vector2(position.X + 228, position.Y + 633), new Vector2(position.X + 228, position.Y + 633), MovementMode.PATROL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 434, position.Y + 1419), new Vector2(position.X + 434, position.Y + 1419), MovementMode.PATROL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 71, position.Y + 1419), new Vector2(position.X + 71, position.Y + 1419), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 438, position.Y + 1155), new Vector2(position.X + 438, position.Y + 1155), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 55, position.Y + 976), new Vector2(position.X + 55, position.Y + 976), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 435, position.Y + 61), new Vector2(position.X + 435, position.Y + 61), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 301, position.Y + 671), new Vector2(position.X + 301, position.Y + 671), MovementMode.PATROL));
                     break;
 
                 case 4:
-                    positionElements.Add(new positionElement(new Vector2(position.X + 119, position.Y + 359), new Vector2(position.X + 303, position.Y + 359), MovementMode.HORIZONTAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y + 984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 1210, position.Y + 435), new Vector2(position.X + 962, position.Y + 435), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 653, position.Y + 283), new Vector2(position.X + 445, position.Y + 283), MovementMode.HORIZONTAL));
 
-                    positionElements.Add(new positionElement(new Vector2(position.X + 375, position.Y + 435), new Vector2(position.X + 375, position.Y + 635), MovementMode.VERTICAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 53, position.Y + 489), new Vector2(position.X + 53, position.Y + 705), MovementMode.VERTICAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 284, position.Y + 1263), new Vector2(position.X + 284, position.Y + 1059), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 855, position.Y + 168), new Vector2(position.X + 855, position.Y + 284), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 85, position.Y + 427), new Vector2(position.X + 85, position.Y + 311), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 569, position.Y + 55), new Vector2(position.X + 569, position.Y + 143), MovementMode.VERTICAL));
 
-                    positionElements.Add(new positionElement(new Vector2(position.X + 228, position.Y + 633), new Vector2(position.X + 228, position.Y + 633), MovementMode.PATROL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 434, position.Y + 1419), new Vector2(position.X + 434, position.Y + 1419), MovementMode.PATROL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 71, position.Y + 1419), new Vector2(position.X + 71, position.Y + 1419), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 1100, position.Y + 66), new Vector2(position.X + 1100, position.Y + 66), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 746, position.Y + 356), new Vector2(position.X + 746, position.Y + 356), MovementMode.PATROL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 65, position.Y + 112), new Vector2(position.X + 65, position.Y + 112), MovementMode.PATROL));
                     break;
 
                 case 5:
-                    positionElements.Add(new positionElement(new Vector2(position.X + 119, position.Y + 359), new Vector2(position.X + 303, position.Y + 359), MovementMode.HORIZONTAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y + 984), new Vector2(position.X + 305, position.Y + 984), MovementMode.HORIZONTAL));
-
-                    positionElements.Add(new positionElement(new Vector2(position.X + 375, position.Y + 435), new Vector2(position.X + 375, position.Y + 635), MovementMode.VERTICAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 53, position.Y + 489), new Vector2(position.X + 53, position.Y + 705), MovementMode.VERTICAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 284, position.Y + 1263), new Vector2(position.X + 284, position.Y + 1059), MovementMode.VERTICAL));
-
-                    positionElements.Add(new positionElement(new Vector2(position.X + 228, position.Y + 633), new Vector2(position.X + 228, position.Y + 633), MovementMode.PATROL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 434, position.Y + 1419), new Vector2(position.X + 434, position.Y + 1419), MovementMode.PATROL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 71, position.Y + 1419), new Vector2(position.X + 71, position.Y + 1419), MovementMode.PATROL));
                     break;
 
             }
@@ -405,7 +396,6 @@ namespace GameStateManagement.MapClasses
 
         #region Manage Level and Explosions
 
-
         public bool CheckIfCompleted()
         {
             switch (levelNumber)
@@ -433,8 +423,15 @@ namespace GameStateManagement.MapClasses
                         return false;
                     break;
                 case 5:
-                    if (!(endBoss is null))
+                    if (endBoss.actualShield > 0)
+                    {
                         return false;
+                    }
+                    else if (theHighlander.updateLevel < 2 && !isEndBossDestroyed)
+                    {
+                        theHighlander.updateLevel++;
+                        isEndBossDestroyed = true;
+                    }
                     break;
             }
             return (isCompleted = true);
