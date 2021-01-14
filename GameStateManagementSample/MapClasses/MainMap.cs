@@ -34,6 +34,9 @@ namespace GameStateManagement.MapClasses
         public Rectangle rightMainBorder;
 
         public TheHighlander player;
+
+        // Mission
+        public Mission prevMission;
         #endregion Fields
 
         #region Initialization
@@ -49,6 +52,7 @@ namespace GameStateManagement.MapClasses
             maps = new Map[4];
             position = new Vector2(0, 0);
             player = theHighlander;
+            prevMission = new Mission(1, player);
             CreateMaps(content);
         }
 
@@ -113,9 +117,26 @@ namespace GameStateManagement.MapClasses
 
         public override void Update(GameTime gameTime, TheHighlander theHighlander)
         {
+            Rectangle overlap = new Rectangle();
             foreach (Map m in maps)
             {
                 m.Update(gameTime, theHighlander);
+
+                foreach(Level l in m.levels)
+                {
+                    overlap = Rectangle.Intersect(l.levelArea, player.Rectangle);
+                    if (l.levelNumber < 5)
+                    {
+                        l.mission.isVisible = true;
+
+                        if (prevMission.missionNr != l.mission.missionNr)
+                        {
+                            prevMission.isVisible = false;                             
+                        }
+                        prevMission = l.mission;
+                    }
+                    //&& l.levelArea.Intersects(player.Rectangle)
+                }
             }
         }
         #endregion Update and Draw

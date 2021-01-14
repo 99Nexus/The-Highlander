@@ -50,6 +50,9 @@ namespace GameStateManagement.MapClasses
         public Rectangle topB;
         public Rectangle bottomB;
 
+        // rectangle for position check 
+        public Rectangle levelArea;
+
         public TheHighlander theHighlander;
         public Vector2 spawnPosition;
 
@@ -68,6 +71,10 @@ namespace GameStateManagement.MapClasses
         private List<Explosion> explosions;
         private Texture2D explosionTexture;
 
+        // Mission
+        public Mission mission;
+
+
         #endregion Fields
 
         #region Initialization
@@ -82,6 +89,7 @@ namespace GameStateManagement.MapClasses
             explosions = new List<Explosion>();
             gameObjects = new List<GameObject>();
             positionElements = new List<positionElement>();
+            mission = new Mission(lvlNumber, player);
         }
 
         public override void LoadContent(ContentManager content)
@@ -268,7 +276,11 @@ namespace GameStateManagement.MapClasses
         public void MakeBorders()
         {
             if (levelNumber == 5)
-                return;
+
+                // create rectangleArea
+                levelArea = new Rectangle((int)position.X + 10, (int)position.Y + 10, 1480, 480);
+
+            return;
 
             if (levelNumber == 1)
             {
@@ -277,6 +289,9 @@ namespace GameStateManagement.MapClasses
                 /// right: P: x 490  y 0 , Size: w 10 x  h 1500
                 rectangles[0] = rightB = new Rectangle((int)position.X + 490, (int)position.Y, 10, 1500);
                 rectangles[1] = leftB = new Rectangle((int)position.X, (int)position.Y, 10, 500);
+
+                // create rectangleArea
+                levelArea = new Rectangle(0 + 10, 0 + 10, 480, 1480);
             }
 
             else if (levelNumber == 2)
@@ -286,6 +301,10 @@ namespace GameStateManagement.MapClasses
                 /// top: P: x 500  y 1500 , Size: w 1500 x  h 10
                 rectangles[0] = leftB = new Rectangle((int)position.X, (int)position.Y, 10, 500);
                 rectangles[1] = topB = new Rectangle((int)position.X, (int)position.Y, 1500, 10);
+
+                // create rectangleArea
+                levelArea = new Rectangle((int)position.X + 10, (int)position.Y + 10, 1480, 480);
+
             }
 
             else if (this.levelNumber == 3)
@@ -293,6 +312,9 @@ namespace GameStateManagement.MapClasses
                 /// Map 1 Lvl 3
                 /// left: P: x 1500  y 500 , Size: w 10 x  h 1500
                 rectangles[0] = leftB = new Rectangle((int)position.X, (int)position.Y, 10, 1500);
+
+                // create rectangleArea
+                levelArea = new Rectangle((int)position.X + 10, (int)position.Y + 10, 480, 1480);
             }
 
             else if (levelNumber == 4)
@@ -300,6 +322,9 @@ namespace GameStateManagement.MapClasses
                 /// Map 1 Lvl 4
                 /// bottom: P: x 500  y + 490 , Size: w 1500 x  h 10 
                 rectangles[0] = bottomB = new Rectangle((int)position.X, (int)position.Y + 490, 1500, 10);
+
+                // create rectangleArea
+                levelArea = new Rectangle((int)position.X + 10, (int)position.Y + 10, 1480, 480);
             }
         }
         #endregion Borders Initialization
@@ -331,6 +356,9 @@ namespace GameStateManagement.MapClasses
             {
                 teleport.Draw(spriteBatch);
             }
+
+            mission.Draw(spriteBatch, sprite);
+
         }
 
         public override void Update(GameTime gameTime, TheHighlander theHighlander)

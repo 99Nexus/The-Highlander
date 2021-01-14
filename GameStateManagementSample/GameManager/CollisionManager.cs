@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using GameStateManagement.MapClasses;
 using GameStateManagement.ObjectItem;
 using System.Linq;
+using GameStateManagement.GameItems;
 
 namespace GameStateManagement.GameManager
 {
@@ -31,6 +32,7 @@ namespace GameStateManagement.GameManager
             CollissionBetweenPlayerAndGameObject();
             CollisionBetweenPlayerLaserAndGameObject();
             CollisionBetweenEnemyLaserAndGameObject();
+            CollisionBetweenPlayerAndTeleport();
         }
 
         public void CollisionBetweenPlayerAndEnemy()
@@ -322,6 +324,22 @@ namespace GameStateManagement.GameManager
                             }
                         }
                     }
+                }
+            }
+        }
+
+        public void CollisionBetweenPlayerAndTeleport()
+        {
+            foreach(Map m in mainMap.maps)
+            {
+                foreach(Level l in m.levels)
+                {
+                    
+                        if(player.Rectangle.Intersects(l.teleport.rectangle))
+                        {
+                            player.Position = l.spawnPosition;
+                        }
+                    
                 }
             }
         }

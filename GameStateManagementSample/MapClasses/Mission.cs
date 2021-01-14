@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GameStateManagement.Starships;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -12,22 +13,24 @@ namespace GameStateManagement.MapClasses
 {
     public class Mission
     {
-        private String misString;
+        public String misString;
         private Vector2 position;
-        private int missionNr;
-        private bool isVisible;
+        public int missionNr;
+        public bool isVisible;
         private bool keyPressed;
+        public TheHighlander player;
 
         // missions
         private SpriteFont missionMessage;
 
-        public Mission(int missionNr)
+        public Mission(int missionNr, TheHighlander player)
         {
             this.missionNr = missionNr;
-            misString = chooseMis(missionNr);
-            position = new Vector2(100, 100);
-            isVisible = true;
+            misString = chooseMis(missionNr);           
+            isVisible = false;
             keyPressed = false;
+            this.player = player;
+            position = new Vector2(player.Position.X, player.Position.Y - 50);
         }
 
         public void LoadContent(ContentManager Content)
@@ -43,6 +46,7 @@ namespace GameStateManagement.MapClasses
         {
             switch(missionNr)
             {
+
                 case 1:
                     return "Task 1: Destroy the control system of the section";
 
@@ -68,7 +72,10 @@ namespace GameStateManagement.MapClasses
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
-            spriteBatch.DrawString(spriteFont, misString, position, Color.AliceBlue);
+            position = new Vector2(player.Position.X, player.Position.Y - 50);
+
+            if (isVisible)
+                spriteBatch.DrawString(spriteFont, misString, position, Color.Black);
         }
     }
 }
