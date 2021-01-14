@@ -23,7 +23,6 @@ namespace GameStateManagement.ObjectItem
         public override void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
             base.Draw(spriteBatch, sprite);
-            spriteBatch.DrawString(sprite, CalculateDistanceToPlayer().ToString(), new Vector2(position.X - 20, position.Y + 100), Color.Black);
 
             if (CalculateDistanceToPlayer() <= 100 && !keyPressed)
             {
