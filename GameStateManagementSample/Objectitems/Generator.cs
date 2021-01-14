@@ -46,11 +46,6 @@ namespace GameStateManagement.ObjectItem
             shieldString = actualShield + " | " + maxShield;
         }
 
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-        }
-
         public override void Draw(SpriteBatch spriteBatch, SpriteFont sprite)
         {
             if (damaged)

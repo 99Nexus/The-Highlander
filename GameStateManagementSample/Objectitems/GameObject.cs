@@ -9,13 +9,13 @@ namespace GameStateManagement.ObjectItem
     public abstract class GameObject
     {
         public Rectangle rectangle;
-        public Vector2 position;
-        public Texture2D texture;
+        protected Vector2 position;
+        protected Texture2D texture;
+        protected Vector2 Origin;
 
         public TheHighlander player;
+
         public bool keyPressed;
-        public Vector2 Origin;
-        public int count = 0;
 
         private bool scoreObserver;
 
@@ -35,11 +35,12 @@ namespace GameStateManagement.ObjectItem
 
         public virtual void Update(GameTime gameTime)
         {
-            if (!scoreObserver && Keyboard.GetState().IsKeyDown(Keys.E) && CalculateDistanceToPlayer() <= 80)
+
+            if (!scoreObserver && Keyboard.GetState().IsKeyDown(Keys.E) && CalculateDistanceToPlayer() <= 120)
             {
-                keyPressed = true;
+                this.keyPressed = true;
                 player.PlayerScore.Value += 250;
-                scoreObserver = true;
+                this.scoreObserver = true;
             }
         }
 

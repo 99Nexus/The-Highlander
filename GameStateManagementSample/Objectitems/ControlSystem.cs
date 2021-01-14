@@ -25,7 +25,7 @@ namespace GameStateManagement.ObjectItem
             base.Draw(spriteBatch, sprite);
             spriteBatch.DrawString(sprite, CalculateDistanceToPlayer().ToString(), new Vector2(position.X - 20, position.Y + 100), Color.Black);
 
-            if (CalculateDistanceToPlayer() <= 80 && !keyPressed)
+            if (CalculateDistanceToPlayer() <= 100 && !keyPressed)
             {
                 spriteBatch.DrawString(sprite, new string("Press 'E' to turn on \n the control system"), new Vector2(position.X - 10, position.Y + 75), Color.Black);
             }
