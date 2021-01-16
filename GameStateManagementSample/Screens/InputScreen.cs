@@ -56,7 +56,6 @@ namespace GameStateManagement
             content = new ContentManager(ScreenManager.Game.Services, "Content");
             inputScreenTexture = content.Load<Texture2D>("graphics/screen_graphics/inputScreen");
             // load the saved Score list, if there is not any created list then a new list will be created
-
         }
 
         #endregion Initialization

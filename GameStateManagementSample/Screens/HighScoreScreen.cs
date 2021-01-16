@@ -28,7 +28,6 @@ namespace GameStateManagement
     /// </summary>
     class HighScoreScreen : MenuScreen
     {
-
         #region Fields
 
         private ScoreManager scoreManager;
@@ -88,8 +87,6 @@ namespace GameStateManagement
 
             base.Draw(gameTime);
         }
-
         #endregion Draw
-
     }
 }

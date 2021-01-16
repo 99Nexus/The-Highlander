@@ -26,15 +26,9 @@ namespace GameStateManagement
     internal class MainMenuScreen : MenuScreen
     {
 
-        #region Fields
-
         private Texture2D startScreenLogo;
 
-
-        #endregion Fields
-
         #region Initialization
-
         /// <summary>
         /// Constructor fills in the menu contents.
         /// </summary>
@@ -84,10 +78,6 @@ namespace GameStateManagement
         private void StartGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             ScreenManager.AddScreen(new InputScreen(sender, e), e.PlayerIndex);
-            /*
-            LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
-                               new GameplayScreen());
-            */
         }
 
         /// <summary>

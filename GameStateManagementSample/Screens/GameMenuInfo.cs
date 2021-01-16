@@ -1,28 +1,16 @@
 ﻿#region Using Statements
 
-using GameStateManagement.GameObjects;
 using GameStateManagement.Starships;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Xml.Serialization;
 
 #endregion Using Statements
-
-
 
 namespace GameStateManagement.Screens
 {
     /// <summary>
     //This Class will contain the Healthbar and Score
     /// </summary>
-    /// 
     public class GameMenuInfo
     {
         private Texture2D texture;

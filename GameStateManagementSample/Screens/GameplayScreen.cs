@@ -19,11 +19,9 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Threading;
 using GameStateManagement.Screens;
-using System.Collections.Generic;
 using GameStateManagement.GameObjects;
 using GameStateManagement.GameManager;
 using GameStateManagement.MapClasses;
-using GameStateManagement.ObjectItem;
 
 #endregion Using Statements
 
@@ -52,13 +50,11 @@ namespace GameStateManagement
         private Camera cameraHighscore;
 
         // Other objects
-        private Random random = new Random();
-        private SpriteFont einFont;
+        private SpriteFont font;
         private float pauseAlpha;
 
         // Map objects
         MainMap mainMap;
-
 
         //  for GameOverScreen
         bool pause;
@@ -67,18 +63,12 @@ namespace GameStateManagement
 
         #region Initialization
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
         public GameplayScreen()
         {
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
         }
 
-        /// <summary>
-        /// Load graphics content for the game.
-        /// </summary>
         public override void LoadContent()
         {
             if (content == null)
@@ -86,17 +76,17 @@ namespace GameStateManagement
 
             scoreManager = ScoreManager.Load();
 
-            einFont = content.Load<SpriteFont>("einFont");
+            font = content.Load<SpriteFont>("einFont");
 
             // Objects declaration
-            highlander = new TheHighlander(einFont, this);
+            highlander = new TheHighlander(font, this);
             healthBar = new HealthBar(highlander);
             highscore = new Highscore(highlander);
 
             mainMap = new MainMap(content, highlander);
 
             // spawn-position for the Highlander
-            highlander.Position = mainMap.maps[0].levels[0].spawnPosition;
+            highlander.Position = mainMap.maps[3].levels[4].spawnPosition;
 
             // Manager
             collisionManager = new CollisionManager(mainMap, highlander);
@@ -112,7 +102,7 @@ namespace GameStateManagement
             cameraBar = new Camera(this);
             cameraHighscore = new Camera(this);
 
-            scoreManager.Add(highlander.PlayerScore);
+            
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
             // while, giving you a chance to admire the beautiful loading screen.
@@ -124,16 +114,12 @@ namespace GameStateManagement
             ScreenManager.Game.ResetElapsedTime();
         }
 
-        /// <summary>
-        /// Unload graphics content used by the game.
-        /// </summary>
         public override void UnloadContent()
         {
             content.Unload();
         }
 
         #endregion Initialization
-
 
         #region Update and Draw
 
@@ -192,10 +178,18 @@ namespace GameStateManagement
                 pause = false;
                 highlander.HandleInput();
             }
+
+            if (mainMap.maps[3].isGameCompleted)
+            {
+                scoreManager.Add(highlander.PlayerScore);
+                ScoreManager.Save(scoreManager);
+                ScreenManager.AddScreen(new WinScreen(highlander.PlayerScore.Playername, highlander.PlayerScore.Value), ControllingPlayer);
+            }
         }
 
         public void CallGameOverScreen()
         {
+            scoreManager.Add(highlander.PlayerScore);
             ScoreManager.Save(scoreManager);
             InputScreen.PlayerNameIS = String.Empty;
             ScreenManager.AddScreen(new GameOverScreen(), ControllingPlayer);
@@ -208,16 +202,16 @@ namespace GameStateManagement
         {
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target, Color.Black, 0, 0);
 
-            ScreenManager screenManager = this.ScreenManager;
+            //ScreenManager screenManager = this.ScreenManager;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
             spriteBatch.Begin(transformMatrix: camera.Transform);
 
-            mainMap.Draw(spriteBatch, einFont, gameTime);
+            mainMap.Draw(spriteBatch, font, gameTime);
 
             foreach (Map m in mainMap.maps)
             {
-                m.Draw(spriteBatch, einFont, gameTime);
+                m.Draw(spriteBatch, font, gameTime);
             }
 
             highlander.Draw(gameTime, spriteBatch);

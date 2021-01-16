@@ -591,18 +591,6 @@
 /processorParam:TextureFormat=Color
 /build:graphics/objects_items/AlarmSystem.png
 
-#begin graphics/objects_items/AlarmSystem.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:graphics/objects_items/AlarmSystem.png
-
 #begin graphics/objects_items/AlarmSystem2.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -614,30 +602,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:graphics/objects_items/AlarmSystem2.png
-
-#begin graphics/objects_items/AlarmSystem2.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:graphics/objects_items/AlarmSystem2.png
-
-#begin graphics/objects_items/ControlSystem.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:graphics/objects_items/ControlSystem.png
 
 #begin graphics/objects_items/ControlSystem.png
 /importer:TextureImporter
@@ -675,18 +639,6 @@
 /processorParam:TextureFormat=Color
 /build:graphics/objects_items/Crate.png
 
-#begin graphics/objects_items/Crate.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:graphics/objects_items/Crate.png
-
 #begin graphics/objects_items/Generator.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -698,30 +650,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:graphics/objects_items/Generator.png
-
-#begin graphics/objects_items/Generator.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:graphics/objects_items/Generator.png
-
-#begin graphics/objects_items/Generator_damaged.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:graphics/objects_items/Generator_damaged.png
 
 #begin graphics/objects_items/Generator_damaged.png
 /importer:TextureImporter
@@ -818,6 +746,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:graphics/screen_graphics/start_screen_logo.png
+
+#begin graphics/screen_graphics/winScreen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:graphics/screen_graphics/winScreen.png
 
 #begin graphics/starships/Doomer1.png
 /importer:TextureImporter

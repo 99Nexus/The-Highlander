@@ -29,23 +29,12 @@ namespace GameStateManagement.MapClasses
 
         public int enemiesNumber;
 
-        private bool isCompleted;
-
-        private Texture2D teleportTexture;
-
+        public bool isGameCompleted;
 
         // Mission
         public Mission mission;
 
         #endregion Fields
-
-        //vector startposition
-        //list von positionen(start,end)
-        //(Bewegungsmuster) type als struct
-        //enum von enemy class holen
-
-        // max and mini enemies
-        //positions from enemies
 
         #region Initialization
 
@@ -54,19 +43,11 @@ namespace GameStateManagement.MapClasses
             mapNumber = mNumber;
             levels = new Level[5];
             player = theHighlander;
-            
         }
 
         ///assign the background directly in the Constructor
         public override void LoadContent(ContentManager content)
         {
-            /*
-            foreach(Level l in levels)
-            {
-                l.LoadContent(content);
-            }
-            */
-            teleportTexture = content.Load<Texture2D>(@"graphics\game_items\Teleport");
         }
 
         //create Levels
@@ -89,7 +70,7 @@ namespace GameStateManagement.MapClasses
                 case 1:
                     lvl.position = new Vector2(position.X, position.Y);
                     playerStartPosition = (lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 100));
-                    lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 250, lvl.position.Y + 1440));
+                    lvl.teleport = new Teleport(new Vector2(lvl.position.X + 250, lvl.position.Y + 1440));
                     
 
 
@@ -102,14 +83,14 @@ namespace GameStateManagement.MapClasses
 
                     
 
-                    //when finish with rest positions call it down and delete the call here
+
                     lvl.SetEnemiesPositions();
                     break;
 
                 case 2:
                     lvl.position = new Vector2(position.X, position.Y + 1500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 250);
-                    lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 1450, lvl.position.Y + 240));
+                    lvl.teleport = new Teleport(new Vector2(lvl.position.X + 1450, lvl.position.Y + 240));
 
                     lvl.gameObjects.Add(new Alarm(new Vector2(lvl.position.X + 750, lvl.position.Y + 60), player));
 
@@ -118,13 +99,13 @@ namespace GameStateManagement.MapClasses
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 800, lvl.position.Y + 275), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 1000, lvl.position.Y + 400), player));
 
-                    
+                    lvl.SetEnemiesPositions();
                     break;
 
                 case 3:
                     lvl.position = new Vector2(position.X + 1500, position.Y + 500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 1400);
-                    lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 250, lvl.position.Y + 40));
+                    lvl.teleport = new Teleport(new Vector2(lvl.position.X + 250, lvl.position.Y + 40));
 
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 400, lvl.position.Y + 660), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 300, lvl.position.Y + 780), player));
@@ -132,14 +113,14 @@ namespace GameStateManagement.MapClasses
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 150, lvl.position.Y + 440), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 170, lvl.position.Y + 975), player));
 
-                    
 
+                    lvl.SetEnemiesPositions();
                     break;
 
                 case 4:
                     lvl.position = new Vector2(position.X + 500, position.Y);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 1400, position.Y + 250);
-                    lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 50, lvl.position.Y + 240));
+                    lvl.teleport = new Teleport(new Vector2(lvl.position.X + 50, lvl.position.Y + 240));
 
                     lvl.generator = new Generator(new Vector2(lvl.position.X + 1000, lvl.position.Y + 70), player);
                     lvl.generator.LoadContent(content);
@@ -148,14 +129,14 @@ namespace GameStateManagement.MapClasses
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 550, lvl.position.Y + 400), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 740, lvl.position.Y + 280), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 370, lvl.position.Y + 140), player));
-                    
 
+                    lvl.SetEnemiesPositions();
                     break;
 
                 case 5:
                     lvl.position = new Vector2(position.X + 500, position.Y + 500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 500, lvl.position.Y + 100);
-                    lvl.teleport = new Teleport(teleportTexture, new Vector2(lvl.position.X + 500, lvl.position.Y + 940));
+                    lvl.teleport = new Teleport(new Vector2(lvl.position.X + 500, lvl.position.Y + 940));
 
                     lvl.SetEndBoss(mapNumber);
 
@@ -205,6 +186,13 @@ namespace GameStateManagement.MapClasses
             foreach (Level l in levels)
             {
                 l.Update(gameTime, theHighlander);
+            }
+            if(mapNumber == 4)
+            {
+                if (levels[4].isEndBossDestroyed)
+                {
+                    isGameCompleted = true;
+                }
             }
         }
         #endregion Update and Draw

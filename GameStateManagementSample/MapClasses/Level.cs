@@ -27,7 +27,7 @@ namespace GameStateManagement.MapClasses
         #region Fields
 
         public struct positionElement
-        {//
+        {
             public Vector2 start;
             public Vector2 end;
             public MovementMode MovementMode;

@@ -106,7 +106,7 @@ namespace GameStateManagement
 
         public void LoadContent(MenuScreen screen)
         {
-            // Only load font if it wasn´t loaded yet
+            // Only load font if it wasnï¿½t loaded yet
             if(font == null)
             {
                 ScreenManager screenManager = screen.ScreenManager;
