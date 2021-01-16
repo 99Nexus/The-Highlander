@@ -150,6 +150,7 @@ namespace GameStateManagement.MapClasses
 
                     break;
             }
+
             lvl.teleport.LoadContent(content);
             //when finish with rest positions call it from here
             //lvl.SetEnemiesPositions();

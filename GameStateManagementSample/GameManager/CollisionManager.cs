@@ -330,16 +330,28 @@ namespace GameStateManagement.GameManager
 
         public void CollisionBetweenPlayerAndTeleport()
         {
-            foreach(Map m in mainMap.maps)
+            for(int j = 0; j < 4; j++)
             {
-                foreach(Level l in m.levels)
+                for(int i = 0; i < 5; i++)
                 {
-                    
-                        if(player.Rectangle.Intersects(l.teleport.rectangle))
+                    // teleport player only if teleporter is visible
+                    if(mainMap.maps[j].levels[i].teleport.isVisible)
+                    {
+                        // if player is in the first 4 levels of any map
+                        if(player.Rectangle.Intersects(mainMap.maps[j].levels[i].teleport.rectangle) && i < 4) 
                         {
-                            player.Position = l.spawnPosition;
+                            // spawn player in next level
+                            player.Position = mainMap.maps[j].levels[i + 1].spawnPosition;
                         }
-                    
+
+                        // if player is in the last level of the first 3 maps
+                        if(player.Rectangle.Intersects(mainMap.maps[j].levels[i].teleport.rectangle) && i == 4)
+                        {
+                            // set player in next map
+                            if (j < 3)
+                                player.Position = mainMap.maps[j + 1].levels[0].spawnPosition;
+                        }
+                    }
                 }
             }
         }

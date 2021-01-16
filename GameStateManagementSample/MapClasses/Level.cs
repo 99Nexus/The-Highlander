@@ -405,6 +405,8 @@ namespace GameStateManagement.MapClasses
                     {
                         if (!go.keyPressed)
                             return false;
+                        else
+                            teleport.isVisible = true;
                     }
                     break;
                 case 2:
@@ -412,15 +414,23 @@ namespace GameStateManagement.MapClasses
                     {
                         if (!go.keyPressed)
                             return false;
+                        else
+                            teleport.isVisible = true;
                     }
                     break;
                 case 3:
                     if (enemies.Any())
                         return false;
+                    else
+                        teleport.isVisible = true;
+
                     break;
                 case 4:
                     if (!generator.damaged)
                         return false;
+                    else
+                        teleport.isVisible = true;
+
                     break;
                 case 5:
                     if (endBoss.actualShield > 0)
@@ -432,6 +442,10 @@ namespace GameStateManagement.MapClasses
                         theHighlander.updateLevel++;
                         isEndBossDestroyed = true;
                     }
+
+                    if (endBoss.actualShield <= 0)
+                        teleport.isVisible = true;
+
                     break;
             }
             return (isCompleted = true);

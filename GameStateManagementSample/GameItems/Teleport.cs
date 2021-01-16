@@ -10,9 +10,12 @@ namespace GameStateManagement.GameItems
     public class Teleport : GameItem
     {
 
+        bool isVisible;
+
         public Teleport(Vector2 pos)
         {
             position = pos;
+            isVisible = false;
         }
 
         public override void LoadContent(ContentManager content)
