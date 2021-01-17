@@ -19,10 +19,5 @@ namespace GameStateManagement.Starships
             texture[2] = content.Load<Texture2D>(@"graphics\starships\sprinter3");
             base.LoadContent(content);
         }
-
-        public override void Update(GameTime gameTime, Vector2 playerPosition)
-        {
-            base.Update(gameTime, playerPosition);
-        }
     }
 }

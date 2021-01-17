@@ -21,8 +21,6 @@ namespace GameStateManagement.Starships
         public bool isVisible;
         public int spriteCounter = 0;
         public Score PlayerScore { get; set; }
-        //public string playerName;
-        // public int playerScore;
 
         // State attributes
         public float linearVelocity = 4f;
@@ -48,11 +46,9 @@ namespace GameStateManagement.Starships
         // Other attributes
         GameplayScreen gameScreen;
 
-        //amer, liber das lassen für testen
         private SpriteFont sprite;
-        //public int PlayerScore { get; set; }
-        private Explosion explosion;
 
+        private Explosion explosion;
         #endregion Fields
 
         #region Initialization
@@ -159,7 +155,8 @@ namespace GameStateManagement.Starships
             // Call game over screen if player has no shield
             if (shield - damage < 1)
             {
-                this.isVisible = false;
+                shield = 0;
+                isVisible = false;
                 gameScreen.CallGameOverScreen();
             }
             else if (shield - damage >= 1)
@@ -220,6 +217,7 @@ namespace GameStateManagement.Starships
 
         public void Update(GameTime gameTime)
         {
+
             highlanderBox = new Rectangle((int)Position.X, (int)Position.Y, texture[spriteCounter].Width, texture[spriteCounter].Height);
             Rectangle = new Rectangle((int)(Position.X - (texture[spriteCounter].Width / 2)),
                                       (int)Position.Y - (texture[spriteCounter].Height / 2),
@@ -229,11 +227,8 @@ namespace GameStateManagement.Starships
             foreach (Laser l in laserList.ToList())
                 l.Update(gameTime);
 
-            if (!this.isVisible)
-            {
-                explosion.position = new Vector2(this.Position.X - 50, Position.Y - 20);
-                explosion.Update(gameTime);
-            }
+            explosion.position = new Vector2(Position.X - 50, Position.Y - 20);
+            explosion.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -244,21 +239,24 @@ namespace GameStateManagement.Starships
             else
                 spriteCounter = 0;
 
-            if (this.isVisible)
+            if (isVisible)
             {
                 //shoot
                 foreach (Laser l in laserList)
                     l.Draw(spriteBatch);
+
                 spriteBatch.Draw(texture[spriteCounter], Position, null, Color.White, rotation, Origin, 1, SpriteEffects.None, 0);
+                /*
+                spriteBatch.DrawString(sprite, new string("Y " + Position.Y.ToString()), new Vector2(Position.X, Position.Y - 40), Color.Black);
+                spriteBatch.DrawString(sprite, new string("X " + Position.X.ToString()), Position, Color.Black);
+                */
             }
-
-            explosion.position = new Vector2(this.Position.X - 50, Position.Y - 20);
-            explosion.Draw(spriteBatch);
-
-            spriteBatch.DrawString(sprite, new string("Y " + Position.Y.ToString()), new Vector2(Position.X, Position.Y - 40), Color.Black);
-            spriteBatch.DrawString(sprite, new string("X " + Position.X.ToString()), Position, Color.Black);
+            else
+            {
+                explosion.position = new Vector2(Position.X - 50, Position.Y - 20);
+                explosion.Draw(spriteBatch);
+            }
         }
-
         #endregion Update and Draw
     }
 }

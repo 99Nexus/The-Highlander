@@ -18,8 +18,12 @@ namespace GameStateManagement.Screens
         /// Constructor.
         /// </summary>
         public GameOverScreen()
-            : base("Try harder next time!")
+            : base("Try  harder  next  time!")
         {
+
+            TransitionOnTime = TimeSpan.FromSeconds(1.5);
+            TransitionOffTime = TimeSpan.FromSeconds(0.0);
+
             // Create our menu entries.
             MenuEntry quitGameMenuEntry = new MenuEntry("Quit Game");
 
@@ -55,8 +59,7 @@ namespace GameStateManagement.Screens
         /// </summary>
         private void ConfirmQuitMessageBoxAccepted(object sender, PlayerIndexEventArgs e)
         {
-            LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(),
-                                                           new MainMenuScreen());
+            LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new MainMenuScreen());
         }
 
         #endregion Handle Input
