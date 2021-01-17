@@ -1138,6 +1138,13 @@
 /processorParam:TextureFormat=Color
 /build:message.PNG
 
+#begin missionFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:missionFont.spritefont
+
 #begin spritefonts/game_menu_fonts/score_font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

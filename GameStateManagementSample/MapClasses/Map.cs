@@ -163,6 +163,10 @@ namespace GameStateManagement.MapClasses
                 e.LoadContent(content);
             }
             lvl.MakeBorders();
+
+           
+
+            
         }
 
         #endregion Initialization

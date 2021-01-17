@@ -347,9 +347,6 @@ namespace GameStateManagement.MapClasses
             {
                 teleport.Draw(spriteBatch);
             }
-
-            mission.Draw(spriteBatch, sprite);
-
         }
 
         public override void Update(GameTime gameTime, TheHighlander theHighlander)
