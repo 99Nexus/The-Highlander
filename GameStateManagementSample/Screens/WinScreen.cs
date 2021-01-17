@@ -26,6 +26,9 @@ namespace GameStateManagement.Screens
         public WinScreen(string pName, int pscore)
             : base("")
         {
+            TransitionOnTime = TimeSpan.FromSeconds(1.0);
+            TransitionOffTime = TimeSpan.FromSeconds(0.0);
+
             score = pscore;
             playerName = pName;
             

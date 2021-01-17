@@ -147,6 +147,18 @@
 /processorParam:TextureFormat=Color
 /build:graphics/game_items/Teleport.png
 
+#begin graphics/game_menu_graphics/bar_0upgrade/bar_0_0upg.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:graphics/game_menu_graphics/bar_0upgrade/bar_0_0upg.png
+
 #begin graphics/game_menu_graphics/bar_0upgrade/bar_1_0upg.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -266,6 +278,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:graphics/game_menu_graphics/bar_0upgrade/bar_9_0upg.png
+
+#begin graphics/game_menu_graphics/bar_1upgrade/bar_0_1upg.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:graphics/game_menu_graphics/bar_1upgrade/bar_0_1upg.png
 
 #begin graphics/game_menu_graphics/bar_1upgrade/bar_1_1upg.png
 /importer:TextureImporter
@@ -410,6 +434,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:graphics/game_menu_graphics/bar_1upgrade/bar_9_1upg.png
+
+#begin graphics/game_menu_graphics/bar_2upgrade/bar_0.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:graphics/game_menu_graphics/bar_2upgrade/bar_0.png
 
 #begin graphics/game_menu_graphics/bar_2upgrade/bar_1.png
 /importer:TextureImporter
@@ -566,6 +602,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:graphics/game_menu_graphics/bar_2upgrade/bar_9.png
+
+#begin graphics/game_objects/enemyLaser.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:graphics/game_objects/enemyLaser.png
 
 #begin graphics/game_objects/theHighlanderLaser.png
 /importer:TextureImporter

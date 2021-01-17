@@ -129,7 +129,7 @@ namespace GameStateManagement.Starships
             textureSize = new Vector2(texture[spriteCounter].Width, texture[spriteCounter].Height);
             Origin = new Vector2(texture[spriteCounter].Width / 2, texture[spriteCounter].Height / 2);
 
-            laserTexture = content.Load<Texture2D>(@"graphics\game_objects\theHighlanderLaser");
+            laserTexture = content.Load<Texture2D>(@"graphics\game_objects\enemyLaser");
 
             Rectangle = new Rectangle((int)Position.X - (texture[spriteCounter].Width / 2),
                           (int)Position.Y - (texture[spriteCounter].Height / 2),

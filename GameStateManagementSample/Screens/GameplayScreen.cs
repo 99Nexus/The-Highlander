@@ -107,7 +107,7 @@ namespace GameStateManagement
             cameraHighscore = new Camera(this);
             cameraMission = new Camera(this);
 
-            
+
             // A real game would probably have more content than this sample, so
             // it would take longer to load. We simulate that by delaying for a
             // while, giving you a chance to admire the beautiful loading screen.
@@ -218,7 +218,6 @@ namespace GameStateManagement
         {
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target, Color.Black, 0, 0);
 
-            //ScreenManager screenManager = this.ScreenManager;
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
 
             spriteBatch.Begin(transformMatrix: camera.Transform);

@@ -33,19 +33,19 @@ namespace GameStateManagement.GameObjects
         public void LoadContent(ContentManager content)
         {
             textureUpgrade0 = new Texture2D[11];
-            textureUpgrade1 = new Texture2D[14];
-            textureUpgrade2 = new Texture2D[15];
+            textureUpgrade1 = new Texture2D[13];
+            textureUpgrade2 = new Texture2D[14];
 
-            for (int i = 1; i < 11; i++)
+            for (int i = 0; i < 11; i++)
                 textureUpgrade0[i] = content.Load<Texture2D>(@"graphics\game_menu_graphics\bar_0upgrade\bar_" + i + "_0upg");
 
-            for (int i = 1; i < 13; i++)
+            for (int i = 0; i < 13; i++)
                 textureUpgrade1[i] = content.Load<Texture2D>(@"graphics\game_menu_graphics\bar_1upgrade\bar_" + i + "_1upg");
 
-            for (int i = 1; i < 14; i++)
+            for (int i = 0; i < 14; i++)
                 textureUpgrade2[i] = content.Load<Texture2D>(@"graphics\game_menu_graphics\bar_2upgrade\bar_" + i);
 
-            texture = textureUpgrade0[1];
+            texture = textureUpgrade0[0];
             Rectangle = new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height);
         }
 

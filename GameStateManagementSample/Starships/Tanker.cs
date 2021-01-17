@@ -26,10 +26,5 @@ namespace GameStateManagement.Starships
 
             base.LoadContent(content);
         }
-
-        public override void Update(GameTime gameTime, Vector2 playerPosition)
-        {
-            base.Update(gameTime, playerPosition);
-        }
     }
 }

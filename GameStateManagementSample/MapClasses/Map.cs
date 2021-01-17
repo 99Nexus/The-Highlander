@@ -70,7 +70,7 @@ namespace GameStateManagement.MapClasses
                 case 1:
                     lvl.position = new Vector2(position.X, position.Y);
                     playerStartPosition = (lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 100));
-                    lvl.teleport = new Teleport(new Vector2(lvl.position.X + 250, lvl.position.Y + 1440));
+                    lvl.teleport = new Teleport(new Vector2(lvl.position.X + 240, lvl.position.Y + 1435));
                     
 
 
@@ -90,7 +90,7 @@ namespace GameStateManagement.MapClasses
                 case 2:
                     lvl.position = new Vector2(position.X, position.Y + 1500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 250);
-                    lvl.teleport = new Teleport(new Vector2(lvl.position.X + 1450, lvl.position.Y + 240));
+                    lvl.teleport = new Teleport(new Vector2(lvl.position.X + 1435, lvl.position.Y + 240));
 
                     lvl.gameObjects.Add(new Alarm(new Vector2(lvl.position.X + 750, lvl.position.Y + 60), player));
 
@@ -105,7 +105,7 @@ namespace GameStateManagement.MapClasses
                 case 3:
                     lvl.position = new Vector2(position.X + 1500, position.Y + 500);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 1400);
-                    lvl.teleport = new Teleport(new Vector2(lvl.position.X + 250, lvl.position.Y + 40));
+                    lvl.teleport = new Teleport(new Vector2(lvl.position.X + 225, lvl.position.Y + 40));
 
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 400, lvl.position.Y + 660), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 300, lvl.position.Y + 780), player));
@@ -120,7 +120,7 @@ namespace GameStateManagement.MapClasses
                 case 4:
                     lvl.position = new Vector2(position.X + 500, position.Y);
                     lvl.spawnPosition = new Vector2(lvl.position.X + 1400, position.Y + 250);
-                    lvl.teleport = new Teleport(new Vector2(lvl.position.X + 50, lvl.position.Y + 240));
+                    lvl.teleport = new Teleport(new Vector2(lvl.position.X + 50, lvl.position.Y + 235));
 
                     lvl.generator = new Generator(new Vector2(lvl.position.X + 1000, lvl.position.Y + 70), player);
                     lvl.generator.LoadContent(content);

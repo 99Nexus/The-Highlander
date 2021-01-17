@@ -11,16 +11,9 @@
 
 #region Using Statements
 
-using GameStateManagement.Starships;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Xml.Serialization;
 
 #endregion Using Statements
@@ -30,8 +23,9 @@ namespace GameStateManagement
     public class ScoreManager
     {
         //the filename to save or load the score list to our system
-        private static string _fileName = "d:\\score.xml";
-
+        // private static string _fileName = "d:\\score.xml";
+        // You have to run VS as administrator
+        private static string _fileName = @"\score.xml";
         //this list to represent the first 5 high scores
         public List<Score> Highscore { get; private set; }
         
