@@ -1,4 +1,5 @@
-﻿using GameStateManagement.Screens;
+﻿using GameStateManagement.MapClasses;
+using GameStateManagement.Screens;
 using GameStateManagement.Starships;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -70,6 +71,17 @@ namespace GameStateManagement.GameObjects
             Transform = position * offset;
         }
 
+        public void Follow(Mission mission)
+        {
+            Matrix position = Matrix.CreateTranslation(
+                -mission.position.X - (mission.rectangle.Width / 2),
+                -mission.position.Y - (mission.rectangle.Height / 2),
+                0);
+
+            Matrix offset = Matrix.CreateTranslation(65, (GameScreen.ScreenManager.GraphicsDevice.Viewport.Height - 10), 0);
+
+            Transform = position * offset;
+        }
         #endregion Logic
     }
 }

@@ -1,4 +1,5 @@
-﻿using GameStateManagement.Starships;
+﻿using GameStateManagement.GameObjects;
+using GameStateManagement.Starships;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,11 +15,13 @@ namespace GameStateManagement.MapClasses
     public class Mission
     {
         public String misString;
-        private Vector2 position;
+        public Vector2 position;
         public int missionNr;
         public bool isVisible;
         private bool keyPressed;
         public TheHighlander player;
+        public Rectangle rectangle;
+        public Camera cameraMission;
 
         // missions
         private SpriteFont missionMessage;
@@ -30,9 +33,10 @@ namespace GameStateManagement.MapClasses
             isVisible = false;
             keyPressed = false;
             this.player = player;
-            position = new Vector2(player.Position.X, player.Position.Y - 50);
+            position = new Vector2(100, 150);
+            rectangle = new Rectangle((int)position.X, (int)position.Y, 100, 55);
         }
-
+        
         public void LoadContent(ContentManager Content)
         {
             /*missionen[0] = "Task 1: Destroy the control system of the section";
@@ -48,7 +52,7 @@ namespace GameStateManagement.MapClasses
             {
 
                 case 1:
-                    return "Task 1: Destroy the control system of the section";
+                    return "Task 1: Turn off the control system";
 
                 case 2:
                     return "Task 2: Turn off the alarm signal";
@@ -57,7 +61,7 @@ namespace GameStateManagement.MapClasses
                     return "Task 3: Destroy all enemy spaceships";
 
                 case 4:
-                    return "Task 4: To go further, you need to turn of the generator";
+                    return "Task 4: To go further, you need destroy the generator";
 
                 case 5:
                     return "Task 5: Take out the final boss to get part of the starmap";
@@ -72,10 +76,8 @@ namespace GameStateManagement.MapClasses
 
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
-            position = new Vector2(player.Position.X, player.Position.Y - 50);
-
             if (isVisible)
-                spriteBatch.DrawString(spriteFont, misString, position, Color.Black);
+                spriteBatch.DrawString(spriteFont, misString, position, Color.Green);
         }
     }
 }

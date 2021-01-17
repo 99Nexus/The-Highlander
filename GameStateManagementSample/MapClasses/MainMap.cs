@@ -37,6 +37,8 @@ namespace GameStateManagement.MapClasses
 
         // Mission
         public Mission prevMission;
+
+        public static GameScreen gameScreen;
         #endregion Fields
 
         #region Initialization
@@ -54,6 +56,7 @@ namespace GameStateManagement.MapClasses
             player = theHighlander;
             prevMission = new Mission(1, player);
             CreateMaps(content);
+            gameScreen = gameScreen;
         }
 
         public override void LoadContent(ContentManager content)
@@ -117,25 +120,26 @@ namespace GameStateManagement.MapClasses
 
         public override void Update(GameTime gameTime, TheHighlander theHighlander)
         {
-            Rectangle overlap = new Rectangle();
             foreach (Map m in maps)
             {
                 m.Update(gameTime, theHighlander);
 
                 foreach(Level l in m.levels)
                 {
-                    overlap = Rectangle.Intersect(l.levelArea, player.Rectangle);
-                    if (l.levelNumber < 5)
-                    {
+                    if (player.spawnPosLvl == l.spawnPosition || player.Position == l.spawnPosition)
+                    {     
                         l.mission.isVisible = true;
+                        if(l.isCompleted)
+                        {
+                            l.mission.isVisible = false;
+                        }
 
                         if (prevMission.missionNr != l.mission.missionNr)
                         {
                             prevMission.isVisible = false;                             
                         }
                         prevMission = l.mission;
-                    }
-                    //&& l.levelArea.Intersects(player.Rectangle)
+                    }  
                 }
             }
         }

@@ -42,6 +42,7 @@ namespace GameStateManagement.Starships
         public Rectangle Rectangle;
         public Vector2 Position;
         public Vector2 direction;
+        public Vector2 spawnPosLvl;
 
         // Other attributes
         GameplayScreen gameScreen;
@@ -62,6 +63,7 @@ namespace GameStateManagement.Starships
             this.isVisible = true;
             this.gameScreen = (GameplayScreen)gameScreen;
             weaponPower = 1;
+            spawnPosLvl = new Vector2(0, 0);
         }
 
         public void LoadContent(ContentManager content)

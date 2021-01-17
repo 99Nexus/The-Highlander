@@ -48,9 +48,11 @@ namespace GameStateManagement
         private Camera camera;
         private Camera cameraBar;
         private Camera cameraHighscore;
+        private Camera cameraMission;
 
         // Other objects
         private SpriteFont font;
+        private SpriteFont missionFont;
         private float pauseAlpha;
 
         // Map objects
@@ -78,6 +80,8 @@ namespace GameStateManagement
 
             font = content.Load<SpriteFont>("einFont");
 
+            missionFont = content.Load<SpriteFont>("missionFont");
+
             // Objects declaration
             highlander = new TheHighlander(font, this);
             healthBar = new HealthBar(highlander);
@@ -101,6 +105,7 @@ namespace GameStateManagement
             camera = new Camera(this);
             cameraBar = new Camera(this);
             cameraHighscore = new Camera(this);
+            cameraMission = new Camera(this);
 
 
             // A real game would probably have more content than this sample, so
@@ -140,6 +145,17 @@ namespace GameStateManagement
                 camera.Follow(highlander);
                 cameraBar.Follow(healthBar);
                 cameraHighscore.Follow(highscore);
+                
+                foreach(Map m in mainMap.maps)
+                {
+                    foreach(Level l in m.levels)
+                    {
+                        if(l.mission.isVisible)
+                        {
+                            cameraMission.Follow(l.mission);
+                        }
+                    }
+                }
 
                 collisionManager.ManageCollisions();
             }
@@ -229,6 +245,21 @@ namespace GameStateManagement
 
             spriteBatch.End();
 
+            spriteBatch.Begin(transformMatrix: cameraMission.Transform);
+
+            foreach (Map m in mainMap.maps)
+            {
+                foreach (Level l in m.levels)
+                {
+                    if (l.mission.isVisible)
+                    {
+                        l.mission.Draw(spriteBatch, missionFont);
+                    }
+                }
+            }
+
+            spriteBatch.End();
+
             // If the game is transitioning on or off, fade it out to black.
             if (TransitionPosition > 0 || pauseAlpha > 0)
             {
@@ -236,6 +267,10 @@ namespace GameStateManagement
 
                 ScreenManager.FadeBackBufferToBlack(alpha);
             }
+
+
+
+
         }
         #endregion Update and Draw
     }

@@ -342,6 +342,7 @@ namespace GameStateManagement.GameManager
                         {
                             // spawn player in next level
                             player.Position = mainMap.maps[j].levels[i + 1].spawnPosition;
+                            player.spawnPosLvl = player.Position;
                         }
 
                         // if player is in the last level of the first 3 maps
@@ -349,7 +350,10 @@ namespace GameStateManagement.GameManager
                         {
                             // set player in next map
                             if (j < 3)
+                            {
                                 player.Position = mainMap.maps[j + 1].levels[0].spawnPosition;
+                                player.spawnPosLvl = player.Position;
+                            }
                         }
                     }
                 }
