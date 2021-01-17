@@ -91,6 +91,7 @@ namespace GameStateManagement.MapClasses
             gameObjects = new List<GameObject>();
             positionElements = new List<positionElement>();
             mission = new Mission(lvlNumber, player);
+            gameItems = new List<GameItem>();
         }
 
         public override void LoadContent(ContentManager content)
@@ -246,11 +247,10 @@ namespace GameStateManagement.MapClasses
             switch (mapNumber)
             {
                 case 1:
-                    enemies.Add((endBoss = new Tanker(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    enemies.Add(endBoss = new Tanker(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL));
                     break;
-
                 case 2:
-                    enemies.Add((endBoss = new Sprinter(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    enemies.Add(endBoss = new Sprinter(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL));
                     break;
                 case 3:
                     enemies.Add((endBoss = new Gunner(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
@@ -343,6 +343,13 @@ namespace GameStateManagement.MapClasses
                 ex.Draw(spriteBatch);
             }
 
+            foreach(GameItem gi in gameItems)
+            {
+                MapPieces mapPieces;
+                mapPieces = (MapPieces)gi;
+                mapPieces.Draw(spriteBatch);
+            }
+
             if (CheckIfCompleted())
             {
                 teleport.Draw(spriteBatch);
@@ -383,6 +390,11 @@ namespace GameStateManagement.MapClasses
                 {
                     explosions.Add(new Explosion(explosionTexture, new Vector2(e.Position.X - 50, e.Position.Y - 25)));
                     theHighlander.PlayerScore.Value += e.score;
+
+                    // Add game item to game item list if enemy is destroyed
+                    if (e.gameItem != null)
+                        gameItems.Add(e.gameItem);
+
                     enemies.Remove(e);
                 }
             }
