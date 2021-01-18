@@ -10,12 +10,15 @@ using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace GameStateManagement.GameItems
 {
-    class UpdateShield : GameItem
+    public class UpdateShield : GameItem
     {
+        Enemy enemy;
+
         public TheHighlander player;
-        public UpdateShield(Vector2 pos)
+        public UpdateShield(Vector2 pos, Enemy enemy)
         {
-            position = pos;
+            this.position = pos;
+            this.enemy = enemy;
         }
 
 
@@ -37,6 +40,16 @@ namespace GameStateManagement.GameItems
             {
                 player.shield += 1;
             }
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            position = enemy.Position;
+
+            rectangle = new Rectangle((int)position.X - (texture.Width / 2),
+                                      (int)position.Y - (texture.Height / 2),
+                                      texture.Width,
+                                      texture.Height);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
