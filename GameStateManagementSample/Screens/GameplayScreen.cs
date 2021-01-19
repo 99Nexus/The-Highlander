@@ -135,7 +135,6 @@ namespace GameStateManagement
         /// </summary>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-            collisionManager.ManageCollisions();
             if (highlander.isVisible && !pause)
             {
                 highlander.Update(gameTime);
@@ -156,6 +155,7 @@ namespace GameStateManagement
                         }
                     }
                 }
+                collisionManager.ManageCollisions();
             }
             base.Update(gameTime, otherScreenHasFocus, false);
         }
@@ -209,9 +209,6 @@ namespace GameStateManagement
             ScreenManager.AddScreen(new GameOverScreen(), ControllingPlayer);
         }
 
-        /// <summary>
-        /// Draws the gameplay screen.
-        /// </summary>
         public override void Draw(GameTime gameTime)
         {
             ScreenManager.GraphicsDevice.Clear(ClearOptions.Target, Color.Black, 0, 0);
@@ -265,10 +262,6 @@ namespace GameStateManagement
 
                 ScreenManager.FadeBackBufferToBlack(alpha);
             }
-
-
-
-
         }
         #endregion Update and Draw
     }

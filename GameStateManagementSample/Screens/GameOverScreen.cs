@@ -14,13 +14,9 @@ namespace GameStateManagement.Screens
         public Texture2D texture;
         #region Initialization
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
         public GameOverScreen()
             : base("Try  harder  next  time!")
         {
-
             TransitionOnTime = TimeSpan.FromSeconds(1.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.0);
 

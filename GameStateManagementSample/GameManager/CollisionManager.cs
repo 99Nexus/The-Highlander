@@ -4,6 +4,7 @@ using GameStateManagement.MapClasses;
 using GameStateManagement.ObjectItem;
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace GameStateManagement.GameManager
 {
@@ -14,25 +15,30 @@ namespace GameStateManagement.GameManager
         public MainMap mainMap;
         public TheHighlander player;
 
-        public CollisionManager(MainMap mainMap, TheHighlander player)
+        private List<Rectangle> lvlBorderList;
+
+        public CollisionManager(MainMap mMap, TheHighlander p)
         {
-            this.mainMap = mainMap;
-            this.player = player;
+            mainMap = mMap;
+            player = p;
+            MakeLevelBorderList();
         }
 
         public void ManageCollisions()
         {
             CollisionBetweenEnemyLaserAndMapObject();
 
+            CollissionBetweenEnemyAndLevelBorders();
+
             CollisionBetweenEnemyLaserAndGameObject();
 
             CollisionBetweenPlayerAndEnemy();
 
-            //CollisionBetweenPlayerAndLaser();
+            CollisionBetweenPlayerAndLaser();
 
             CollissionBetweenEnemyAndLaser();
 
-            //CollissionBetweenPlayerAndMapObject();
+            CollissionBetweenPlayerAndMapObject();
 
             CollisionBetweenPlayerLaserAndMapObject();
 
@@ -213,17 +219,34 @@ namespace GameStateManagement.GameManager
                     }
                 }
             }
+        }
 
+        public void MakeLevelBorderList()
+        {
+            lvlBorderList = new List<Rectangle>();
+            foreach (Map m in mainMap.maps)
+            {
+                foreach (Level lv in m.levels)
+                {
+                    foreach (Rectangle r in lv.rectangles)
+                    {
+                        lvlBorderList.Add(r);
+                    }
+                }
+            }
+        }
+
+        public void CollissionBetweenEnemyAndLevelBorders()
+        {
             foreach (Map m in mainMap.maps)
             {
                 foreach (Level lv in m.levels)
                 {
                     foreach (Enemy e in lv.enemies)
                     {
-
                         foreach (Laser l in e.laserList.ToList<Laser>())
                         {
-                            foreach (Rectangle r in lv.rectangles)
+                            foreach (Rectangle r in lvlBorderList)
                             {
                                 if (l.Rectangle.Intersects(r))
                                 {
@@ -232,24 +255,12 @@ namespace GameStateManagement.GameManager
                                     break;
                                 }
                             }
-                            /*
-                            for (int i = 0; i < e.laserList.Count; i++)
-                            {
-                                if (r.Intersects(e.laserList[i].Rectangle))
-                                {
-                                    e.laserList[i].isVisible = false;
-                                    e.laserList.Remove(e.laserList[i]);
-                                    break;
-                                }
-                            }
-                            */
-
                         }
                     }
                 }
             }
-
         }
+
 
         public void CollissionBetweenPlayerAndGameObject()
         {
@@ -273,7 +284,7 @@ namespace GameStateManagement.GameManager
                                 lv.generator.damageBuffer = 0;
                             }
 
-                            if (damageBuffer >= maxDamageBuffer)
+                            if (damageBuffer >= maxDamageBuffer && !lv.generator.damaged)
                             {
                                 player.DecreaseShieldValue(1);
                                 damageBuffer = 0;

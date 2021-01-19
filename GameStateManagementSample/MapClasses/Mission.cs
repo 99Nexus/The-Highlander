@@ -77,7 +77,7 @@ namespace GameStateManagement.MapClasses
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont)
         {
             if (isVisible)
-                spriteBatch.DrawString(spriteFont, misString, position, Color.Green);
+                spriteBatch.DrawString(spriteFont, misString, position, Color.White);
         }
     }
 }
