@@ -45,18 +45,18 @@ namespace GameStateManagement.MapClasses
         public MainMap(ContentManager content, TheHighlander theHighlander)
         {
             rectangles = new Rectangle[6];
-            rectangles[0] = this.topMainBorder = new Rectangle(0, 0, 4000, 10);
-            rectangles[1] = this.leftMainBorder = new Rectangle(0, 0, 10, 4000);
-            rectangles[2] = this.verticalMainBorder = new Rectangle(2000, 0, 10, 4000);
-            rectangles[3] = this.horizontalMainBorder = new Rectangle(0, 2000, 4000, 10);
-            rectangles[4] = this.bottomMainBorder = new Rectangle(0, 4000, 4000, 10);
-            rectangles[5] = this.leftMainBorder = new Rectangle(4000, 0, 10, 4000);
+            rectangles[0] = topMainBorder = new Rectangle(0, 0, 4000, 10);
+            rectangles[1] = leftMainBorder = new Rectangle(0, 0, 10, 4000);
+            rectangles[2] = verticalMainBorder = new Rectangle(2000, 0, 10, 4000);
+            rectangles[3] = horizontalMainBorder = new Rectangle(0, 2000, 4000, 10);
+            rectangles[4] = bottomMainBorder = new Rectangle(0, 4000, 4000, 10);
+            rectangles[5] = leftMainBorder = new Rectangle(4000, 0, 10, 4000);
+
             maps = new Map[4];
             position = new Vector2(0, 0);
             player = theHighlander;
             prevMission = new Mission(1, player);
             CreateMaps(content);
-            gameScreen = gameScreen;
         }
 
         public override void LoadContent(ContentManager content)

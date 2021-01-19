@@ -44,14 +44,12 @@ namespace GameStateManagement.MapClasses
         public bool isCompleted;
 
         //borders
-        public Rectangle[] rectangles;
+        public List<Rectangle> rectangles;
+
         public Rectangle leftB;
         public Rectangle rightB;
         public Rectangle topB;
         public Rectangle bottomB;
-
-        // rectangle for position check 
-        public Rectangle levelArea;
 
         public TheHighlander theHighlander;
         public Vector2 spawnPosition;
@@ -86,7 +84,7 @@ namespace GameStateManagement.MapClasses
             levelNumber = lvlNumber;
             mapNumber = mNumber;
             theHighlander = player;
-            rectangles = new Rectangle[2];
+            rectangles = new List<Rectangle>();
             enemies = new List<Enemy>();
             explosions = new List<Explosion>();
             gameObjects = new List<GameObject>();
@@ -317,19 +315,13 @@ namespace GameStateManagement.MapClasses
         #region Borders Initialization
         public void MakeBorders()
         {
-
-
-
             if (levelNumber == 1)
             {
                 /// Map 1 Lvl 1
                 /// left: P: x 0  y 0 , Size: w 10 x  h 1500
                 /// right: P: x 490  y 0 , Size: w 10 x  h 1500
-                rectangles[0] = rightB = new Rectangle((int)position.X + 490, (int)position.Y, 10, 1500);
-                rectangles[1] = leftB = new Rectangle((int)position.X, (int)position.Y, 10, 500);
-
-                // create rectangleArea
-                levelArea = new Rectangle(0 + 10, 0 + 10, 480, 1480);
+                rectangles.Add(rightB = new Rectangle((int)position.X + 490, (int)position.Y, 10, 1500));
+                rectangles.Add(leftB = new Rectangle((int)position.X, (int)position.Y, 10, 500));
             }
 
             if (levelNumber == 2)
@@ -337,40 +329,25 @@ namespace GameStateManagement.MapClasses
                 /// Map 1 Lvl 2
                 /// left: P: x 0  y 1500 , Size: w 10 x  h 500
                 /// top: P: x 500  y 1500 , Size: w 1500 x  h 10
-                rectangles[0] = leftB = new Rectangle((int)position.X, (int)position.Y, 10, 500);
-                rectangles[1] = topB = new Rectangle((int)position.X, (int)position.Y, 1500, 10);
-
-                // create rectangleArea
-                levelArea = new Rectangle((int)position.X + 10, (int)position.Y + 10, 1480, 480);
+                rectangles.Add(leftB = new Rectangle((int)position.X, (int)position.Y, 10, 500));
+                rectangles.Add(topB = new Rectangle((int)position.X, (int)position.Y, 1500, 10));
             }
 
             if (levelNumber == 3)
             {
                 /// Map 1 Lvl 3
                 /// left: P: x 1500  y 500 , Size: w 10 x  h 1500
-                rectangles[0] = leftB = new Rectangle((int)position.X, (int)position.Y, 10, 1500);
-
-                // create rectangleArea
-                levelArea = new Rectangle((int)position.X + 10, (int)position.Y + 10, 480, 1480);
+                rectangles.Add(leftB = new Rectangle((int)position.X, (int)position.Y, 10, 1500));
             }
 
             if (levelNumber == 4)
             {
                 /// Map 1 Lvl 4
                 /// bottom: P: x 500  y + 490 , Size: w 1500 x  h 10 
-                rectangles[0] = bottomB = new Rectangle((int)position.X, (int)position.Y + 490, 1500, 10);
-
-                // create rectangleArea
-                levelArea = new Rectangle((int)position.X + 10, (int)position.Y + 10, 1480, 480);
+                rectangles.Add(bottomB = new Rectangle((int)position.X, (int)position.Y + 490, 1500, 10));
             }
-
-            if (levelNumber == 5)
-            {
-                // create rectangleArea
-                levelArea = new Rectangle((int)position.X + 10, (int)position.Y + 10, 1480, 480);
-            }
-
         }
+
         #endregion Borders Initialization
 
         #region Update and Draw

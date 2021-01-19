@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using GameStateManagement.MapClasses;
 using GameStateManagement.ObjectItem;
 using System.Linq;
-using GameStateManagement.GameItems;
+using System;
 
 namespace GameStateManagement.GameManager
 {
@@ -22,23 +22,23 @@ namespace GameStateManagement.GameManager
 
         public void ManageCollisions()
         {
+            CollisionBetweenEnemyLaserAndMapObject();
+
+            CollisionBetweenEnemyLaserAndGameObject();
+
             CollisionBetweenPlayerAndEnemy();
 
-            CollisionBetweenPlayerAndLaser();
+            //CollisionBetweenPlayerAndLaser();
 
             CollissionBetweenEnemyAndLaser();
 
-            CollissionBetweenPlayerAndMapObject();
+            //CollissionBetweenPlayerAndMapObject();
 
             CollisionBetweenPlayerLaserAndMapObject();
-
-            CollisionBetweenEnemyLaserAndMapObject();
 
             CollissionBetweenPlayerAndGameObject();
 
             CollisionBetweenPlayerLaserAndGameObject();
-
-            CollisionBetweenEnemyLaserAndGameObject();
 
             CollisionBetweenPlayerAndTeleport();
 
@@ -143,7 +143,6 @@ namespace GameStateManagement.GameManager
                 {
                     foreach (Rectangle r in l.rectangles)
                     {
-
                         if (player.Rectangle.Intersects(r))
                         {
                             // Set position backwards if player collides with an map object
@@ -159,7 +158,6 @@ namespace GameStateManagement.GameManager
         {
             foreach (Rectangle r in mainMap.rectangles)
             {
-                // Player laser
                 for (int i = 0; i < player.laserList.Count; i++)
                 {
                     if (player.laserList[i].Rectangle.Intersects(r))
@@ -177,7 +175,6 @@ namespace GameStateManagement.GameManager
                 {
                     foreach (Rectangle r in l.rectangles)
                     {
-                        // Player laser
                         for (int i = 0; i < player.laserList.Count; i++)
                         {
                             if (player.laserList[i].Rectangle.Intersects(r))
@@ -192,20 +189,20 @@ namespace GameStateManagement.GameManager
             }
         }
 
+
         public void CollisionBetweenEnemyLaserAndMapObject()
         {
-            foreach (Map m in mainMap.maps)
+            foreach (Rectangle rm in mainMap.rectangles)
             {
-                foreach (Level lv in m.levels)
+                foreach (Map m in mainMap.maps)
                 {
-                    foreach (Rectangle r in lv.rectangles)
+                    foreach (Level lv in m.levels)
                     {
                         foreach (Enemy e in lv.enemies)
                         {
-                            // Enemy laser
                             foreach (Laser l in e.laserList)
                             {
-                                if (l.Rectangle.Intersects(r))
+                                if (l.Rectangle.Intersects(rm))
                                 {
                                     l.isVisible = false;
                                     e.laserList.Remove(l);
@@ -215,19 +212,18 @@ namespace GameStateManagement.GameManager
                         }
                     }
                 }
-
             }
 
             foreach (Map m in mainMap.maps)
             {
                 foreach (Level lv in m.levels)
                 {
-                    foreach (Rectangle r in lv.rectangles)
+                    foreach (Enemy e in lv.enemies)
                     {
-                        foreach (Enemy e in lv.enemies)
+
+                        foreach (Laser l in e.laserList.ToList<Laser>())
                         {
-                            // Enemy laser
-                            foreach (Laser l in e.laserList)
+                            foreach (Rectangle r in lv.rectangles)
                             {
                                 if (l.Rectangle.Intersects(r))
                                 {
@@ -236,11 +232,23 @@ namespace GameStateManagement.GameManager
                                     break;
                                 }
                             }
-                        }
+                            /*
+                            for (int i = 0; i < e.laserList.Count; i++)
+                            {
+                                if (r.Intersects(e.laserList[i].Rectangle))
+                                {
+                                    e.laserList[i].isVisible = false;
+                                    e.laserList.Remove(e.laserList[i]);
+                                    break;
+                                }
+                            }
+                            */
 
+                        }
                     }
                 }
             }
+
         }
 
         public void CollissionBetweenPlayerAndGameObject()

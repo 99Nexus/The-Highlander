@@ -438,7 +438,7 @@ namespace GameStateManagement.Starships
                 newLaser.direction = Direction;
                 newLaser.isVisible = true;
 
-                if (laserList.Count() < 1000000000)
+                if (laserList.Count() < 10)
                 {
                     laserList.Add(newLaser);
                     newLaser.id = laserList.Count();

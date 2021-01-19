@@ -1,46 +1,647 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Laser" Collapsed="true">
-    <Position X="9.25" Y="0.5" Width="1.5" />
+  <Class Name="GameStateManagement.GameScreen">
+    <Position X="30.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAAQAAIgAgABCAAAAAAAAgAwAAAAAAAAgAAgA=</HashCode>
-      <FileName>Starships\Laser.cs</FileName>
+      <HashCode>AAwAEBCAAARQAgAEEAIAAAAADAAAAA4AAgAGAkYIBAY=</HashCode>
+      <FileName>ScreenManager\GameScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.InputState">
+    <Position X="49.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAAUBAAAAAAAAAAAACQAAFYAAAAAEAIAAAEAAAAEA=</HashCode>
+      <FileName>ScreenManager\InputState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.ScreenManager">
+    <Position X="58.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAVEAgAAAgAwAAAAAAAAAAAAAAiBAERAAAgAACCEQ=</HashCode>
+      <FileName>ScreenManager\ScreenManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.AboutGameScreen">
+    <Position X="49.5" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.MenuScreen" FixedToPoint="true">
+      <Path>
+        <Point X="41.25" Y="2.5" />
+        <Point X="41.25" Y="2.125" />
+        <Point X="50.312" Y="2.125" />
+        <Point X="50.312" Y="3.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAgAAAAAAAAAAAAAAAAgAAAAAgAAAAAQ=</HashCode>
+      <FileName>Screens\AboutGameScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.BackgroundScreen">
+    <Position X="34.5" Y="2.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.GameScreen" FixedToPoint="true">
+      <Path>
+        <Point X="31.703" Y="0.5" />
+        <Point X="31.703" Y="0.125" />
+        <Point X="35.188" Y="0.125" />
+        <Point X="35.188" Y="2.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQCEAAAAAAAAgAAAAAAAAAAAAAAABAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Screens\BackgroundScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.GameplayScreen">
+    <Position X="38" Y="2.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.GameScreen" FixedToPoint="true">
+      <Path>
+        <Point X="31.094" Y="0.5" />
+        <Point X="31.094" Y="0.125" />
+        <Point X="38.75" Y="0.125" />
+        <Point X="38.75" Y="2.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AEYCkAGAIgAAggAgABAAAAAAAAAAAABAAAAIAAEQYAQ=</HashCode>
+      <FileName>Screens\GameplayScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.HighScoreScreen">
+    <Position X="53" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.MenuScreen" FixedToPoint="true">
+      <Path>
+        <Point X="41.91" Y="2.5" />
+        <Point X="41.91" Y="2.125" />
+        <Point X="53.75" Y="2.125" />
+        <Point X="53.75" Y="3.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAACAEAAAAAAAgAAAAAAAAAAAAAAAAAAABAAAAQAQAQ=</HashCode>
+      <FileName>Screens\HighScoreScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.InputScreen">
+    <Position X="42.25" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.MenuScreen" FixedToPoint="true">
+      <Path>
+        <Point X="40.844" Y="2.5" />
+        <Point X="40.844" Y="2.125" />
+        <Point X="43" Y="2.125" />
+        <Point X="43" Y="3.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQKACAAAACQAhAAAAEAAAACAAIAAAAAEAAAAAQAAEQ=</HashCode>
+      <FileName>Screens\InputScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.LoadingScreen">
+    <Position X="32.5" Y="2.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.GameScreen" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="0.5" />
+        <Point X="31.5" Y="0.125" />
+        <Point X="33.25" Y="0.125" />
+        <Point X="33.25" Y="2.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ARRugAAAAABAAgAAAAAQAAGAAAAQAEBBBCAAAAAAACQ=</HashCode>
+      <FileName>Screens\LoadingScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.MainMenuScreen">
+    <Position X="47.5" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.MenuScreen" FixedToPoint="true">
+      <Path>
+        <Point X="41.758" Y="2.5" />
+        <Point X="41.758" Y="2.125" />
+        <Point X="48.25" Y="2.125" />
+        <Point X="48.25" Y="3.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAiAAAAAAAgQAAAAAIAAAAAQABCAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Screens\MainMenuScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.MenuEntry">
+    <Position X="53" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAAAAAAgAgAAAAJABAAAAAAAAIAAAACEQAAAY=</HashCode>
+      <FileName>Screens\MenuEntry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.MenuScreen">
+    <Position X="40.5" Y="2.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.GameScreen" FixedToPoint="true">
+      <Path>
+        <Point X="31.5" Y="0.5" />
+        <Point X="31.5" Y="0.125" />
+        <Point X="40.125" Y="0.125" />
+        <Point X="40.125" Y="2.812" />
+        <Point X="40.5" Y="2.812" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>CQQAACGAAAAAAgAAAAAAgAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Screens\MenuScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.MessageBoxScreen">
+    <Position X="36.25" Y="2.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.GameScreen" FixedToPoint="true">
+      <Path>
+        <Point X="32.109" Y="0.5" />
+        <Point X="32.109" Y="0.125" />
+        <Point X="36.938" Y="0.125" />
+        <Point X="36.938" Y="2.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAQQCAACAAAgAAAAAAAAAAAAAAQAAAAAAAAAAAACQ=</HashCode>
+      <FileName>Screens\MessageBoxScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.OptionsMenuScreen">
+    <Position X="51.25" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.MenuScreen" FixedToPoint="true">
+      <Path>
+        <Point X="40.641" Y="2.5" />
+        <Point X="40.641" Y="2.125" />
+        <Point X="52" Y="2.125" />
+        <Point X="52" Y="3.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAAAAYAAABAAACAAAIACAABAAAEASAAQAAAAQAAACAA=</HashCode>
+      <FileName>Screens\OptionsMenuScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.PauseMenuScreen">
+    <Position X="54.75" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.MenuScreen" FixedToPoint="true">
+      <Path>
+        <Point X="41.605" Y="2.5" />
+        <Point X="41.605" Y="2.125" />
+        <Point X="55.5" Y="2.125" />
+        <Point X="55.5" Y="3.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAQAA=</HashCode>
+      <FileName>Screens\PauseMenuScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.PlayerIndexEventArgs">
+    <Position X="46.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Screens\PlayerIndexEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.GameStateManagementGame">
+    <Position X="58.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAgAAAAAAAAAACAAAAAQAAAAAAEAAAAQ=</HashCode>
+      <FileName>Game.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Program">
+    <Position X="55" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Game.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Score">
+    <Position X="62" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Score.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.ScoreManager">
+    <Position X="63.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIggIAAAAAAAAwAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>ScoreManager.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStateManagement.ObjectItem.Alarm">
-    <Position X="0.5" Y="1.75" Width="1.5" />
+    <Position X="18.5" Y="8.75" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.ObjectItem.GameObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="25.438" Y="8" />
+        <Point X="25.438" Y="7.625" />
+        <Point X="24.375" Y="7.625" />
+        <Point X="24.375" Y="8.375" />
+        <Point X="23.833" Y="8.375" Type="JumpStart" />
+        <Point X="23.667" Y="8.375" Type="JumpEnd" />
+        <Point X="21.521" Y="8.375" Type="JumpStart" />
+        <Point X="21.354" Y="8.375" Type="JumpEnd" />
+        <Point X="19.25" Y="8.375" />
+        <Point X="19.25" Y="8.75" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAQAAAAAAAAAAgAAAAAAAAAABAAAAAAAAAAAAAQAAAQ=</HashCode>
       <FileName>Objectitems\Alarm.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStateManagement.ObjectItem.ControlSystem">
-    <Position X="2.75" Y="1.75" Width="1.5" />
+    <Position X="20.75" Y="8.75" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.ObjectItem.GameObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="25.438" Y="8" />
+        <Point X="25.438" Y="7.625" />
+        <Point X="21.438" Y="7.625" />
+        <Point X="21.438" Y="8.75" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>Objectitems\ControlSystem.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStateManagement.ObjectItem.Crate">
-    <Position X="7.25" Y="1.75" Width="1.5" />
+    <Position X="23" Y="8.75" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.ObjectItem.GameObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="25.438" Y="8" />
+        <Point X="25.438" Y="7.625" />
+        <Point X="23.75" Y="7.625" />
+        <Point X="23.75" Y="8.75" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
       <FileName>Objectitems\Crate.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GameStateManagement.ObjectItem.GameObject" Collapsed="true">
-    <Position X="3.75" Y="0.5" Width="1.5" />
+  <Class Name="GameStateManagement.ObjectItem.GameObject">
+    <Position X="24.75" Y="8" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAEAAAAAAAAgAAAAAAICAAAAAAAgEBAEAAAAgAAAQ=</HashCode>
       <FileName>Objectitems\GameObject.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameStateManagement.ObjectItem.Generator">
-    <Position X="5" Y="1.75" Width="1.5" />
+    <Position X="16.25" Y="8.75" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.ObjectItem.GameObject" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="25.438" Y="8" />
+        <Point X="25.438" Y="7.625" />
+        <Point X="24.375" Y="7.625" />
+        <Point X="24.375" Y="8.375" />
+        <Point X="23.833" Y="8.375" Type="JumpStart" />
+        <Point X="23.667" Y="8.375" Type="JumpEnd" />
+        <Point X="21.521" Y="8.375" Type="JumpStart" />
+        <Point X="21.354" Y="8.375" Type="JumpEnd" />
+        <Point X="17" Y="8.375" />
+        <Point X="17" Y="8.75" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAABgQgAAAAAAAAASAEAAgAAAAAAAIAAAQ=</HashCode>
       <FileName>Objectitems\Generator.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="GameStateManagement.GameItems.GameItem">
+    <Position X="8" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAABAAICAAAAAAAgAAAAAAAAgAAAQ=</HashCode>
+      <FileName>GameItems\GameItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.GameItems.MapPieces">
+    <Position X="1" Y="11.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.GameItems.GameItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.438" Y="10.25" />
+        <Point X="8.438" Y="9.875" />
+        <Point X="7.625" Y="9.875" />
+        <Point X="7.625" Y="11.125" />
+        <Point X="1.625" Y="11.125" />
+        <Point X="1.625" Y="11.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAIAAAAAAAAAAgAAAAAAQAAAQ=</HashCode>
+      <FileName>GameItems\MapPieces.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.GameItems.Teleport">
+    <Position X="3.25" Y="11.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.GameItems.GameItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="9" Y="10.25" />
+        <Point X="9" Y="9.875" />
+        <Point X="7.625" Y="9.875" />
+        <Point X="7.625" Y="11.125" />
+        <Point X="4" Y="11.125" />
+        <Point X="4" Y="11.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAABAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>GameItems\Teleport.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.GameItems.UpdateShield">
+    <Position X="5.5" Y="11.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.GameItems.GameItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8" Y="11.375" />
+        <Point X="7.625" Y="11.375" />
+        <Point X="7.625" Y="11.125" />
+        <Point X="6.375" Y="11.125" />
+        <Point X="6.375" Y="11.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAgAAAAAAAAAAIAAAAAABAAAAAAAAAAY=</HashCode>
+      <FileName>GameItems\UpdateShield.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.GameManager.CollisionManager">
+    <Position X="60.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEIAAAAAACAAIgAAAgAQAAACAAAgARAAAEAAAAEAQ=</HashCode>
+      <FileName>GameManager\CollisionManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.GameObjects.Camera">
+    <Position X="63.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>GameObjects\Camera.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.GameObjects.HealthBar">
+    <Position X="62" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AARAAAAAQAAAAgAgAAAAAAAAAAAgAgABAAAAAAAAAAQ=</HashCode>
+      <FileName>GameObjects\HealthBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.GameObjects.Highscore">
+    <Position X="65.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAgAAAAAAAAABAgAAABAAAAAAAAAAQ=</HashCode>
+      <FileName>GameObjects\Highscore.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.MapClasses.Level">
+    <Position X="3.25" Y="1.5" Width="1.5" />
+    <NestedTypes>
+      <Struct Name="GameStateManagement.MapClasses.Level.positionElement" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>MapClasses\Level.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <InheritanceLine Type="GameStateManagement.MapClasses.MapStructure" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.312" Y="1" />
+        <Point X="10.312" Y="0.625" />
+        <Point X="4.062" Y="0.625" />
+        <Point X="4.062" Y="1.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AkUEAhAAAIIABgEDJwABCCQAEAKIEGAlACCAAAAAgAQ=</HashCode>
+      <FileName>MapClasses\Level.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.MapClasses.MainMap">
+    <Position X="7.25" Y="1.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.MapClasses.MapStructure" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10" Y="1" />
+        <Point X="10" Y="0.625" />
+        <Point X="7.938" Y="0.625" />
+        <Point X="7.938" Y="1.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AJUAAAAAAAEAAiCAAAAAAAAgACAAAgBBAAAIBAAAAIQ=</HashCode>
+      <FileName>MapClasses\MainMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.MapClasses.Map">
+    <Position X="5.25" Y="1.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.MapClasses.MapStructure" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="9.75" Y="1" />
+        <Point X="9.75" Y="0.625" />
+        <Point X="6" Y="0.625" />
+        <Point X="6" Y="1.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AUQECAAAAAAgAgADQAAAAAAAAQECAgABAAAAAAAAAAQ=</HashCode>
+      <FileName>MapClasses\Map.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.MapClasses.MapStructure">
+    <Position X="9.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAIAAAAAAAAgAAAAAAIAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>MapClasses\MapStructure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.MapClasses.Mission">
+    <Position X="65.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgAAAAAAAEgAAABAAICECAAAAAAABAEAAAAAAAAQ=</HashCode>
+      <FileName>MapClasses\Mission.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Screens.GameMenuInfo">
+    <Position X="56.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgCgAAEIAAAAAAAgAgABAAAAAAAAAAA=</HashCode>
+      <FileName>Screens\GameMenuInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Screens.GameOverScreen">
+    <Position X="44" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.MenuScreen" FixedToPoint="true">
+      <Path>
+        <Point X="41.047" Y="2.5" />
+        <Point X="41.047" Y="2.125" />
+        <Point X="44.688" Y="2.125" />
+        <Point X="44.688" Y="3.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>EAAABAAAAAAAAgAAAAAAAAAAAAAAAiAAAAAAAAAAAAA=</HashCode>
+      <FileName>Screens\GameOverScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Screens.WinScreen">
+    <Position X="45.75" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.MenuScreen" FixedToPoint="true">
+      <Path>
+        <Point X="41.453" Y="2.5" />
+        <Point X="41.453" Y="2.125" />
+        <Point X="46.375" Y="2.125" />
+        <Point X="46.375" Y="3.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAACAACAIAAAAgABAAEIAAAAAAAAAgAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Screens\WinScreen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Starships.Doomer">
+    <Position X="20" Y="2.25" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.Starships.Enemy" FixedToPoint="true">
+      <Path>
+        <Point X="14.859" Y="1" />
+        <Point X="14.859" Y="0.625" />
+        <Point X="20.75" Y="0.625" />
+        <Point X="20.75" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Starships\Doomer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Starships.Enemy">
+    <Position X="13.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIYAAIALEIgARoAgADCIIgEAASgmAwUQAiIARA6AxgQ=</HashCode>
+      <FileName>Starships\Enemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Starships.Explosion">
+    <Position X="17.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAgAAAAgAAEBAAIACAAEAAAgAAAAAAAAAQAAI=</HashCode>
+      <FileName>Starships\Explosion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Starships.Gunner">
+    <Position X="26.75" Y="2.25" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.Starships.Enemy" FixedToPoint="true">
+      <Path>
+        <Point X="13.844" Y="1" />
+        <Point X="13.844" Y="0.625" />
+        <Point X="27.438" Y="0.625" />
+        <Point X="27.438" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Starships\Gunner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Starships.GunnerShip">
+    <Position X="28.75" Y="2.25" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.Starships.Enemy" FixedToPoint="true">
+      <Path>
+        <Point X="14.25" Y="1" />
+        <Point X="14.25" Y="0.625" />
+        <Point X="29.438" Y="0.625" />
+        <Point X="29.438" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Starships\GunnerShip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Starships.Sprinter">
+    <Position X="15.5" Y="2.25" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.Starships.Enemy" FixedToPoint="true">
+      <Path>
+        <Point X="13.641" Y="1" />
+        <Point X="13.641" Y="0.625" />
+        <Point X="16.188" Y="0.625" />
+        <Point X="16.188" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Starships\Sprinter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Starships.SprinterShip">
+    <Position X="17.75" Y="2.25" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.Starships.Enemy" FixedToPoint="true">
+      <Path>
+        <Point X="14.656" Y="1" />
+        <Point X="14.656" Y="0.625" />
+        <Point X="18.5" Y="0.625" />
+        <Point X="18.5" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Starships\SprinterShip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Starships.Tanker">
+    <Position X="22.25" Y="2.25" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.Starships.Enemy" FixedToPoint="true">
+      <Path>
+        <Point X="14.047" Y="1" />
+        <Point X="14.047" Y="0.625" />
+        <Point X="23.062" Y="0.625" />
+        <Point X="23.062" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Starships\Tanker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Starships.TankerShip">
+    <Position X="24.5" Y="2.25" Width="1.5" />
+    <InheritanceLine Type="GameStateManagement.Starships.Enemy" FixedToPoint="true">
+      <Path>
+        <Point X="14.453" Y="1" />
+        <Point X="14.453" Y="0.625" />
+        <Point X="25.188" Y="0.625" />
+        <Point X="25.188" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Starships\TankerShip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameStateManagement.Starships.TheHighlander">
+    <Position X="11.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIQAAACAEIgAJiCpARiIAAAAABAkBwQAAAAAwAxAAoQ=</HashCode>
+      <FileName>Starships\TheHighlander.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Laser">
+    <Position X="15.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAQAAIgAgABCAAAAAAAAgAwAAAAAAAAgAAgA=</HashCode>
+      <FileName>Starships\Laser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="GameStateManagement.ScreenState">
+    <Position X="55" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAgAAAIAAAEAAA=</HashCode>
+      <FileName>ScreenManager\GameScreen.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GameStateManagement.Starships.MovementMode">
+    <Position X="19.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQEAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Starships\Enemy.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

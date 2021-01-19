@@ -90,7 +90,7 @@ namespace GameStateManagement
             mainMap = new MainMap(content, highlander);
 
             // spawn-position for the Highlander
-            highlander.Position = mainMap.maps[3].levels[4].spawnPosition;
+            highlander.Position = mainMap.maps[0].levels[0].spawnPosition;
 
             // Manager
             collisionManager = new CollisionManager(mainMap, highlander);
@@ -133,9 +133,9 @@ namespace GameStateManagement
         /// property, so the game will stop updating when the pause menu is active,
         /// or if you tab away to a different application.
         /// </summary>
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus,
-                                                       bool coveredByOtherScreen)
+        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
+            collisionManager.ManageCollisions();
             if (highlander.isVisible && !pause)
             {
                 highlander.Update(gameTime);
@@ -156,8 +156,6 @@ namespace GameStateManagement
                         }
                     }
                 }
-
-                collisionManager.ManageCollisions();
             }
             base.Update(gameTime, otherScreenHasFocus, false);
         }
