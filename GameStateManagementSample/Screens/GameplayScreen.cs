@@ -90,7 +90,7 @@ namespace GameStateManagement
             mainMap = new MainMap(content, highlander);
 
             // spawn-position for the Highlander
-            highlander.Position = mainMap.maps[0].levels[0].spawnPosition;
+            highlander.Position = mainMap.maps[3].levels[4].spawnPosition;
 
             // Manager
             collisionManager = new CollisionManager(mainMap, highlander);

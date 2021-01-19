@@ -11,10 +11,8 @@ namespace GameStateManagement.Screens
 {
     class WinScreen : MenuScreen
     {
-        private const int V = 12;
         public Texture2D texture;
         private ContentManager content;
-        //private SpriteFont font;
 
         private int score;
         private string playerName;
@@ -31,13 +29,9 @@ namespace GameStateManagement.Screens
 
             score = pscore;
             playerName = pName;
-            
-            TransitionOnTime = TimeSpan.FromSeconds(0.0);
 
-            TransitionOffTime = TimeSpan.FromSeconds(0.0);
-            
             goBackToMainMenuMenuEntry = new MenuEntry("Back To Main Menu");
-            
+
             goBackToMainMenuMenuEntry.Selected += GoBackToMainMenuMenuEntrySelected;
 
             MenuEntries.Add(goBackToMainMenuMenuEntry);
@@ -48,15 +42,28 @@ namespace GameStateManagement.Screens
         public override void LoadContent()
         {
             content = new ContentManager(ScreenManager.Game.Services, "Content");
-            //font = content.Load<SpriteFont>(@"spritefonts\game_menu_fonts\score_font");
             texture = content.Load<Texture2D>(@"graphics\screen_graphics\winScreen");
-            
         }
 
         private void GoBackToMainMenuMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             InputScreen.PlayerNameIS = String.Empty;
-            LoadingScreen.Load(ScreenManager, false, null, new BackgroundScreen(), new MainMenuScreen());
+
+            foreach (GameScreen screen in ScreenManager.GetScreens())
+                screen.ExitScreen();
+
+            ScreenManager.AddScreen(new BackgroundScreen(), null);
+            ScreenManager.AddScreen(new MainMenuScreen(), null);
+        }
+
+        public override void HandleInput(InputState input)
+        {
+            PlayerIndex playerIndex;
+
+            if (input.IsMenuSelect(ControllingPlayer, out playerIndex))
+            {
+                OnSelectEntry(0, playerIndex);
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -71,7 +78,7 @@ namespace GameStateManagement.Screens
             goBackToMainMenuMenuEntry.Draw(this, true, gameTime);
             spriteBatch.Draw(texture, new Vector2(Width / 2 - 250, Height / 2 - 150), Color.White);
 
-            spriteBatch.DrawString(font, playerName + "          " + score, new Vector2(Width / 2 - 70, Height / 2 -20), Color.Green * TransitionAlpha);
+            spriteBatch.DrawString(font, playerName + "          " + score, new Vector2(Width / 2 - 70, Height / 2 - 20), Color.Green * TransitionAlpha);
             goBackToMainMenuMenuEntry.Draw(this, true, gameTime);
             spriteBatch.End();
         }

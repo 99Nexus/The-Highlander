@@ -39,6 +39,7 @@ namespace GameStateManagement
 
         public event EventHandler<PlayerIndexEventArgs> Cancelled;
 
+        private bool mainMenuScreen;
         #endregion Events
 
         #region Initialization
@@ -47,15 +48,21 @@ namespace GameStateManagement
         /// Constructor automatically includes the standard "A=ok, B=cancel"
         /// usage text prompt.
         /// </summary>
-        public MessageBoxScreen(string message)
+        public MessageBoxScreen()
         {
-            this.message = message;
-
             TransitionOnTime = TimeSpan.FromSeconds(0.2);
             TransitionOffTime = TimeSpan.FromSeconds(0.2);
-
             IsPopup = true;
         }
+
+        public MessageBoxScreen(bool mainMenu)
+        {
+            TransitionOnTime = TimeSpan.FromSeconds(0.2);
+            TransitionOffTime = TimeSpan.FromSeconds(0.2);
+            IsPopup = true;
+            mainMenuScreen = mainMenu;
+        }
+
 
         /// <summary>
         /// Loads graphics content for this screen. This uses the shared ContentManager
@@ -74,32 +81,34 @@ namespace GameStateManagement
 
         #region Handle Input
 
-        /// <summary>
-        /// Responds to user input, accepting or cancelling the message box.
-        /// </summary>
         public override void HandleInput(InputState input)
         {
             PlayerIndex playerIndex;
 
-            // We pass in our ControllingPlayer, which may either be null (to
-            // accept input from any player) or a specific index. If we pass a null
-            // controlling player, the InputState helper returns to us which player
-            // actually provided the input. We pass that through to our Accepted and
-            // Cancelled events, so they can tell which player triggered them.
-            if (input.IsMenuSelect(ControllingPlayer, out playerIndex))
+            if (input.IsMenuSelect(ControllingPlayer, out playerIndex) && !mainMenuScreen)
             {
-                // Raise the accepted event, then exit the message box.
-                if (Accepted != null)
-                    Accepted(this, new PlayerIndexEventArgs(playerIndex));
+                InputScreen.PlayerNameIS = String.Empty;
+
+                foreach (GameScreen screen in ScreenManager.GetScreens())
+                    screen.ExitScreen();
+
+                ScreenManager.AddScreen(new BackgroundScreen(), null);
+                ScreenManager.AddScreen(new MainMenuScreen(), null);
+            }
+
+            if (input.IsMenuSelect(ControllingPlayer, out playerIndex) && mainMenuScreen)
+            {
+                InputScreen.PlayerNameIS = String.Empty;
+
+                foreach (GameScreen screen in ScreenManager.GetScreens())
+                    screen.ExitScreen();
 
                 ExitScreen();
+                ScreenManager.Game.Exit();
             }
+
             else if (input.IsMenuCancel(ControllingPlayer, out playerIndex))
             {
-                // Raise the cancelled event, then exit the message box.
-                if (Cancelled != null)
-                    Cancelled(this, new PlayerIndexEventArgs(playerIndex));
-
                 ExitScreen();
             }
         }
@@ -108,15 +117,14 @@ namespace GameStateManagement
 
         #region Draw
 
-        /// <summary>
-        /// Draws the message box.
-        /// </summary>
         public override void Draw(GameTime gameTime)
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
+
             String yesOption = "Yes = Space, Enter";
             String noOption = "No = Esc";
+            message = "Do you want to exit Captain?";
 
             // Darken down any other screens that were drawn beneath the popup.
             ScreenManager.FadeBackBufferToBlack(TransitionAlpha * 2 / 3);
@@ -160,7 +168,6 @@ namespace GameStateManagement
 
             spriteBatch.End();
         }
-
         #endregion Draw
     }
 }

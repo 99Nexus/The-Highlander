@@ -52,9 +52,7 @@ namespace GameStateManagement
         /// </summary>
         private void QuitGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            const string message = "Do you want to exit Captain?";
-
-            MessageBoxScreen confirmQuitMessageBox = new MessageBoxScreen(message);
+            MessageBoxScreen confirmQuitMessageBox = new MessageBoxScreen();
 
             confirmQuitMessageBox.Accepted += ConfirmQuitMessageBoxAccepted;
 

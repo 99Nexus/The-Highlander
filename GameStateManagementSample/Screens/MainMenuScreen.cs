@@ -65,7 +65,6 @@ namespace GameStateManagement
             ContentManager content = ScreenManager.Game.Content;
 
             startScreenLogo = content.Load<Texture2D>(@"graphics\screen_graphics\start_screen_logo");
-            
         }
 
         #endregion Initialization
@@ -110,9 +109,7 @@ namespace GameStateManagement
         /// </summary>
         protected override void OnCancel(PlayerIndex playerIndex)
         {
-            const string message = "Do you want to exit Captain?";
-
-            MessageBoxScreen confirmExitMessageBox = new MessageBoxScreen(message);
+            MessageBoxScreen confirmExitMessageBox = new MessageBoxScreen(true);
 
             confirmExitMessageBox.Accepted += ConfirmExitMessageBoxAccepted;
 

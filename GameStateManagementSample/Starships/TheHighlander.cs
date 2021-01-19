@@ -195,7 +195,7 @@ namespace GameStateManagement.Starships
         {
             foreach (Laser l in laserList.ToList())
             {
-                if (l.steps++ < 80)
+                if (l.steps++ < 40)
                 {
                     l.Position += l.direction * (l.speed);
                 }
