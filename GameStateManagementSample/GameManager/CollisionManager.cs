@@ -22,17 +22,26 @@ namespace GameStateManagement.GameManager
 
         public void ManageCollisions()
         {
-
             CollisionBetweenPlayerAndEnemy();
-            //CollisionBetweenPlayerAndLaser();
+
+            CollisionBetweenPlayerAndLaser();
+
             CollissionBetweenEnemyAndLaser();
-            //CollissionBetweenPlayerAndMapObject();
-            //CollisionBetweenPlayerLaserAndMapObject();
-            //CollisionBetweenEnemyLaserAndMapObject();
+
+            CollissionBetweenPlayerAndMapObject();
+
+            CollisionBetweenPlayerLaserAndMapObject();
+
+            CollisionBetweenEnemyLaserAndMapObject();
+
             CollissionBetweenPlayerAndGameObject();
+
             CollisionBetweenPlayerLaserAndGameObject();
+
             CollisionBetweenEnemyLaserAndGameObject();
+
             CollisionBetweenPlayerAndTeleport();
+
             CollissionBetweenPlayerAndGameItem();
         }
 
@@ -185,11 +194,11 @@ namespace GameStateManagement.GameManager
 
         public void CollisionBetweenEnemyLaserAndMapObject()
         {
-            foreach (Rectangle r in mainMap.rectangles)
+            foreach (Map m in mainMap.maps)
             {
-                foreach (Map m in mainMap.maps)
+                foreach (Level lv in m.levels)
                 {
-                    foreach (Level lv in m.levels)
+                    foreach (Rectangle r in lv.rectangles)
                     {
                         foreach (Enemy e in lv.enemies)
                         {
@@ -331,15 +340,15 @@ namespace GameStateManagement.GameManager
 
         public void CollisionBetweenPlayerAndTeleport()
         {
-            for(int j = 0; j < 4; j++)
+            for (int j = 0; j < 4; j++)
             {
-                for(int i = 0; i < 5; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     // teleport player only if teleporter is visible
-                    if(mainMap.maps[j].levels[i].teleport.isVisible)
+                    if (mainMap.maps[j].levels[i].teleport.isVisible)
                     {
                         // if player is in the first 4 levels of any map
-                        if(player.Rectangle.Intersects(mainMap.maps[j].levels[i].teleport.rectangle) && i < 4) 
+                        if (player.Rectangle.Intersects(mainMap.maps[j].levels[i].teleport.rectangle) && i < 4)
                         {
                             // spawn player in next level
                             player.Position = mainMap.maps[j].levels[i + 1].spawnPosition;
@@ -347,7 +356,7 @@ namespace GameStateManagement.GameManager
                         }
 
                         // if player is in the last level of the first 3 maps
-                        if(player.Rectangle.Intersects(mainMap.maps[j].levels[i].teleport.rectangle) && i == 4)
+                        if (player.Rectangle.Intersects(mainMap.maps[j].levels[i].teleport.rectangle) && i == 4)
                         {
                             // set player in next map
                             if (j < 3)
@@ -363,11 +372,11 @@ namespace GameStateManagement.GameManager
 
         public void CollissionBetweenPlayerAndGameItem()
         {
-            foreach(Map m in mainMap.maps)
+            foreach (Map m in mainMap.maps)
             {
-                foreach(Level l in m.levels)
+                foreach (Level l in m.levels)
                 {
-                    for(int i = 0; i < l.mapPieces.Count; i++)
+                    for (int i = 0; i < l.mapPieces.Count; i++)
                     {
                         if (player.Rectangle.Intersects(l.mapPieces[i].rectangle))
                             l.mapPieces.RemoveAt(i);
@@ -375,7 +384,7 @@ namespace GameStateManagement.GameManager
                     }
 
                     // increase health of player
-                    if(l.updateShield != null && player.Rectangle.Intersects(l.updateShield.rectangle))
+                    if (l.updateShield != null && player.Rectangle.Intersects(l.updateShield.rectangle))
                     {
                         l.updateShield = null;
                         player.IncreaseShieldValue();

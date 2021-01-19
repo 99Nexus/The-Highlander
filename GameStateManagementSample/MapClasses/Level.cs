@@ -120,24 +120,42 @@ namespace GameStateManagement.MapClasses
                     positionElements.Add(new positionElement(new Vector2(position.X + 71, position.Y + 1419), new Vector2(position.X + 71, position.Y + 1419), MovementMode.PATROL));
                     break;
 
+
+                /*
+                lvl 2
+                    x = 0 + mapPosition.X
+                    interval [10, 1480]
+                    
+                    y = 1500 + mapPosition.Y
+                    interval [10, 450]
+                 */
                 case 2:
                     positionElements.Add(new positionElement(new Vector2(position.X + 860, position.Y + 54), new Vector2(position.X + 1248, position.Y + 54), MovementMode.HORIZONTAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 786, position.Y +  195), new Vector2(position.X + 434, position.Y + 195), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 786, position.Y + 195), new Vector2(position.X + 434, position.Y + 195), MovementMode.HORIZONTAL));
 
                     positionElements.Add(new positionElement(new Vector2(position.X + 1347, position.Y + 180), new Vector2(position.X + 1347, position.Y + 384), MovementMode.VERTICAL));
-                    positionElements.Add(new positionElement(new Vector2(position.X + 712, position.Y + 436), new Vector2(position.X + 712, position.Y + 344), MovementMode.VERTICAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 712, position.Y + 435), new Vector2(position.X + 712, position.Y + 344), MovementMode.VERTICAL));
                     positionElements.Add(new positionElement(new Vector2(position.X + 1163, position.Y + 382), new Vector2(position.X + 1163, position.Y + 254), MovementMode.VERTICAL));
 
                     positionElements.Add(new positionElement(new Vector2(position.X + 803, position.Y + 202), new Vector2(position.X + 803, position.Y + 202), MovementMode.PATROL));
                     positionElements.Add(new positionElement(new Vector2(position.X + 638, position.Y + 56), new Vector2(position.X + 638, position.Y + 56), MovementMode.PATROL));
                     positionElements.Add(new positionElement(new Vector2(position.X + 431, position.Y + 376), new Vector2(position.X + 431, position.Y + 376), MovementMode.PATROL));
                     break;
+                /*
+                lvl 3
+                    x = 1500 + mapPosition.X
+                    interval [10, 480]
+
+                    y = 500 + mapPosition.Y
+                    interval [10, 1480]
+                */
 
                 case 3:
-                    positionElements.Add(new positionElement(new Vector2(position.X + 61, position.Y + 1132), new Vector2(position.X + 1273, position.Y + 1143), MovementMode.HORIZONTAL));
+                    positionElements.Add(new positionElement(new Vector2(position.X + 61, position.Y + 1132), new Vector2(position.X + 98, position.Y + 1132), MovementMode.HORIZONTAL));
                     positionElements.Add(new positionElement(new Vector2(position.X + 59, position.Y + 58), new Vector2(position.X + 195, position.Y + 58), MovementMode.HORIZONTAL));
 
                     positionElements.Add(new positionElement(new Vector2(position.X + 147, position.Y + 347), new Vector2(position.X + 147, position.Y + 184), MovementMode.VERTICAL));
+
                     positionElements.Add(new positionElement(new Vector2(position.X + 142, position.Y + 519), new Vector2(position.X + 142, position.Y + 647), MovementMode.VERTICAL));
                     positionElements.Add(new positionElement(new Vector2(position.X + 409, position.Y + 736), new Vector2(position.X + 409, position.Y + 916), MovementMode.VERTICAL));
 
@@ -147,6 +165,14 @@ namespace GameStateManagement.MapClasses
                     positionElements.Add(new positionElement(new Vector2(position.X + 301, position.Y + 671), new Vector2(position.X + 301, position.Y + 671), MovementMode.PATROL));
                     break;
 
+                /*
+                lvl 4
+                    x = 500 + mapPosition.X
+                    interval [10, 1480]
+
+                    y = 0 + mapPosition.Y
+                    interval [10, 480]
+                */
                 case 4:
                     positionElements.Add(new positionElement(new Vector2(position.X + 1210, position.Y + 435), new Vector2(position.X + 962, position.Y + 435), MovementMode.HORIZONTAL));
                     positionElements.Add(new positionElement(new Vector2(position.X + 653, position.Y + 283), new Vector2(position.X + 445, position.Y + 283), MovementMode.HORIZONTAL));
@@ -188,10 +214,10 @@ namespace GameStateManagement.MapClasses
 
                 if (orderOfEnemiesObj[k] == 1)
                 {
-                    tankerShip = new TankerShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 20.0, positionElements[randomPosition].MovementMode);
+                    tankerShip = new TankerShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 10.0, positionElements[randomPosition].MovementMode);
 
                     // give one enemy in every level an update shield item
-                    if (k == numberOfEnemies-1)
+                    if (k == numberOfEnemies - 1)
                         tankerShip.gameItem = new UpdateShield(tankerShip.Position, tankerShip);
 
                     enemies.Add(tankerShip);
@@ -199,7 +225,7 @@ namespace GameStateManagement.MapClasses
 
                 if (orderOfEnemiesObj[k] == 2)
                 {
-                    sprinterShip = new SprinterShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 20.0, positionElements[randomPosition].MovementMode);
+                    sprinterShip = new SprinterShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 10.0, positionElements[randomPosition].MovementMode);
 
                     // give one enemy in every level an update shield item
                     if (k == numberOfEnemies - 1)
@@ -210,7 +236,7 @@ namespace GameStateManagement.MapClasses
 
                 if (orderOfEnemiesObj[k] == 3)
                 {
-                    gunnerShip = new GunnerShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 20.0, positionElements[randomPosition].MovementMode);
+                    gunnerShip = new GunnerShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 10.0, positionElements[randomPosition].MovementMode);
 
                     // give one enemy in every level an update shield item
                     if (k == numberOfEnemies - 1)
@@ -254,8 +280,10 @@ namespace GameStateManagement.MapClasses
                     break;
 
                 case 5:
+                    /*
                     numberOfEnemies = 3;
                     FullEnemiesList(numberOfEnemies);
+                    */
                     break;
 
                 default:
@@ -270,16 +298,16 @@ namespace GameStateManagement.MapClasses
             switch (mapNumber)
             {
                 case 1:
-                    enemies.Add(endBoss = new Tanker(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL));
+                    enemies.Add(endBoss = new Tanker(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 10.0, MovementMode.VERTICAL));
                     break;
                 case 2:
-                    enemies.Add(endBoss = new Sprinter(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL));
+                    enemies.Add(endBoss = new Sprinter(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 10.0, MovementMode.VERTICAL));
                     break;
                 case 3:
-                    enemies.Add((endBoss = new Gunner(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    enemies.Add((endBoss = new Gunner(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 10.0, MovementMode.VERTICAL)));
                     break;
                 case 4:
-                    enemies.Add((endBoss = new Doomer(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    enemies.Add((endBoss = new Doomer(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 10.0, MovementMode.VERTICAL)));
                     break;
             }
         }
@@ -289,12 +317,8 @@ namespace GameStateManagement.MapClasses
         #region Borders Initialization
         public void MakeBorders()
         {
-            if (levelNumber == 5)
 
-                // create rectangleArea
-                levelArea = new Rectangle((int)position.X + 10, (int)position.Y + 10, 1480, 480);
 
-            return;
 
             if (levelNumber == 1)
             {
@@ -308,7 +332,7 @@ namespace GameStateManagement.MapClasses
                 levelArea = new Rectangle(0 + 10, 0 + 10, 480, 1480);
             }
 
-            else if (levelNumber == 2)
+            if (levelNumber == 2)
             {
                 /// Map 1 Lvl 2
                 /// left: P: x 0  y 1500 , Size: w 10 x  h 500
@@ -318,10 +342,9 @@ namespace GameStateManagement.MapClasses
 
                 // create rectangleArea
                 levelArea = new Rectangle((int)position.X + 10, (int)position.Y + 10, 1480, 480);
-
             }
 
-            else if (this.levelNumber == 3)
+            if (levelNumber == 3)
             {
                 /// Map 1 Lvl 3
                 /// left: P: x 1500  y 500 , Size: w 10 x  h 1500
@@ -331,7 +354,7 @@ namespace GameStateManagement.MapClasses
                 levelArea = new Rectangle((int)position.X + 10, (int)position.Y + 10, 480, 1480);
             }
 
-            else if (levelNumber == 4)
+            if (levelNumber == 4)
             {
                 /// Map 1 Lvl 4
                 /// bottom: P: x 500  y + 490 , Size: w 1500 x  h 10 
@@ -340,6 +363,13 @@ namespace GameStateManagement.MapClasses
                 // create rectangleArea
                 levelArea = new Rectangle((int)position.X + 10, (int)position.Y + 10, 1480, 480);
             }
+
+            if (levelNumber == 5)
+            {
+                // create rectangleArea
+                levelArea = new Rectangle((int)position.X + 10, (int)position.Y + 10, 1480, 480);
+            }
+
         }
         #endregion Borders Initialization
 
@@ -366,7 +396,7 @@ namespace GameStateManagement.MapClasses
                 ex.Draw(spriteBatch);
             }
 
-            foreach(GameItem gi in mapPieces)
+            foreach (GameItem gi in mapPieces)
             {
                 gi.Draw(spriteBatch);
             }

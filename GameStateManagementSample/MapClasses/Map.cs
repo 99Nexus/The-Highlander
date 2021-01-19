@@ -46,9 +46,7 @@ namespace GameStateManagement.MapClasses
         }
 
         ///assign the background directly in the Constructor
-        public override void LoadContent(ContentManager content)
-        {
-        }
+        public override void LoadContent(ContentManager content) { }
 
         //create Levels
         public void CreateLevels(ContentManager content)
@@ -71,8 +69,6 @@ namespace GameStateManagement.MapClasses
                     lvl.position = new Vector2(position.X, position.Y);
                     playerStartPosition = (lvl.spawnPosition = new Vector2(lvl.position.X + 250, lvl.position.Y + 100));
                     lvl.teleport = new Teleport(new Vector2(lvl.position.X + 240, lvl.position.Y + 1435));
-                    
-
 
                     lvl.gameObjects.Add(new ControlSystem(new Vector2(lvl.position.X + 45, lvl.position.Y + 400), player));
 
@@ -81,10 +77,6 @@ namespace GameStateManagement.MapClasses
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 150, lvl.position.Y + 1300), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 370, lvl.position.Y + 370), player));
 
-                    
-
-
-                    lvl.SetEnemiesPositions();
                     break;
 
                 case 2:
@@ -99,7 +91,6 @@ namespace GameStateManagement.MapClasses
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 800, lvl.position.Y + 275), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 1000, lvl.position.Y + 400), player));
 
-                    lvl.SetEnemiesPositions();
                     break;
 
                 case 3:
@@ -113,8 +104,6 @@ namespace GameStateManagement.MapClasses
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 150, lvl.position.Y + 440), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 170, lvl.position.Y + 975), player));
 
-
-                    lvl.SetEnemiesPositions();
                     break;
 
                 case 4:
@@ -130,7 +119,6 @@ namespace GameStateManagement.MapClasses
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 740, lvl.position.Y + 280), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 370, lvl.position.Y + 140), player));
 
-                    lvl.SetEnemiesPositions();
                     break;
 
                 case 5:
@@ -146,14 +134,13 @@ namespace GameStateManagement.MapClasses
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 400, lvl.position.Y + 880), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 700, lvl.position.Y + 866), player));
                     lvl.gameObjects.Add(new Crate(new Vector2(lvl.position.X + 690, lvl.position.Y + 170), player));
-                    
 
                     break;
             }
 
             lvl.teleport.LoadContent(content);
             //when finish with rest positions call it from here
-            //lvl.SetEnemiesPositions();
+            lvl.SetEnemiesPositions();
             foreach (GameObject go in lvl.gameObjects)
             {
                 go.LoadContent(content);
@@ -164,9 +151,9 @@ namespace GameStateManagement.MapClasses
             }
             lvl.MakeBorders();
 
-           
 
-            
+
+
         }
 
         #endregion Initialization
@@ -192,7 +179,7 @@ namespace GameStateManagement.MapClasses
             {
                 l.Update(gameTime, theHighlander);
             }
-            if(mapNumber == 4)
+            if (mapNumber == 4)
             {
                 if (levels[4].isEndBossDestroyed)
                 {

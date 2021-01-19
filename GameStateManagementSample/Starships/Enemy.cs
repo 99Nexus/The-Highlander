@@ -1,13 +1,10 @@
 ﻿using GameStateManagement.GameItems;
-using GameStateManagement.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace GameStateManagement.Starships
 {
@@ -449,14 +446,14 @@ namespace GameStateManagement.Starships
             }
 
             if (laserDelay == 0)
-                laserDelay = 50;
+                laserDelay = 80;
         }
 
         public void UpdateLaser()
         {
             foreach (Laser l in laserList.ToList())
             {
-                if (l.steps++ < 80)
+                if (l.steps++ < 35)
                     l.Position += l.direction * (l.speed);
                 else
                     l.isVisible = false;
