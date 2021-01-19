@@ -1,4 +1,5 @@
-﻿using GameStateManagement.GameObjects;
+﻿using GameStateManagement.GameItems;
+using GameStateManagement.GameObjects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -45,6 +46,7 @@ namespace GameStateManagement.Starships
         public int damageBuffer;
         public int maxDamageBuffer;
         public int score = 0;
+        public GameItem gameItem;
 
         // Movement attributes
         public Vector2 position;
@@ -133,6 +135,9 @@ namespace GameStateManagement.Starships
                           (int)Position.Y - (texture[spriteCounter].Height / 2),
                           texture[spriteCounter].Width,
                           texture[spriteCounter].Height);
+
+            if (gameItem != null)
+                gameItem.LoadContent(content);
         }
 
         #endregion Initialization

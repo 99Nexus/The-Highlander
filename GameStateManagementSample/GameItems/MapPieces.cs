@@ -34,11 +34,14 @@ namespace GameStateManagement.GameItems
                                       pieces[spriteCounter].Height);
             Origin = new Vector2(pieces[spriteCounter].Width / 2, pieces[spriteCounter].Height / 2);
             Origin = new Vector2(pieces[spriteCounter].Width / 2, pieces[spriteCounter].Height / 2);
+
+            base.LoadContent(content);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(pieces[spriteCounter], position, null, Color.White, 0, Origin, 1, SpriteEffects.None, 0);
+            if(pieces[spriteCounter] != null)
+                spriteBatch.Draw(pieces[spriteCounter], position, null, Color.White, 0, Origin, 1, SpriteEffects.None, 0);
         }
     }
 }

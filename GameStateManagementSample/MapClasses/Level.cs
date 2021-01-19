@@ -66,7 +66,8 @@ namespace GameStateManagement.MapClasses
         public Generator generator;
 
         //Items
-        public List<GameItem> gameItems;
+        public List<GameItem> mapPieces;
+        public UpdateShield updateShield;
         public Teleport teleport;
 
         private List<Explosion> explosions;
@@ -91,6 +92,7 @@ namespace GameStateManagement.MapClasses
             gameObjects = new List<GameObject>();
             positionElements = new List<positionElement>();
             mission = new Mission(lvlNumber, player);
+            mapPieces = new List<GameItem>();
         }
 
         public override void LoadContent(ContentManager content)
@@ -167,11 +169,15 @@ namespace GameStateManagement.MapClasses
 
         public void FullEnemiesList(int numberOfEnemies)
         {
+            TankerShip tankerShip;
+            SprinterShip sprinterShip;
+            GunnerShip gunnerShip;
+
             int randomPosition;
 
             int[] orderOfEnemiesObj = OrderOfEnemies();
 
-            // list [1,1,1,1,1]
+            // list [1, 1, 1, 1, 1]
             // list [2, 1, 2, 2, 2]
             // list [1, 3, 2, 3, 3]
             // list [3, 2, 1, 3, 2]
@@ -182,17 +188,35 @@ namespace GameStateManagement.MapClasses
 
                 if (orderOfEnemiesObj[k] == 1)
                 {
-                    enemies.Add(new TankerShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 20.0, positionElements[randomPosition].MovementMode));
+                    tankerShip = new TankerShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 20.0, positionElements[randomPosition].MovementMode);
+
+                    // give one enemy in every level an update shield item
+                    if (k == numberOfEnemies-1)
+                        tankerShip.gameItem = new UpdateShield(tankerShip.Position, tankerShip);
+
+                    enemies.Add(tankerShip);
                 }
 
                 if (orderOfEnemiesObj[k] == 2)
                 {
-                    enemies.Add(new SprinterShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 20.0, positionElements[randomPosition].MovementMode));
+                    sprinterShip = new SprinterShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 20.0, positionElements[randomPosition].MovementMode);
+
+                    // give one enemy in every level an update shield item
+                    if (k == numberOfEnemies - 1)
+                        sprinterShip.gameItem = new UpdateShield(sprinterShip.Position, sprinterShip);
+
+                    enemies.Add(sprinterShip);
                 }
 
                 if (orderOfEnemiesObj[k] == 3)
                 {
-                    enemies.Add(new GunnerShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 20.0, positionElements[randomPosition].MovementMode));
+                    gunnerShip = new GunnerShip(positionElements[randomPosition].start, positionElements[randomPosition].end, theHighlander.Position, 20.0, positionElements[randomPosition].MovementMode);
+
+                    // give one enemy in every level an update shield item
+                    if (k == numberOfEnemies - 1)
+                        gunnerShip.gameItem = new UpdateShield(gunnerShip.Position, gunnerShip);
+
+                    enemies.Add(gunnerShip);
                 }
                 positionElements.RemoveAt(randomPosition);
             }
@@ -246,11 +270,10 @@ namespace GameStateManagement.MapClasses
             switch (mapNumber)
             {
                 case 1:
-                    enemies.Add((endBoss = new Tanker(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    enemies.Add(endBoss = new Tanker(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL));
                     break;
-
                 case 2:
-                    enemies.Add((endBoss = new Sprinter(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
+                    enemies.Add(endBoss = new Sprinter(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL));
                     break;
                 case 3:
                     enemies.Add((endBoss = new Gunner(new Vector2(position.X + 500, position.Y + 900), new Vector2(position.X + 800, position.Y + 500), theHighlander.Position, 20.0, MovementMode.VERTICAL)));
@@ -343,6 +366,14 @@ namespace GameStateManagement.MapClasses
                 ex.Draw(spriteBatch);
             }
 
+            foreach(GameItem gi in mapPieces)
+            {
+                gi.Draw(spriteBatch);
+            }
+
+            if (updateShield != null)
+                updateShield.Draw(spriteBatch);
+
             if (CheckIfCompleted())
             {
                 teleport.Draw(spriteBatch);
@@ -368,6 +399,10 @@ namespace GameStateManagement.MapClasses
             {
                 ex.Update(gameTime);
             }
+
+            if (updateShield != null)
+                updateShield.Update(gameTime);
+
             ObserveEnemies();
             ManageExplosions();
         }
@@ -383,6 +418,13 @@ namespace GameStateManagement.MapClasses
                 {
                     explosions.Add(new Explosion(explosionTexture, new Vector2(e.Position.X - 50, e.Position.Y - 25)));
                     theHighlander.PlayerScore.Value += e.score;
+
+                    // Add game item to game item list if enemy is destroyed
+                    if (e.gameItem != null && e == endBoss)
+                        mapPieces.Add(e.gameItem);
+                    else if (e.gameItem != null && e != endBoss)
+                        updateShield = (UpdateShield)e.gameItem;
+
                     enemies.Remove(e);
                 }
             }

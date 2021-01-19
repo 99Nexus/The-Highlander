@@ -33,6 +33,7 @@ namespace GameStateManagement.GameManager
             CollisionBetweenPlayerLaserAndGameObject();
             CollisionBetweenEnemyLaserAndGameObject();
             CollisionBetweenPlayerAndTeleport();
+            CollissionBetweenPlayerAndGameItem();
         }
 
         public void CollisionBetweenPlayerAndEnemy()
@@ -355,6 +356,29 @@ namespace GameStateManagement.GameManager
                                 player.spawnPosLvl = player.Position;
                             }
                         }
+                    }
+                }
+            }
+        }
+
+        public void CollissionBetweenPlayerAndGameItem()
+        {
+            foreach(Map m in mainMap.maps)
+            {
+                foreach(Level l in m.levels)
+                {
+                    for(int i = 0; i < l.mapPieces.Count; i++)
+                    {
+                        if (player.Rectangle.Intersects(l.mapPieces[i].rectangle))
+                            l.mapPieces.RemoveAt(i);
+
+                    }
+
+                    // increase health of player
+                    if(l.updateShield != null && player.Rectangle.Intersects(l.updateShield.rectangle))
+                    {
+                        l.updateShield = null;
+                        player.IncreaseShieldValue();
                     }
                 }
             }

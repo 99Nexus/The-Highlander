@@ -26,6 +26,7 @@ namespace GameStateManagement.Starships
         public float linearVelocity = 4f;
         public int updateLevel = 0;
         public int shield = 10;
+        public int maxShield = 10;
         public int score;
         public int weaponPower;
 
@@ -165,6 +166,21 @@ namespace GameStateManagement.Starships
                 shield -= damage;
         }
 
+        public void IncreaseShieldValue()
+        {
+            switch(updateLevel)
+            {
+                case 0:
+                    if (shield + 1 <= (maxShield + updateLevel))
+                        shield++;
+                    break;
+                default:
+                    if (shield + 1 <= (maxShield + updateLevel+1))
+                        shield++;
+                    break;
+            }
+        }
+
         #endregion Logic and Input
 
         #region Shoot
@@ -248,10 +264,6 @@ namespace GameStateManagement.Starships
                     l.Draw(spriteBatch);
 
                 spriteBatch.Draw(texture[spriteCounter], Position, null, Color.White, rotation, Origin, 1, SpriteEffects.None, 0);
-                /*
-                spriteBatch.DrawString(sprite, new string("Y " + Position.Y.ToString()), new Vector2(Position.X, Position.Y - 40), Color.Black);
-                spriteBatch.DrawString(sprite, new string("X " + Position.X.ToString()), Position, Color.Black);
-                */
             }
             else
             {
